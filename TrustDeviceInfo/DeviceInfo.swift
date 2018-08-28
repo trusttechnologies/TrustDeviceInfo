@@ -9,27 +9,26 @@
 import Foundation
 import UIKit
 import CoreTelephony
-
 import DeviceKit
 import Alamofire
 
-protocol OnSIMChangedDelegate: class {
+public protocol OnSIMChangedDelegate: class {
     func onCarrierInfoHasChanged(carrier: CTCarrier)
 }
 
-protocol OnSendDataResponseDelegate: class {
+public protocol OnSendDataResponseDelegate: class {
     func onResponse(responseStatus: ResponseStatus)
     func onTrustIDSaved()
 }
 
-enum ResponseStatus: String {
+public enum ResponseStatus: String {
     case created = "TrustID Creado"
     case noChanges = "No hay cambios"
     case updated = "Datos actualizados"
     case error = "Ha ocurrido un error en el envío de datos"
 }
 
-class DeviceInfo {
+public class DeviceInfo {
     
     private let trustIDKey = "trustid"
     private let baseUrl = "https://audit.trust.lat/api"
@@ -37,12 +36,6 @@ class DeviceInfo {
     private let trifleUploadURLAsString = "https://audit.trust.lat/api/v1/trifle"
     private let eventUploadURLAsString = "https://audit.trust.lat/api/v1/trifle/remote"
     private let networkInfo = CTTelephonyNetworkInfo()
-
-    private init() {}
-
-    deinit {
-        enable = false
-    }
 
     private var autoSendDataOnEnabled: Bool = false
     
@@ -72,6 +65,12 @@ class DeviceInfo {
     
     public weak var onSIMChangedDelegate: OnSIMChangedDelegate?
     public weak var onSendDataResponseDelegate: OnSendDataResponseDelegate?
+    
+    private init() {}
+    
+    deinit {
+        enable = false
+    }
 }
 
 extension DeviceInfo {
@@ -111,7 +110,7 @@ extension DeviceInfo {
         
         switch statusCode {
         case 200:
-            guard self.checkTrustIDhasBeenSaved() else {
+            guard checkTrustIDhasBeenSaved() else {
                 return .created
             }
 
@@ -345,7 +344,7 @@ extension DeviceInfo {
 }
 
 // MARK: - DiskStatus
-class DiskStatus {
+private class DiskStatus {
     
     class func MBFormatter(_ bytes: Int64) -> String {
         let formatter = ByteCountFormatter()
@@ -435,7 +434,7 @@ class DiskStatus {
 }
 
 // MARK: - Sysctl
-struct Sysctl {
+private struct Sysctl {
     
     enum Error: Swift.Error {
         case unknown
