@@ -126,16 +126,16 @@ extension DeviceInfo {
         UserDefaults.standard.set(trustID, forKey: trustIDKey)
     }
     
-    func enable(autoSendDataOnEnabled: Bool = true) {
+    public func enable(autoSendDataOnEnabled: Bool = true) {
         self.autoSendDataOnEnabled = autoSendDataOnEnabled
         self.enable = true
     }
     
-    func disable() {
+    public func disable() {
         self.enable = false
     }
     
-    func sendData(completionHandler: ((ResponseStatus) -> Void)? = nil) {
+    public func sendData(completionHandler: ((ResponseStatus) -> Void)? = nil) {
         
         guard let parameters = getInfoAsParameters() else {
             return
@@ -237,7 +237,7 @@ extension DeviceInfo {
         }
     }
     
-    func getTrustID() -> String {
+    public func getTrustID() -> String {
         guard let trustID = UserDefaults.standard.string(forKey: trustIDKey) else {
             return ""
         }
@@ -249,7 +249,7 @@ extension DeviceInfo {
         UserDefaults.standard.removeObject(forKey: trustIDKey)
     }
     
-    func checkTrustIDhasBeenSaved() -> Bool {
+    public func checkTrustIDhasBeenSaved() -> Bool {
         return UserDefaults.standard.string(forKey: trustIDKey) != nil
     }
     
