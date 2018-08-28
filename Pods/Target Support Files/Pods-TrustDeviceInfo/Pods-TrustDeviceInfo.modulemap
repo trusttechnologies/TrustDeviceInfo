@@ -1,0 +1,6 @@
+module Pods_TrustDeviceInfo {
+  umbrella header "Pods-TrustDeviceInfo-umbrella.h"
+
+  export *
+  module * { export * }
+}
