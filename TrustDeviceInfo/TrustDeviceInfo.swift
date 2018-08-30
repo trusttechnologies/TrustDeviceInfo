@@ -61,7 +61,7 @@ public struct EventData {
     var latitude: String?
     var longitude: String?
     
-    var asParameters: Parameters {
+    public var asParameters: Parameters {
         return [
             "source": [
                 "trustid": TrustDeviceInfo.shared.getTrustID(),
@@ -80,6 +80,13 @@ public struct EventData {
                 "long": longitude ?? ""
             ]
         ]
+    }
+    
+    public init(transactionType: TransactionType, authMethod: AuthMethod, latitude: String, longitude: String) {
+        self.transactionType = transactionType
+        self.authMethod = authMethod
+        self.latitude = latitude
+        self.longitude = longitude
     }
 }
 
