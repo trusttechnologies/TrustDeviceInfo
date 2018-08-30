@@ -6,21 +6,99 @@
 //  Copyright © 2018 Jumpitt Labs. All rights reserved.
 //
 
-import Foundation
-import UIKit
+import Alamofire
 import CoreTelephony
 import DeviceKit
-import Alamofire
+import Foundation
+import UIKit
 
+// MARK: Extension Bundle
+extension Bundle {
+    var displayName: String? {
+        return object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
+            object(forInfoDictionaryKey: "CFBundleName") as? String
+    }
+}
+
+// MARK: - Extension String
+extension String {
+    static let appLocale = "es_CL"
+    static let yyyyMMddHHmmss = "yyyy-MM-dd HH:mm:ss"
+}
+
+// MARK: - Extension Date
+extension Date {
+    func toString(with format: String) -> String {
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.locale = Locale(identifier: .appLocale)
+        dateFormatter.dateFormat = format
+        
+        return dateFormatter.string(from: self)
+    }
+}
+
+// MARK: - Enum TransactionType
+public enum TransactionType: String {
+    case sign = "Firma"
+    case deny = "Rechaza"
+}
+
+// MARK: - Enum AuthMethod
+public enum AuthMethod: String {
+    case advancedElectronicSignature = "Firma Electrónica Avanzada"
+    case touchID = "Touch ID"
+    case faceID = "Face ID"
+}
+
+// MARK: - Struct EventData
+public struct EventData {
+    
+    private let device = Device()
+    
+    var transactionType: TransactionType?
+    var authMethod: AuthMethod?
+    var latitude: String?
+    var longitude: String?
+    
+    var asParameters: Parameters {
+        return [
+            "source": [
+                "trustid": DeviceInfo.shared.getTrustID(),
+                "app_name": Bundle.main.displayName,
+                "bundle_id": Bundle.main.bundleIdentifier,
+                "system_name": device.systemName,
+                "system_version": device.systemVersion
+            ],
+            "transaction": [
+                "operation": transactionType?.rawValue ?? "",
+                "method": authMethod?.rawValue ?? "",
+                "timestamp": Date().toString(with: .yyyyMMddHHmmss)
+            ],
+            "geo": [
+                "lat": latitude ?? "",
+                "long": longitude ?? ""
+            ]
+        ]
+    }
+}
+
+// MARK: - OnSIMChangedDelegate
 public protocol OnSIMChangedDelegate: class {
     func onCarrierInfoHasChanged(carrier: CTCarrier)
 }
 
+// MARK: - OnSendDataResponseDelegate
 public protocol OnSendDataResponseDelegate: class {
     func onResponse(responseStatus: ResponseStatus)
+}
+
+// MARK: - OnTrustIDDelegate
+public protocol OnTrustIDDelegate: class {
     func onTrustIDSaved()
 }
 
+// MARK: - ResponseStatus
 public enum ResponseStatus: String {
     case created = "TrustID Creado"
     case noChanges = "No hay cambios"
@@ -28,13 +106,25 @@ public enum ResponseStatus: String {
     case error = "Ha ocurrido un error en el envío de datos"
 }
 
+// MARK: - DeviceInfo
 public class DeviceInfo {
     
     private let trustIDKey = "trustid"
     private let baseUrl = "https://audit.trust.lat/api"
     private let apiVersion = "/v1"
-    private let trifleUploadURLAsString = "https://audit.trust.lat/api/v1/trifle"
-    private let eventUploadURLAsString = "https://audit.trust.lat/api/v1/trifle/remote"
+    
+    private var trifleUploadURLAsString: String {
+        return "\(baseUrl)\(apiVersion)/trifle"
+    }
+    
+    private var carrierChangeEventUploadURLAsString: String {
+        return "\(baseUrl)\(apiVersion)/trifle/remote"
+    }
+    
+    private var eventUploadURLAsString: String {
+        return "\(baseUrl)\(apiVersion)/audit"
+    }
+    
     private let networkInfo = CTTelephonyNetworkInfo()
 
     private var autoSendDataOnEnabled: Bool = false
@@ -65,6 +155,7 @@ public class DeviceInfo {
     
     public weak var onSIMChangedDelegate: OnSIMChangedDelegate?
     public weak var onSendDataResponseDelegate: OnSendDataResponseDelegate?
+    public weak var onTrustIDDelegate: OnTrustIDDelegate?
     
     private init() {}
     
@@ -86,7 +177,7 @@ extension DeviceInfo {
                 }
                 
                 if self.checkTrustIDhasBeenSaved() {
-                    self.sendEventData(carrier: carrier)
+                    self.send(carrierData: carrier)
                 } else {
                     self.sendData()
                 }
@@ -122,10 +213,6 @@ extension DeviceInfo {
         }
     }
     
-    private func save(trustID: String) {
-        UserDefaults.standard.set(trustID, forKey: trustIDKey)
-    }
-    
     public func enable(autoSendDataOnEnabled: Bool = true) {
         self.autoSendDataOnEnabled = autoSendDataOnEnabled
         self.enable = true
@@ -135,9 +222,56 @@ extension DeviceInfo {
         self.enable = false
     }
     
+    func send(carrierData: CTCarrier) {
+        
+        guard let parameters = getEventInfoAsParameters(carrier: carrierData) else {
+            return
+        }
+        
+        print("Parameters: \(parameters)")
+        
+        request(
+            carrierChangeEventUploadURLAsString,
+            method: .post,
+            parameters: parameters,
+            encoding: JSONEncoding.default).responseJSON {
+                [weak self] response in
+                
+                print("Status code: \(response.response?.statusCode ?? -1)")
+                print("Carrier Change response: \(response)")
+                
+                guard let `self` = self else {
+                    return
+                }
+                
+                switch response.result {
+                case .success(let responseData):
+                    guard
+                        let json = responseData as? [String: Any],
+                        let trifle = json["trifle"] as? [String: Any] else {
+                            return
+                    }
+                    
+                    guard let trustID = trifle[self.trustIDKey] as? String else {
+                        print("No TrustID")
+                        self.removeTrustID()
+                        return
+                    }
+                    
+                    print("TrustID: \(trustID)")
+                    self.save(trustID: trustID)
+                    
+                    if let delegate = self.onTrustIDDelegate {
+                        delegate.onTrustIDSaved()
+                    }
+                default: break
+                }
+        }
+    }
+    
     public func sendData(completionHandler: ((ResponseStatus) -> Void)? = nil) {
         
-        guard let parameters = getInfoAsParameters() else {
+        guard let parameters = getDeviceInfoAsParameters() else {
             return
         }
         
@@ -182,63 +316,52 @@ extension DeviceInfo {
                     print("TrustID: \(trustID)")
                     self.save(trustID: trustID)
                     
-                    if let delegate = self.onSendDataResponseDelegate {
+                    if let delegate = self.onTrustIDDelegate {
                         delegate.onTrustIDSaved()
                     }
                 default: break
                 }
         }
     }
-    
-    func sendEventData(carrier: CTCarrier) {
+
+    public func send(eventData: EventData, onResponse: (()->Void)? = nil, onSuccess: (()->Void)? = nil, onFailure: (()->Void)? = nil) {
         
-        guard let parameters = getEventInfoAsParameters(carrier: carrier) else {
-            return
-        }
-        
-        print("Parameters: \(parameters)")
+        let parameters = eventData.asParameters
         
         request(
             eventUploadURLAsString,
             method: .post,
             parameters: parameters,
             encoding: JSONEncoding.default).responseJSON {
-                [weak self] response in
+                response in
                 
                 print("Status code: \(response.response?.statusCode ?? -1)")
                 print("Event response: \(response)")
                 
-                guard let `self` = self else {
-                    return
+                if let onResponse = onResponse {
+                    onResponse()
                 }
                 
                 switch response.result {
-                case .success(let responseData):
-                    guard
-                        let json = responseData as? [String: Any],
-                        let trifle = json["trifle"] as? [String: Any] else {
-                            return
+                case .success:
+                    if let onSuccess = onSuccess {
+                        onSuccess()
                     }
-                    
-                    guard let trustID = trifle[self.trustIDKey] as? String else {
-                        print("No TrustID")
-                        self.removeTrustID()
-                        return
+                case .failure:
+                    if let onFailure = onFailure {
+                        onFailure()
                     }
-                    
-                    print("TrustID: \(trustID)")
-                    //self.save(trustID: trustID)
-                    
-                    if let delegate = self.onSendDataResponseDelegate {
-                        delegate.onTrustIDSaved()
-                    }
-                default: break
                 }
         }
     }
     
+    private func save(trustID: String) {
+        KeychainWrapper.standard.set(trustID, forKey: trustIDKey)
+    }
+    
     public func getTrustID() -> String {
-        guard let trustID = UserDefaults.standard.string(forKey: trustIDKey) else {
+        
+        guard let trustID = KeychainWrapper.standard.string(forKey: trustIDKey) else {
             return ""
         }
         
@@ -246,11 +369,11 @@ extension DeviceInfo {
     }
     
     private func removeTrustID() {
-        UserDefaults.standard.removeObject(forKey: trustIDKey)
+        KeychainWrapper.standard.removeObject(forKey: trustIDKey)
     }
     
     public func checkTrustIDhasBeenSaved() -> Bool {
-        return UserDefaults.standard.string(forKey: trustIDKey) != nil
+        return KeychainWrapper.standard.string(forKey: trustIDKey) != nil
     }
     
     private func getEventInfoAsParameters(carrier: CTCarrier) -> Parameters? {
@@ -279,7 +402,7 @@ extension DeviceInfo {
         return parameters
     }
     
-    private func getInfoAsParameters() -> Parameters? {
+    private func getDeviceInfoAsParameters() -> Parameters? {
         
         guard enable else {
             return nil
@@ -559,4 +682,514 @@ private struct Sysctl {
     
     static var memSize: UInt64 { return try! Sysctl.valueOfType(UInt64.self, forKeys: [CTL_HW, HW_MEMSIZE]) }
     #endif
+}
+
+protocol KeychainAttrRepresentable {
+    var keychainAttrValue: CFString { get }
+}
+
+// MARK: - KeychainItemAccessibility
+public enum KeychainItemAccessibility {
+    /**
+     The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
+     
+     After the first unlock, the data remains accessible until the next restart. This is recommended for items that need to be accessed by background applications. Items with this attribute migrate to a new device when using encrypted backups.
+     */
+    @available(iOS 4, *)
+    case afterFirstUnlock
+    
+    /**
+     The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
+     
+     After the first unlock, the data remains accessible until the next restart. This is recommended for items that need to be accessed by background applications. Items with this attribute do not migrate to a new device. Thus, after restoring from a backup of a different device, these items will not be present.
+     */
+    @available(iOS 4, *)
+    case afterFirstUnlockThisDeviceOnly
+    
+    /**
+     The data in the keychain item can always be accessed regardless of whether the device is locked.
+     
+     This is not recommended for application use. Items with this attribute migrate to a new device when using encrypted backups.
+     */
+    @available(iOS 4, *)
+    case always
+    
+    /**
+     The data in the keychain can only be accessed when the device is unlocked. Only available if a passcode is set on the device.
+     
+     This is recommended for items that only need to be accessible while the application is in the foreground. Items with this attribute never migrate to a new device. After a backup is restored to a new device, these items are missing. No items can be stored in this class on devices without a passcode. Disabling the device passcode causes all items in this class to be deleted.
+     */
+    @available(iOS 8, *)
+    case whenPasscodeSetThisDeviceOnly
+    
+    /**
+     The data in the keychain item can always be accessed regardless of whether the device is locked.
+     
+     This is not recommended for application use. Items with this attribute do not migrate to a new device. Thus, after restoring from a backup of a different device, these items will not be present.
+     */
+    @available(iOS 4, *)
+    case alwaysThisDeviceOnly
+    
+    /**
+     The data in the keychain item can be accessed only while the device is unlocked by the user.
+     
+     This is recommended for items that need to be accessible only while the application is in the foreground. Items with this attribute migrate to a new device when using encrypted backups.
+     
+     This is the default value for keychain items added without explicitly setting an accessibility constant.
+     */
+    @available(iOS 4, *)
+    case whenUnlocked
+    
+    /**
+     The data in the keychain item can be accessed only while the device is unlocked by the user.
+     
+     This is recommended for items that need to be accessible only while the application is in the foreground. Items with this attribute do not migrate to a new device. Thus, after restoring from a backup of a different device, these items will not be present.
+     */
+    @available(iOS 4, *)
+    case whenUnlockedThisDeviceOnly
+    
+    static func accessibilityForAttributeValue(_ keychainAttrValue: CFString) -> KeychainItemAccessibility? {
+        for (key, value) in keychainItemAccessibilityLookup {
+            if value == keychainAttrValue {
+                return key
+            }
+        }
+        
+        return nil
+    }
+}
+
+private let keychainItemAccessibilityLookup: [KeychainItemAccessibility:CFString] = {
+    var lookup: [KeychainItemAccessibility:CFString] = [
+        .afterFirstUnlock: kSecAttrAccessibleAfterFirstUnlock,
+        .afterFirstUnlockThisDeviceOnly: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
+        .always: kSecAttrAccessibleAlways,
+        .whenPasscodeSetThisDeviceOnly: kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+        .alwaysThisDeviceOnly : kSecAttrAccessibleAlwaysThisDeviceOnly,
+        .whenUnlocked: kSecAttrAccessibleWhenUnlocked,
+        .whenUnlockedThisDeviceOnly: kSecAttrAccessibleWhenUnlockedThisDeviceOnly
+    ]
+    
+    return lookup
+}()
+
+extension KeychainItemAccessibility : KeychainAttrRepresentable {
+    internal var keychainAttrValue: CFString {
+        return keychainItemAccessibilityLookup[self]!
+    }
+}
+
+private let SecMatchLimit: String! = kSecMatchLimit as String
+private let SecReturnData: String! = kSecReturnData as String
+private let SecReturnPersistentRef: String! = kSecReturnPersistentRef as String
+private let SecValueData: String! = kSecValueData as String
+private let SecAttrAccessible: String! = kSecAttrAccessible as String
+private let SecClass: String! = kSecClass as String
+private let SecAttrService: String! = kSecAttrService as String
+private let SecAttrGeneric: String! = kSecAttrGeneric as String
+private let SecAttrAccount: String! = kSecAttrAccount as String
+private let SecAttrAccessGroup: String! = kSecAttrAccessGroup as String
+private let SecReturnAttributes: String = kSecReturnAttributes as String
+
+/// KeychainWrapper is a class to help make Keychain access in Swift more straightforward. It is designed to make accessing the Keychain services more like using NSUserDefaults, which is much more familiar to people.
+open class KeychainWrapper {
+    
+    @available(*, deprecated: 2.2.1, message: "KeychainWrapper.defaultKeychainWrapper is deprecated, use KeychainWrapper.standard instead")
+    public static let defaultKeychainWrapper = KeychainWrapper.standard
+    
+    /// Default keychain wrapper access
+    public static let standard = KeychainWrapper()
+    
+    /// ServiceName is used for the kSecAttrService property to uniquely identify this keychain accessor. If no service name is specified, KeychainWrapper will default to using the bundleIdentifier.
+    private (set) public var serviceName: String
+    
+    /// AccessGroup is used for the kSecAttrAccessGroup property to identify which Keychain Access Group this entry belongs to. This allows you to use the KeychainWrapper with shared keychain access between different applications.
+    private (set) public var accessGroup: String?
+    
+    private static let defaultServiceName: String = {
+        return Bundle.main.bundleIdentifier ?? "SwiftKeychainWrapper"
+    }()
+    
+    private convenience init() {
+        self.init(serviceName: KeychainWrapper.defaultServiceName)
+    }
+    
+    /// Create a custom instance of KeychainWrapper with a custom Service Name and optional custom access group.
+    ///
+    /// - parameter serviceName: The ServiceName for this instance. Used to uniquely identify all keys stored using this keychain wrapper instance.
+    /// - parameter accessGroup: Optional unique AccessGroup for this instance. Use a matching AccessGroup between applications to allow shared keychain access.
+    public init(serviceName: String, accessGroup: String? = nil) {
+        self.serviceName = serviceName
+        self.accessGroup = accessGroup
+    }
+    
+    // MARK:- Public Methods
+    
+    /// Checks if keychain data exists for a specified key.
+    ///
+    /// - parameter forKey: The key to check for.
+    /// - parameter withAccessibility: Optional accessibility to use when retrieving the keychain item.
+    /// - returns: True if a value exists for the key. False otherwise.
+    open func hasValue(forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+        if let _ = data(forKey: key, withAccessibility: accessibility) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    open func accessibilityOfKey(_ key: String) -> KeychainItemAccessibility? {
+        var keychainQueryDictionary = setupKeychainQueryDictionary(forKey: key)
+        
+        // Remove accessibility attribute
+        keychainQueryDictionary.removeValue(forKey: SecAttrAccessible)
+        
+        // Limit search results to one
+        keychainQueryDictionary[SecMatchLimit] = kSecMatchLimitOne
+        
+        // Specify we want SecAttrAccessible returned
+        keychainQueryDictionary[SecReturnAttributes] = kCFBooleanTrue
+        
+        // Search
+        var result: AnyObject?
+        let status = SecItemCopyMatching(keychainQueryDictionary as CFDictionary, &result)
+        
+        guard status == noErr, let resultsDictionary = result as? [String:AnyObject], let accessibilityAttrValue = resultsDictionary[SecAttrAccessible] as? String else {
+            return nil
+        }
+        
+        return KeychainItemAccessibility.accessibilityForAttributeValue(accessibilityAttrValue as CFString)
+    }
+    
+    /// Get the keys of all keychain entries matching the current ServiceName and AccessGroup if one is set.
+    open func allKeys() -> Set<String> {
+        var keychainQueryDictionary: [String:Any] = [
+            SecClass: kSecClassGenericPassword,
+            SecAttrService: serviceName,
+            SecReturnAttributes: kCFBooleanTrue,
+            SecMatchLimit: kSecMatchLimitAll,
+            ]
+        
+        if let accessGroup = self.accessGroup {
+            keychainQueryDictionary[SecAttrAccessGroup] = accessGroup
+        }
+        
+        var result: AnyObject?
+        let status = SecItemCopyMatching(keychainQueryDictionary as CFDictionary, &result)
+        
+        guard status == errSecSuccess else { return [] }
+        
+        var keys = Set<String>()
+        if let results = result as? [[AnyHashable: Any]] {
+            for attributes in results {
+                if let accountData = attributes[SecAttrAccount] as? Data,
+                    let account = String(data: accountData, encoding: String.Encoding.utf8) {
+                    keys.insert(account)
+                }
+            }
+        }
+        return keys
+    }
+    
+    // MARK: Public Getters
+    
+    open func integer(forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Int? {
+        guard let numberValue = object(forKey: key, withAccessibility: accessibility) as? NSNumber else {
+            return nil
+        }
+        
+        return numberValue.intValue
+    }
+    
+    open func float(forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Float? {
+        guard let numberValue = object(forKey: key, withAccessibility: accessibility) as? NSNumber else {
+            return nil
+        }
+        
+        return numberValue.floatValue
+    }
+    
+    open func double(forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Double? {
+        guard let numberValue = object(forKey: key, withAccessibility: accessibility) as? NSNumber else {
+            return nil
+        }
+        
+        return numberValue.doubleValue
+    }
+    
+    open func bool(forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool? {
+        guard let numberValue = object(forKey: key, withAccessibility: accessibility) as? NSNumber else {
+            return nil
+        }
+        
+        return numberValue.boolValue
+    }
+    
+    /// Returns a string value for a specified key.
+    ///
+    /// - parameter forKey: The key to lookup data for.
+    /// - parameter withAccessibility: Optional accessibility to use when retrieving the keychain item.
+    /// - returns: The String associated with the key if it exists. If no data exists, or the data found cannot be encoded as a string, returns nil.
+    open func string(forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> String? {
+        guard let keychainData = data(forKey: key, withAccessibility: accessibility) else {
+            return nil
+        }
+        
+        return String(data: keychainData, encoding: String.Encoding.utf8) as String?
+    }
+    
+    /// Returns an object that conforms to NSCoding for a specified key.
+    ///
+    /// - parameter forKey: The key to lookup data for.
+    /// - parameter withAccessibility: Optional accessibility to use when retrieving the keychain item.
+    /// - returns: The decoded object associated with the key if it exists. If no data exists, or the data found cannot be decoded, returns nil.
+    open func object(forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> NSCoding? {
+        guard let keychainData = data(forKey: key, withAccessibility: accessibility) else {
+            return nil
+        }
+        
+        return NSKeyedUnarchiver.unarchiveObject(with: keychainData) as? NSCoding
+    }
+    
+    
+    /// Returns a Data object for a specified key.
+    ///
+    /// - parameter forKey: The key to lookup data for.
+    /// - parameter withAccessibility: Optional accessibility to use when retrieving the keychain item.
+    /// - returns: The Data object associated with the key if it exists. If no data exists, returns nil.
+    open func data(forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Data? {
+        var keychainQueryDictionary = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
+        
+        // Limit search results to one
+        keychainQueryDictionary[SecMatchLimit] = kSecMatchLimitOne
+        
+        // Specify we want Data/CFData returned
+        keychainQueryDictionary[SecReturnData] = kCFBooleanTrue
+        
+        // Search
+        var result: AnyObject?
+        let status = SecItemCopyMatching(keychainQueryDictionary as CFDictionary, &result)
+        
+        return status == noErr ? result as? Data : nil
+    }
+    
+    
+    /// Returns a persistent data reference object for a specified key.
+    ///
+    /// - parameter forKey: The key to lookup data for.
+    /// - parameter withAccessibility: Optional accessibility to use when retrieving the keychain item.
+    /// - returns: The persistent data reference object associated with the key if it exists. If no data exists, returns nil.
+    open func dataRef(forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Data? {
+        var keychainQueryDictionary = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
+        
+        // Limit search results to one
+        keychainQueryDictionary[SecMatchLimit] = kSecMatchLimitOne
+        
+        // Specify we want persistent Data/CFData reference returned
+        keychainQueryDictionary[SecReturnPersistentRef] = kCFBooleanTrue
+        
+        // Search
+        var result: AnyObject?
+        let status = SecItemCopyMatching(keychainQueryDictionary as CFDictionary, &result)
+        
+        return status == noErr ? result as? Data : nil
+    }
+    
+    // MARK: Public Setters
+    
+    @discardableResult open func set(_ value: Int, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+        return set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
+    }
+    
+    @discardableResult open func set(_ value: Float, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+        return set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
+    }
+    
+    @discardableResult open func set(_ value: Double, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+        return set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
+    }
+    
+    @discardableResult open func set(_ value: Bool, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+        return set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
+    }
+    
+    /// Save a String value to the keychain associated with a specified key. If a String value already exists for the given key, the string will be overwritten with the new value.
+    ///
+    /// - parameter value: The String value to save.
+    /// - parameter forKey: The key to save the String under.
+    /// - parameter withAccessibility: Optional accessibility to use when setting the keychain item.
+    /// - returns: True if the save was successful, false otherwise.
+    @discardableResult open func set(_ value: String, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+        if let data = value.data(using: .utf8) {
+            return set(data, forKey: key, withAccessibility: accessibility)
+        } else {
+            return false
+        }
+    }
+    
+    /// Save an NSCoding compliant object to the keychain associated with a specified key. If an object already exists for the given key, the object will be overwritten with the new value.
+    ///
+    /// - parameter value: The NSCoding compliant object to save.
+    /// - parameter forKey: The key to save the object under.
+    /// - parameter withAccessibility: Optional accessibility to use when setting the keychain item.
+    /// - returns: True if the save was successful, false otherwise.
+    @discardableResult open func set(_ value: NSCoding, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+        let data = NSKeyedArchiver.archivedData(withRootObject: value)
+        
+        return set(data, forKey: key, withAccessibility: accessibility)
+    }
+    
+    /// Save a Data object to the keychain associated with a specified key. If data already exists for the given key, the data will be overwritten with the new value.
+    ///
+    /// - parameter value: The Data object to save.
+    /// - parameter forKey: The key to save the object under.
+    /// - parameter withAccessibility: Optional accessibility to use when setting the keychain item.
+    /// - returns: True if the save was successful, false otherwise.
+    @discardableResult open func set(_ value: Data, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+        var keychainQueryDictionary: [String:Any] = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
+        
+        keychainQueryDictionary[SecValueData] = value
+        
+        if let accessibility = accessibility {
+            keychainQueryDictionary[SecAttrAccessible] = accessibility.keychainAttrValue
+        } else {
+            // Assign default protection - Protect the keychain entry so it's only valid when the device is unlocked
+            keychainQueryDictionary[SecAttrAccessible] = KeychainItemAccessibility.whenUnlocked.keychainAttrValue
+        }
+        
+        let status: OSStatus = SecItemAdd(keychainQueryDictionary as CFDictionary, nil)
+        
+        if status == errSecSuccess {
+            return true
+        } else if status == errSecDuplicateItem {
+            return update(value, forKey: key, withAccessibility: accessibility)
+        } else {
+            return false
+        }
+    }
+    
+    @available(*, deprecated: 2.2.1, message: "remove is deprecated, use removeObject instead")
+    @discardableResult open func remove(key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+        return removeObject(forKey: key, withAccessibility: accessibility)
+    }
+    
+    /// Remove an object associated with a specified key. If re-using a key but with a different accessibility, first remove the previous key value using removeObjectForKey(:withAccessibility) using the same accessibilty it was saved with.
+    ///
+    /// - parameter forKey: The key value to remove data for.
+    /// - parameter withAccessibility: Optional accessibility level to use when looking up the keychain item.
+    /// - returns: True if successful, false otherwise.
+    @discardableResult open func removeObject(forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+        let keychainQueryDictionary: [String:Any] = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
+        
+        // Delete
+        let status: OSStatus = SecItemDelete(keychainQueryDictionary as CFDictionary)
+        
+        if status == errSecSuccess {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    /// Remove all keychain data added through KeychainWrapper. This will only delete items matching the currnt ServiceName and AccessGroup if one is set.
+    open func removeAllKeys() -> Bool {
+        // Setup dictionary to access keychain and specify we are using a generic password (rather than a certificate, internet password, etc)
+        var keychainQueryDictionary: [String:Any] = [SecClass:kSecClassGenericPassword]
+        
+        // Uniquely identify this keychain accessor
+        keychainQueryDictionary[SecAttrService] = serviceName
+        
+        // Set the keychain access group if defined
+        if let accessGroup = self.accessGroup {
+            keychainQueryDictionary[SecAttrAccessGroup] = accessGroup
+        }
+        
+        let status: OSStatus = SecItemDelete(keychainQueryDictionary as CFDictionary)
+        
+        if status == errSecSuccess {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    /// Remove all keychain data, including data not added through keychain wrapper.
+    ///
+    /// - Warning: This may remove custom keychain entries you did not add via SwiftKeychainWrapper.
+    ///
+    open class func wipeKeychain() {
+        deleteKeychainSecClass(kSecClassGenericPassword) // Generic password items
+        deleteKeychainSecClass(kSecClassInternetPassword) // Internet password items
+        deleteKeychainSecClass(kSecClassCertificate) // Certificate items
+        deleteKeychainSecClass(kSecClassKey) // Cryptographic key items
+        deleteKeychainSecClass(kSecClassIdentity) // Identity items
+    }
+    
+    // MARK:- Private Methods
+    
+    /// Remove all items for a given Keychain Item Class
+    ///
+    ///
+    @discardableResult private class func deleteKeychainSecClass(_ secClass: AnyObject) -> Bool {
+        let query = [SecClass: secClass]
+        let status: OSStatus = SecItemDelete(query as CFDictionary)
+        
+        if status == errSecSuccess {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    /// Update existing data associated with a specified key name. The existing data will be overwritten by the new data.
+    private func update(_ value: Data, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+        var keychainQueryDictionary: [String:Any] = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
+        let updateDictionary = [SecValueData:value]
+        
+        // on update, only set accessibility if passed in
+        if let accessibility = accessibility {
+            keychainQueryDictionary[SecAttrAccessible] = accessibility.keychainAttrValue
+        }
+        
+        // Update
+        let status: OSStatus = SecItemUpdate(keychainQueryDictionary as CFDictionary, updateDictionary as CFDictionary)
+        
+        if status == errSecSuccess {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    /// Setup the keychain query dictionary used to access the keychain on iOS for a specified key name. Takes into account the Service Name and Access Group if one is set.
+    ///
+    /// - parameter forKey: The key this query is for
+    /// - parameter withAccessibility: Optional accessibility to use when setting the keychain item. If none is provided, will default to .WhenUnlocked
+    /// - returns: A dictionary with all the needed properties setup to access the keychain on iOS
+    private func setupKeychainQueryDictionary(forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> [String:Any] {
+        // Setup default access as generic password (rather than a certificate, internet password, etc)
+        var keychainQueryDictionary: [String:Any] = [SecClass:kSecClassGenericPassword]
+        
+        // Uniquely identify this keychain accessor
+        keychainQueryDictionary[SecAttrService] = serviceName
+        
+        // Only set accessibiilty if its passed in, we don't want to default it here in case the user didn't want it set
+        if let accessibility = accessibility {
+            keychainQueryDictionary[SecAttrAccessible] = accessibility.keychainAttrValue
+        }
+        
+        // Set the keychain access group if defined
+        if let accessGroup = self.accessGroup {
+            keychainQueryDictionary[SecAttrAccessGroup] = accessGroup
+        }
+        
+        // Uniquely identify the account who will be accessing the keychain
+        let encodedIdentifier: Data? = key.data(using: String.Encoding.utf8)
+        
+        keychainQueryDictionary[SecAttrGeneric] = encodedIdentifier
+        
+        keychainQueryDictionary[SecAttrAccount] = encodedIdentifier
+        
+        return keychainQueryDictionary
+    }
 }
