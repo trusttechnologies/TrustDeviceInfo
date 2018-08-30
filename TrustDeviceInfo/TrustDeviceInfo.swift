@@ -1,5 +1,5 @@
 //
-//  DeviceInfo.swift
+//  TrustDeviceInfo.swift
 //  Trust
 //
 //  Created by Diego Villouta Fredes on 7/25/18.
@@ -64,7 +64,7 @@ public struct EventData {
     var asParameters: Parameters {
         return [
             "source": [
-                "trustid": DeviceInfo.shared.getTrustID(),
+                "trustid": TrustDeviceInfo.shared.getTrustID(),
                 "app_name": Bundle.main.displayName,
                 "bundle_id": Bundle.main.bundleIdentifier,
                 "system_name": device.systemName,
@@ -107,7 +107,7 @@ public enum ResponseStatus: String {
 }
 
 // MARK: - DeviceInfo
-public class DeviceInfo {
+public class TrustDeviceInfo {
     
     private let trustIDKey = "trustid"
     private let baseUrl = "https://audit.trust.lat/api"
@@ -145,9 +145,9 @@ public class DeviceInfo {
         }
     }
     
-    public class var shared: DeviceInfo {
+    public class var shared: TrustDeviceInfo {
         struct Static {
-            static let deviceInfo = DeviceInfo()
+            static let deviceInfo = TrustDeviceInfo()
         }
         
         return Static.deviceInfo
@@ -164,7 +164,7 @@ public class DeviceInfo {
     }
 }
 
-extension DeviceInfo {
+extension TrustDeviceInfo {
     private func setCarrierUpdateNotifier() {
         let updateNotifier: ((CTCarrier) -> Void) = {
             carrier in
