@@ -46,7 +46,7 @@ public enum TransactionType: String {
 
 // MARK: - Enum AuthMethod
 public enum AuthMethod: String {
-    case advancedElectronicSignature = "Firma Electrónica Avanzada"
+    case advancedElectronicSignature = "Firma Electronica Avanzada"
     case touchID = "Touch ID"
     case faceID = "Face ID"
 }
@@ -60,6 +60,7 @@ public struct EventData {
     var authMethod: AuthMethod?
     var latitude: String?
     var longitude: String?
+    var timestamp: String?
     
     public var asParameters: Parameters {
         return [
@@ -73,7 +74,7 @@ public struct EventData {
             "transaction": [
                 "operation": transactionType?.rawValue ?? "",
                 "method": authMethod?.rawValue ?? "",
-                "timestamp": Date().toString(with: .yyyyMMddHHmmss)
+                "timestamp": timestamp ?? ""
             ],
             "geo": [
                 "lat": latitude ?? "",
