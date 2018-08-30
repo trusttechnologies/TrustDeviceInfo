@@ -83,11 +83,12 @@ public struct EventData {
         ]
     }
     
-    public init(transactionType: TransactionType, authMethod: AuthMethod, latitude: String, longitude: String) {
+    public init(transactionType: TransactionType, authMethod: AuthMethod, latitude: String, longitude: String, timestamp: String) {
         self.transactionType = transactionType
         self.authMethod = authMethod
         self.latitude = latitude
         self.longitude = longitude
+        self.timestamp = timestamp
     }
 }
 
