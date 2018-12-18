@@ -1,0 +1,320 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": null,
+      "symbol": "TrustDeviceInfo",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 42,
+      "symbol": "TransactionType",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 43,
+      "symbol": "TransactionType.sign",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 44,
+      "symbol": "TransactionType.deny",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 48,
+      "symbol": "AuthMethod",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 49,
+      "symbol": "AuthMethod.advancedElectronicSignature",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 50,
+      "symbol": "AuthMethod.touchID",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 51,
+      "symbol": "AuthMethod.faceID",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 55,
+      "symbol": "EventData",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 65,
+      "symbol": "EventData.asParameters",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 86,
+      "symbol": "EventData.init(transactionType:authMethod:latitude:longitude:timestamp:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 96,
+      "symbol": "OnSIMChangedDelegate",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 97,
+      "symbol": "OnSIMChangedDelegate.onCarrierInfoHasChanged(carrier:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 101,
+      "symbol": "OnSendDataResponseDelegate",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 102,
+      "symbol": "OnSendDataResponseDelegate.onResponse(responseStatus:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 106,
+      "symbol": "OnTrustIDDelegate",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 107,
+      "symbol": "OnTrustIDDelegate.onTrustIDSaved()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 111,
+      "symbol": "ResponseStatus",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 112,
+      "symbol": "ResponseStatus.created",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 113,
+      "symbol": "ResponseStatus.noChanges",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 114,
+      "symbol": "ResponseStatus.updated",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 115,
+      "symbol": "ResponseStatus.error",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 119,
+      "symbol": "TrustDeviceInfo",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 157,
+      "symbol": "TrustDeviceInfo.shared",
+      "symbol_kind": "source.lang.swift.decl.var.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 165,
+      "symbol": "TrustDeviceInfo.onSIMChangedDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 166,
+      "symbol": "TrustDeviceInfo.onSendDataResponseDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 167,
+      "symbol": "TrustDeviceInfo.onTrustIDDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 225,
+      "symbol": "TrustDeviceInfo.enable(autoSendDataOnEnabled:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 230,
+      "symbol": "TrustDeviceInfo.disable()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 281,
+      "symbol": "TrustDeviceInfo.sendData(completionHandler:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 336,
+      "symbol": "TrustDeviceInfo.send(eventData:onResponse:onSuccess:onFailure:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 371,
+      "symbol": "TrustDeviceInfo.getTrustID()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 384,
+      "symbol": "TrustDeviceInfo.checkTrustIDhasBeenSaved()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 702,
+      "symbol": "KeychainItemAccessibility",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 808,
+      "symbol": "KeychainWrapper.defaultKeychainWrapper",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 851,
+      "symbol": "KeychainWrapper.accessibilityOfKey(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 906,
+      "symbol": "KeychainWrapper.integer(forKey:withAccessibility:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 914,
+      "symbol": "KeychainWrapper.float(forKey:withAccessibility:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 922,
+      "symbol": "KeychainWrapper.double(forKey:withAccessibility:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 930,
+      "symbol": "KeychainWrapper.bool(forKey:withAccessibility:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 1010,
+      "symbol": "KeychainWrapper.set(_:forKey:withAccessibility:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 1014,
+      "symbol": "KeychainWrapper.set(_:forKey:withAccessibility:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 1018,
+      "symbol": "KeychainWrapper.set(_:forKey:withAccessibility:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 1022,
+      "symbol": "KeychainWrapper.set(_:forKey:withAccessibility:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo/TrustDeviceInfo/TrustDeviceInfo.swift",
+      "line": 1082,
+      "symbol": "KeychainWrapper.remove(key:withAccessibility:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/diegovilloutafredes/Documents/Libraries/TrustDeviceInfo"
+}

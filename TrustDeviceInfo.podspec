@@ -1,12 +1,12 @@
 Pod::Spec.new do |s|
 
   s.platform     = :ios
-  s.ios.deployment_target = '11.4'
+  s.ios.deployment_target = '12.1'
   s.name         = "TrustDeviceInfo"
   s.summary      = "Small library that allows the user to obtain information about the device in use. Developed by Jumpitt Labs."
   s.requires_arc = true
 
-  s.version      = "0.1.6"
+  s.version      = "0.1.7"
 
   s.license      = { :type => "MIT", :file => "LICENSE" }
 
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 
   s.framework = "UIKit"
 
-  s.dependency 'Alamofire', '~> 4.7'
+  s.dependency 'Alamofire'
   s.dependency 'DeviceKit'
 
   s.source_files  = "TrustDeviceInfo/**/*.{swift}"

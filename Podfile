@@ -1,7 +1,7 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '11.4'
+# platform :ios, '12.1'
 
 target 'TrustDeviceInfo' do
-    pod 'Alamofire', '~> 4.7'
+    pod 'Alamofire'
     pod 'DeviceKit'
 end

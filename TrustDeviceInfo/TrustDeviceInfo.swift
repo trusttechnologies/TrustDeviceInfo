@@ -140,7 +140,7 @@ public class TrustDeviceInfo {
     
     private var enable = false {
         didSet {
-            if enable == true && oldValue == false {
+            if enable && !oldValue {
                 setCarrierUpdateNotifier()
                 
                 guard autoSendDataOnEnabled else {
@@ -148,7 +148,7 @@ public class TrustDeviceInfo {
                 }
                 
                 sendData()
-            } else if enable == false && oldValue == true {
+            } else if !enable && oldValue {
                 print("Disabled")
             }
         }
@@ -158,7 +158,7 @@ public class TrustDeviceInfo {
         struct Static {
             static let deviceInfo = TrustDeviceInfo()
         }
-        
+
         return Static.deviceInfo
     }
     
@@ -198,10 +198,10 @@ extension TrustDeviceInfo {
                 delegate.onCarrierInfoHasChanged(carrier: carrier)
             }
         }
-        
+
         networkInfo.subscriberCellularProviderDidUpdateNotifier = updateNotifier
     }
-    
+
     private func getResponseStatus(response: HTTPURLResponse?) -> ResponseStatus {
         
         guard let statusCode = response?.statusCode else {
@@ -459,6 +459,10 @@ extension TrustDeviceInfo {
             return parameters
         }
         
+        if let sscp = networkInfo.serviceSubscriberCellularProviders {
+            print("serviceSubscriberCellularProviders: \(sscp)")
+        }
+        
         let carrierInfo = [
             [
                 "carrierName": carrier.carrierName ?? "",
@@ -693,6 +697,7 @@ private struct Sysctl {
     #endif
 }
 
+// MARK: - KeychainAttrRepresentable
 protocol KeychainAttrRepresentable {
     var keychainAttrValue: CFString { get }
 }

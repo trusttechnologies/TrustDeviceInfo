@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>KeychainWrapper Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/KeychainWrapper" class="dashAnchor"></a>
+    <a title="KeychainWrapper Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">TrustDeviceInfo Docs</a> (34% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">TrustDeviceInfo Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        KeychainWrapper Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/KeychainWrapper.html">KeychainWrapper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TrustDeviceInfo.html">TrustDeviceInfo</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/AuthMethod.html">AuthMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ResponseStatus.html">ResponseStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/TransactionType.html">TransactionType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/OnSIMChangedDelegate.html">OnSIMChangedDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/OnSendDataResponseDelegate.html">OnSendDataResponseDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/OnTrustIDDelegate.html">OnTrustIDDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/EventData.html">EventData</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>KeychainWrapper</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="kt">KeychainWrapper</span></code></pre>
+
+                </div>
+              </div>
+            <p>KeychainWrapper is a class to help make Keychain access in Swift more straightforward. It is designed to make accessing the Keychain services more like using NSUserDefaults, which is much more familiar to people.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC07defaultdE0ACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/defaultKeychainWrapper" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC07defaultdE0ACvpZ">defaultKeychainWrapper</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">defaultKeychainWrapper</span><span class="p">:</span> <span class="kt">KeychainWrapper</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC8standardACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/standard" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC8standardACvpZ">standard</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Default keychain wrapper access</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">standard</span><span class="p">:</span> <span class="kt">KeychainWrapper</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC11serviceNameSSvp"></a>
+                    <a name="//apple_ref/swift/Property/serviceName" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC11serviceNameSSvp">serviceName</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>ServiceName is used for the kSecAttrService property to uniquely identify this keychain accessor. If no service name is specified, KeychainWrapper will default to using the bundleIdentifier.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">private(set)</span> <span class="kd">public</span> <span class="k">var</span> <span class="nv">serviceName</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC11accessGroupSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/accessGroup" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC11accessGroupSSSgvp">accessGroup</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>AccessGroup is used for the kSecAttrAccessGroup property to identify which Keychain Access Group this entry belongs to. This allows you to use the KeychainWrapper with shared keychain access between different applications.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">private(set)</span> <span class="kd">public</span> <span class="k">var</span> <span class="nv">accessGroup</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperCACSS11serviceName_SSSg11accessGrouptcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(serviceName:accessGroup:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperCACSS11serviceName_SSSg11accessGrouptcfc">init(serviceName:accessGroup:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a custom instance of KeychainWrapper with a custom Service Name and optional custom access group.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">serviceName</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">accessGroup</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>serviceName</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ServiceName for this instance. Used to uniquely identify all keys stored using this keychain wrapper instance.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>accessGroup</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional unique AccessGroup for this instance. Use a matching AccessGroup between applications to allow shared keychain access.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC8hasValueSbSS6forKey_AA0D17ItemAccessibilityOSg04withK0tF"></a>
+                    <a name="//apple_ref/swift/Method/hasValue(forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC8hasValueSbSS6forKey_AA0D17ItemAccessibilityOSg04withK0tF">hasValue(forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Checks if keychain data exists for a specified key.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">hasValue</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>forKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The key to check for.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>withAccessibility</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional accessibility to use when retrieving the keychain item.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>True if a value exists for the key. False otherwise.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC18accessibilityOfKeyAA0D17ItemAccessibilityOSgSSF"></a>
+                    <a name="//apple_ref/swift/Method/accessibilityOfKey(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC18accessibilityOfKeyAA0D17ItemAccessibilityOSgSSF">accessibilityOfKey(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">accessibilityOfKey</span><span class="p">(</span><span class="n">_</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC7allKeyss3SetVySSGyF"></a>
+                    <a name="//apple_ref/swift/Method/allKeys()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC7allKeyss3SetVySSGyF">allKeys()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get the keys of all keychain entries matching the current ServiceName and AccessGroup if one is set.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">allKeys</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Public%20Getters"></a>
+                <a name="//apple_ref/swift/Section/Public Getters" class="dashAnchor"></a>
+                <a href="#/Public%20Getters">
+                  <h3 class="section-name">Public Getters</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC7integerSiSgSS6forKey_AA0D17ItemAccessibilityOSg04withJ0tF"></a>
+                    <a name="//apple_ref/swift/Method/integer(forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC7integerSiSgSS6forKey_AA0D17ItemAccessibilityOSg04withJ0tF">integer(forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">integer</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC5floatSfSgSS6forKey_AA0D17ItemAccessibilityOSg04withJ0tF"></a>
+                    <a name="//apple_ref/swift/Method/float(forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC5floatSfSgSS6forKey_AA0D17ItemAccessibilityOSg04withJ0tF">float(forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">float</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Float</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC6doubleSdSgSS6forKey_AA0D17ItemAccessibilityOSg04withJ0tF"></a>
+                    <a name="//apple_ref/swift/Method/double(forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC6doubleSdSgSS6forKey_AA0D17ItemAccessibilityOSg04withJ0tF">double(forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">double</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Double</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC4boolSbSgSS6forKey_AA0D17ItemAccessibilityOSg04withJ0tF"></a>
+                    <a name="//apple_ref/swift/Method/bool(forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC4boolSbSgSS6forKey_AA0D17ItemAccessibilityOSg04withJ0tF">bool(forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">bool</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC6stringSSSgSS6forKey_AA0D17ItemAccessibilityOSg04withJ0tF"></a>
+                    <a name="//apple_ref/swift/Method/string(forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC6stringSSSgSS6forKey_AA0D17ItemAccessibilityOSg04withJ0tF">string(forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a string value for a specified key.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">string</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>forKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The key to lookup data for.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>withAccessibility</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional accessibility to use when retrieving the keychain item.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The String associated with the key if it exists. If no data exists, or the data found cannot be encoded as a string, returns nil.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC6objectSo8NSCoding_pSgSS6forKey_AA0D17ItemAccessibilityOSg04withK0tF"></a>
+                    <a name="//apple_ref/swift/Method/object(forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC6objectSo8NSCoding_pSgSS6forKey_AA0D17ItemAccessibilityOSg04withK0tF">object(forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns an object that conforms to NSCoding for a specified key.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">object</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">NSCoding</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>forKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The key to lookup data for.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>withAccessibility</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional accessibility to use when retrieving the keychain item.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The decoded object associated with the key if it exists. If no data exists, or the data found cannot be decoded, returns nil.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC4data10Foundation4DataVSgSS6forKey_AA0D17ItemAccessibilityOSg04withL0tF"></a>
+                    <a name="//apple_ref/swift/Method/data(forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC4data10Foundation4DataVSgSS6forKey_AA0D17ItemAccessibilityOSg04withL0tF">data(forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a Data object for a specified key.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">data</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Data</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>forKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The key to lookup data for.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>withAccessibility</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional accessibility to use when retrieving the keychain item.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The Data object associated with the key if it exists. If no data exists, returns nil.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC7dataRef10Foundation4DataVSgSS6forKey_AA0D17ItemAccessibilityOSg04withM0tF"></a>
+                    <a name="//apple_ref/swift/Method/dataRef(forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC7dataRef10Foundation4DataVSgSS6forKey_AA0D17ItemAccessibilityOSg04withM0tF">dataRef(forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a persistent data reference object for a specified key.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">dataRef</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Data</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>forKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The key to lookup data for.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>withAccessibility</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional accessibility to use when retrieving the keychain item.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The persistent data reference object associated with the key if it exists. If no data exists, returns nil.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Public%20Setters"></a>
+                <a name="//apple_ref/swift/Section/Public Setters" class="dashAnchor"></a>
+                <a href="#/Public%20Setters">
+                  <h3 class="section-name">Public Setters</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC3setSbSi_SS6forKeyAA0D17ItemAccessibilityOSg04withJ0tF"></a>
+                    <a name="//apple_ref/swift/Method/set(_:forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC3setSbSi_SS6forKeyAA0D17ItemAccessibilityOSg04withJ0tF">set(_:forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">set</span><span class="p">(</span><span class="n">_</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC3setSbSf_SS6forKeyAA0D17ItemAccessibilityOSg04withJ0tF"></a>
+                    <a name="//apple_ref/swift/Method/set(_:forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC3setSbSf_SS6forKeyAA0D17ItemAccessibilityOSg04withJ0tF">set(_:forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">set</span><span class="p">(</span><span class="n">_</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Float</span><span class="p">,</span> <span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC3setSbSd_SS6forKeyAA0D17ItemAccessibilityOSg04withJ0tF"></a>
+                    <a name="//apple_ref/swift/Method/set(_:forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC3setSbSd_SS6forKeyAA0D17ItemAccessibilityOSg04withJ0tF">set(_:forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">set</span><span class="p">(</span><span class="n">_</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC3setS2b_SS6forKeyAA0D17ItemAccessibilityOSg04withJ0tF"></a>
+                    <a name="//apple_ref/swift/Method/set(_:forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC3setS2b_SS6forKeyAA0D17ItemAccessibilityOSg04withJ0tF">set(_:forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">set</span><span class="p">(</span><span class="n">_</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span> <span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC3setSbSS_SS6forKeyAA0D17ItemAccessibilityOSg04withJ0tF"></a>
+                    <a name="//apple_ref/swift/Method/set(_:forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC3setSbSS_SS6forKeyAA0D17ItemAccessibilityOSg04withJ0tF">set(_:forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Save a String value to the keychain associated with a specified key. If a String value already exists for the given key, the string will be overwritten with the new value.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">set</span><span class="p">(</span><span class="n">_</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>value</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The String value to save.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>forKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The key to save the String under.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>withAccessibility</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional accessibility to use when setting the keychain item.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>True if the save was successful, false otherwise.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC3setSbSo8NSCoding_p_SS6forKeyAA0D17ItemAccessibilityOSg04withK0tF"></a>
+                    <a name="//apple_ref/swift/Method/set(_:forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC3setSbSo8NSCoding_p_SS6forKeyAA0D17ItemAccessibilityOSg04withK0tF">set(_:forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Save an NSCoding compliant object to the keychain associated with a specified key. If an object already exists for the given key, the object will be overwritten with the new value.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">set</span><span class="p">(</span><span class="n">_</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">NSCoding</span><span class="p">,</span> <span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>value</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The NSCoding compliant object to save.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>forKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The key to save the object under.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>withAccessibility</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional accessibility to use when setting the keychain item.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>True if the save was successful, false otherwise.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC3setSb10Foundation4DataV_SS6forKeyAA0D17ItemAccessibilityOSg04withL0tF"></a>
+                    <a name="//apple_ref/swift/Method/set(_:forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC3setSb10Foundation4DataV_SS6forKeyAA0D17ItemAccessibilityOSg04withL0tF">set(_:forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Save a Data object to the keychain associated with a specified key. If data already exists for the given key, the data will be overwritten with the new value.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">set</span><span class="p">(</span><span class="n">_</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Data</span><span class="p">,</span> <span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>value</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Data object to save.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>forKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The key to save the object under.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>withAccessibility</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional accessibility to use when setting the keychain item.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>True if the save was successful, false otherwise.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC6removeSbSS3key_AA0D17ItemAccessibilityOSg04withI0tF"></a>
+                    <a name="//apple_ref/swift/Method/remove(key:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC6removeSbSS3key_AA0D17ItemAccessibilityOSg04withI0tF">remove(key:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">remove</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC12removeObjectSbSS6forKey_AA0D17ItemAccessibilityOSg04withK0tF"></a>
+                    <a name="//apple_ref/swift/Method/removeObject(forKey:withAccessibility:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC12removeObjectSbSS6forKey_AA0D17ItemAccessibilityOSg04withK0tF">removeObject(forKey:withAccessibility:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Remove an object associated with a specified key. If re-using a key but with a different accessibility, first remove the previous key value using removeObjectForKey(:withAccessibility) using the same accessibilty it was saved with.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">removeObject</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">withAccessibility</span> <span class="nv">accessibility</span><span class="p">:</span> <span class="kt"><a href="../Enums/KeychainItemAccessibility.html">KeychainItemAccessibility</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>forKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The key value to remove data for.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>withAccessibility</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional accessibility level to use when looking up the keychain item.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>True if successful, false otherwise.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC13removeAllKeysSbyF"></a>
+                    <a name="//apple_ref/swift/Method/removeAllKeys()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC13removeAllKeysSbyF">removeAllKeys()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Remove all keychain data added through KeychainWrapper. This will only delete items matching the currnt ServiceName and AccessGroup if one is set.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">removeAllKeys</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15TrustDeviceInfo15KeychainWrapperC04wipeD0yyFZ"></a>
+                    <a name="//apple_ref/swift/Method/wipeKeychain()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15TrustDeviceInfo15KeychainWrapperC04wipeD0yyFZ">wipeKeychain()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Remove all keychain data, including data not added through keychain wrapper.</p>
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    This may remove custom keychain entries you did not add via SwiftKeychainWrapper.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">wipeKeychain</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2018 <a class="link" href="https://github.com/trusttechnologies/TrustDeviceInfo" target="_blank" rel="external">Diego Villouta Fredes</a>. All rights reserved. (Last updated: 2018-09-10)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

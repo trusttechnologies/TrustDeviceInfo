@@ -4,6 +4,7 @@
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/DeviceKit.svg)](https://cocoapods.org/pods/DeviceKit)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![codecov](https://codecov.io/gh/dennisweissmann/DeviceKit/branch/master/graph/badge.svg)](https://codecov.io/gh/dennisweissmann/DeviceKit)
+[![CocoaPods](https://img.shields.io/cocoapods/dt/DeviceKit.svg)](https://cocoapods.org/pods/DeviceKit)
 [![Maintainability](https://api.codeclimate.com/v1/badges/844e23a17bde71ff6be1/maintainability)](https://codeclimate.com/github/dennisweissmann/DeviceKit/maintainability)
 [![Platform](https://img.shields.io/cocoapods/p/DeviceKit.svg?style=flat)](http://cocoadocs.org/docsets/DeviceKit)
 
@@ -11,33 +12,42 @@
 | Branch | Build Status | Versions |
 |:---------|:--------------:|:----------:|
 | **master** |[![Build Status](https://travis-ci.org/dennisweissmann/DeviceKit.svg?branch=master)](https://travis-ci.org/dennisweissmann/DeviceKit)| - |
-| **Swift 4** |[![Build Status](https://travis-ci.org/dennisweissmann/DeviceKit.svg?branch=swift-4)](https://travis-ci.org/dennisweissmann/DeviceKit)| ≥ 1.3.0 |
-| **Swift 3** |[![Build Status](https://travis-ci.org/dennisweissmann/DeviceKit.svg?branch=swift-3)](https://travis-ci.org/dennisweissmann/DeviceKit)| ≥ 1.0 ≤ 1.2.3 |
+| **Swift 4 - 4.2** |[![Build Status](https://travis-ci.org/dennisweissmann/DeviceKit.svg?branch=swift-4)](https://travis-ci.org/dennisweissmann/DeviceKit)| ≥ 1.3 |
+| **Swift 3** |[![Build Status](https://travis-ci.org/dennisweissmann/DeviceKit.svg?branch=swift-3)](https://travis-ci.org/dennisweissmann/DeviceKit)| ≥ 1.0 < 1.3 |
 | **Swift 2.3** |[![Build Status](https://travis-ci.org/dennisweissmann/DeviceKit.svg?branch=swift-2.3-unsupported)](https://travis-ci.org/dennisweissmann/DeviceKit)| < 1.0 |
 
 `DeviceKit` is a value-type replacement of [`UIDevice`](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIDevice_Class/).
 
 ## Features
 
+- [x] Equatable
 - [x] Device identification
 - [x] Device family detection
 - [x] Device group detection
 - [x] Simulator detection
 - [x] Battery state
 - [x] Battery level
-- [x] Equatable
+- [x] Various device metrics (e.g. screen size, screen ratio, PPI)
+- [x] Low Power Mode detection
+- [x] Guided Access Session detection
+- [x] Screen brightness
+- [x] Display Zoom detection
+- [x] Detect available sensors (Touch ID, Face ID)
+- [x] Detect available disk space
+
 
 ## Requirements
 
-- iOS 8.0+ / tvOS 9.0+ (linking against iOS 9.3 and tvOS 9.2 required)
-- Xcode 8.0+
+- iOS 8.0+ (linking against iOS 9.3 required)
+- tvOS 9.0+ (linking against tvOS 9.2 required)
+- watchOS 2.0+
 
 ## Installation
 DeviceKit can be installed in various ways.
 
 ### CocoaPods
 
-#### Swift 4
+#### Swift 4.0 - Swift 4.2
 ```ruby
 pod 'DeviceKit', '~> 1.3'
 ```
@@ -52,7 +62,7 @@ pod 'DeviceKit', :git => 'https://github.com/dennisweissmann/DeviceKit.git', :br
 
 ### Carthage
 
-#### Swift 4
+#### Swift 4.0 - Swift 4.2
 ```ogdl
 github "dennisweissmann/DeviceKit" ~> 1.3
 ```
@@ -66,8 +76,7 @@ github "dennisweissmann/DeviceKit" "swift-2.3-unsupported"
 ```
 
 ### Manually
-To install it manually drag the DeviceKit project into your app project in Xcode or add it as a git submodule.
-In your project folder enter:
+To install it manually, drag the `DeviceKit` project into your app project in Xcode. Or add it as a git submodule by running:
 ```bash
 $ git submodule add https://github.com/dennisweissmann/DeviceKit.git
 ```
@@ -83,6 +92,12 @@ Here are some usage examples. All devices are also available as simulators:
 .iPhone6 => .simulator(.iPhone6)
 .iPhone6s => .simulator(.iPhone6s)
 ```
+
+You can try these examples in Playground.
+
+**Note:**
+
+> To try DeviceKit in the playground, open the `DeviceKit.xcworkspace` and build DeviceKit.framework for any simulator first by selecting "DeviceKit" as your current scheme.
 
 ### Get the Device You're Running On
 ```swift
@@ -113,7 +128,7 @@ if device.isPod {
 ```swift
 let device = Device()
 if device.isSimulator {
-  // Running on one of the simulators(iPod/iPhone/iPad) 
+  // Running on one of the simulators(iPod/iPhone/iPad)
   // Skip doing something irrelevant for Simulator
 } 
 ```
@@ -134,14 +149,14 @@ let groupOfAllowedDevices: [Device] = [.iPhone6, .iPhone6Plus, .iPhone6s, .iPhon
 let device = Device()
  
 if device.isOneOf(groupOfAllowedDevices) {
-  // Do you action
+  // Do your action
 }
 ```
 
 ### Get the Current Battery State
 **Note:**
 
-> To get the current battery state we need to set `UIDevice.current.isBatteryMonitoringEnabled` to `true`. To avoid any issues with your code we read the current setting and reset it when we're done to what it was before..
+> To get the current battery state we need to set `UIDevice.current.isBatteryMonitoringEnabled` to `true`. To avoid any issues with your code, we read the current setting and reset it to what it was before when we're done.
 
 ```swift
 if device.batteryState == .full || device.batteryState >= .charging(75) {
@@ -178,8 +193,19 @@ if device.isGuidedAccessSessionActive {
 
 ### Get Screen Brightness
 ```swift
-if device.screenBrightness < 50 {
+if device.screenBrightness > 50 {
   print("Take care of your eyes!")
+}
+```
+
+### Get Available Disk Space
+```swift
+if Device.volumeAvailableCapacityForOpportunisticUsage ?? 0 > Int64(1_000_000) {
+  // download that nice-to-have huge file
+}
+
+if Device.volumeAvailableCapacityForImportantUsage ?? 0 > Int64(1_000) {
+  // download that file you really need
 }
 ```
 
@@ -192,4 +218,3 @@ If you extended the functionality of DeviceKit yourself and want others to use i
 
 ## Contributors
 The complete list of people who contributed to this project is available [here](https://github.com/dennisweissmann/DeviceKit/graphs/contributors). DeviceKit wouldn't be what it is without you! Thank you very much! 🙏
-
