@@ -12,98 +12,18 @@ import DeviceKit
 import Foundation
 import UIKit
 
-// MARK: Extension Bundle
-extension Bundle {
-    var displayName: String? {
-        return object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
-            object(forInfoDictionaryKey: "CFBundleName") as? String
-    }
-}
-
-// MARK: - Extension String
-extension String {
-    static let appLocale = "es_CL"
-    static let yyyyMMddHHmmss = "yyyy-MM-dd HH:mm:ss"
-}
-
-// MARK: - Extension Date
-extension Date {
-    func toString(with format: String) -> String {
-        let dateFormatter = DateFormatter()
-        
-        dateFormatter.locale = Locale(identifier: .appLocale)
-        dateFormatter.dateFormat = format
-        
-        return dateFormatter.string(from: self)
-    }
-}
-
-// MARK: - Enum TransactionType
-public enum TransactionType: String {
-    case sign = "Firma"
-    case deny = "Rechaza"
-}
-
-// MARK: - Enum AuthMethod
-public enum AuthMethod: String {
-    case advancedElectronicSignature = "Firma Electronica Avanzada"
-    case touchID = "Touch ID"
-    case faceID = "Face ID"
-}
-
-// MARK: - Struct EventData
-public struct EventData {
-    
-    private let device = Device()
-    
-    var transactionType: TransactionType?
-    var authMethod: AuthMethod?
-    var latitude: String?
-    var longitude: String?
-    var timestamp: String?
-    
-    public var asParameters: Parameters {
-        return [
-            "source": [
-                "trustid": TrustDeviceInfo.shared.getTrustID(),
-                "app_name": Bundle.main.displayName,
-                "bundle_id": Bundle.main.bundleIdentifier,
-                "system_name": device.systemName,
-                "system_version": device.systemVersion
-            ],
-            "transaction": [
-                "operation": transactionType?.rawValue ?? "",
-                "method": authMethod?.rawValue ?? "",
-                "timestamp": timestamp ?? ""
-            ],
-            "geo": [
-                "lat": latitude ?? "",
-                "long": longitude ?? ""
-            ]
-        ]
-    }
-    
-    public init(transactionType: TransactionType, authMethod: AuthMethod, latitude: String, longitude: String, timestamp: String) {
-        self.transactionType = transactionType
-        self.authMethod = authMethod
-        self.latitude = latitude
-        self.longitude = longitude
-        self.timestamp = timestamp
-    }
-}
-
 // MARK: - OnSIMChangedDelegate
-public protocol OnSIMChangedDelegate: class {
+public protocol OnSIMChangedDelegate: AnyObject {
     func onCarrierInfoHasChanged(carrier: CTCarrier)
 }
 
 // MARK: - OnSendDataResponseDelegate
-public protocol OnSendDataResponseDelegate: class {
+public protocol OnSendDataResponseDelegate: AnyObject {
     func onResponse(responseStatus: ResponseStatus)
 }
 
 // MARK: - OnTrustIDDelegate
-public protocol OnTrustIDDelegate: class {
+public protocol OnTrustIDDelegate: AnyObject {
     func onTrustIDSaved()
 }
 
@@ -115,7 +35,7 @@ public enum ResponseStatus: String {
     case error = "Ha ocurrido un error en el envío de datos"
 }
 
-// MARK: - DeviceInfo
+// MARK: - TrustDeviceInfo
 public class TrustDeviceInfo {
     
     private let trustIDKey = "trustid"
@@ -136,44 +56,54 @@ public class TrustDeviceInfo {
     
     private let networkInfo = CTTelephonyNetworkInfo()
 
-    private var autoSendDataOnEnabled: Bool = false
+    private var sendDataOnEnabled: Bool = false
     
     private var enable = false {
         didSet {
             if enable && !oldValue {
                 setCarrierUpdateNotifier()
                 
-                guard autoSendDataOnEnabled else {
+                guard sendDataOnEnabled else {
                     return
                 }
                 
-                sendData()
+                sendDeviceInfo()
             } else if !enable && oldValue {
                 print("Disabled")
             }
         }
     }
     
-    public class var shared: TrustDeviceInfo {
-        struct Static {
-            static let deviceInfo = TrustDeviceInfo()
-        }
+    private static var trustDeviceInfo: TrustDeviceInfo = {
+        return TrustDeviceInfo()
+    }()
 
-        return Static.deviceInfo
+    private init() {}
+    
+    deinit {
+        disable()
+    }
+    
+    public static var shared: TrustDeviceInfo {
+        return trustDeviceInfo
     }
     
     public weak var onSIMChangedDelegate: OnSIMChangedDelegate?
     public weak var onSendDataResponseDelegate: OnSendDataResponseDelegate?
     public weak var onTrustIDDelegate: OnTrustIDDelegate?
-    
-    private init() {}
-    
-    deinit {
-        enable = false
-    }
 }
 
+// MARK: - TrustDeviceInfo
 extension TrustDeviceInfo {
+    public func enable(sendDataOnEnabled: Bool = true) {
+        self.sendDataOnEnabled = sendDataOnEnabled
+        enable = true
+    }
+    
+    public func disable() {
+        enable = false
+    }
+
     private func setCarrierUpdateNotifier() {
         let updateNotifier: ((CTCarrier) -> Void) = {
             carrier in
@@ -181,7 +111,33 @@ extension TrustDeviceInfo {
             DispatchQueue.main.async {
                 [weak self] in
                 
-                guard let `self` = self else {
+                guard let self = self else {
+                    return
+                }
+                
+                if self.checkTrustIDhasBeenSaved() {
+                    self.send(carrierData: carrier)
+                } else {
+                    self.sendDeviceInfo()
+                }
+                
+                guard let delegate = self.onSIMChangedDelegate else {
+                    return
+                }
+                
+                delegate.onCarrierInfoHasChanged(carrier: carrier)
+            }
+        }
+
+        networkInfo.subscriberCellularProviderDidUpdateNotifier = updateNotifier
+        
+        /*let _updateNotifier: ((String) -> Void) = {
+            carrier in
+            print("subscriberCellularProviderDidUpdateNotifier Carrier: \(carrier)")
+            /*DispatchQueue.main.async {
+                [weak self] in
+                
+                guard let self = self else {
                     return
                 }
                 
@@ -196,12 +152,15 @@ extension TrustDeviceInfo {
                 }
                 
                 delegate.onCarrierInfoHasChanged(carrier: carrier)
-            }
+            }*/
         }
-
-        networkInfo.subscriberCellularProviderDidUpdateNotifier = updateNotifier
+        
+        networkInfo.serviceSubscriberCellularProvidersDidUpdateNotifier = _updateNotifier*/
     }
+}
 
+// MARK: - SendData related methods
+extension TrustDeviceInfo {
     private func getResponseStatus(response: HTTPURLResponse?) -> ResponseStatus {
         
         guard let statusCode = response?.statusCode else {
@@ -222,22 +181,11 @@ extension TrustDeviceInfo {
         }
     }
     
-    public func enable(autoSendDataOnEnabled: Bool = true) {
-        self.autoSendDataOnEnabled = autoSendDataOnEnabled
-        self.enable = true
-    }
-    
-    public func disable() {
-        self.enable = false
-    }
-    
     func send(carrierData: CTCarrier) {
         
         guard let parameters = getEventInfoAsParameters(carrier: carrierData) else {
             return
         }
-        
-        print("Parameters: \(parameters)")
         
         request(
             carrierChangeEventUploadURLAsString,
@@ -249,7 +197,7 @@ extension TrustDeviceInfo {
                 print("Status code: \(response.response?.statusCode ?? -1)")
                 print("Carrier Change response: \(response)")
                 
-                guard let `self` = self else {
+                guard let self = self else {
                     return
                 }
                 
@@ -263,22 +211,17 @@ extension TrustDeviceInfo {
                     
                     guard let trustID = trifle[self.trustIDKey] as? String else {
                         print("No TrustID")
-                        self.removeTrustID()
                         return
                     }
                     
                     print("TrustID: \(trustID)")
                     self.save(trustID: trustID)
-                    
-                    if let delegate = self.onTrustIDDelegate {
-                        delegate.onTrustIDSaved()
-                    }
                 default: break
                 }
         }
     }
     
-    public func sendData(completionHandler: ((ResponseStatus) -> Void)? = nil) {
+    public func sendDeviceInfo(completionHandler: ((ResponseStatus) -> Void)? = nil) {
         
         guard let parameters = getDeviceInfoAsParameters() else {
             return
@@ -290,14 +233,14 @@ extension TrustDeviceInfo {
             parameters: parameters,
             encoding: JSONEncoding.default).responseJSON {
                 [weak self] response in
-                
+
                 print("Status code: \(response.response?.statusCode ?? -1)")
                 print("Trifle response: \(response)")
-                
-                guard let `self` = self else {
+
+                guard let self = self else {
                     return
                 }
-                
+
                 let httpResponse = response.response
                 
                 if let delegate = self.onSendDataResponseDelegate {
@@ -318,7 +261,6 @@ extension TrustDeviceInfo {
                     
                     guard let trustID = trifle[self.trustIDKey] as? String else {
                         print("No TrustID")
-                        self.removeTrustID()
                         return
                     }
                     
@@ -359,60 +301,36 @@ extension TrustDeviceInfo {
                 }
         }
     }
+}
     
+// MARK: - TrustID Persistance related methods
+extension TrustDeviceInfo {
+    public func checkTrustIDhasBeenSaved() -> Bool {
+        return KeychainWrapper.standard.string(forKey: trustIDKey) != nil
+    }
+    
+    public func getTrustID() -> String? {
+        return KeychainWrapper.standard.string(forKey: trustIDKey)
+    }
+
     private func save(trustID: String) {
-        KeychainWrapper.standard.set(trustID, forKey: trustIDKey)
-        
+        if !checkTrustIDhasBeenSaved() {
+            KeychainWrapper.standard.set(trustID, forKey: trustIDKey)
+        }
+
         if let delegate = onTrustIDDelegate {
             delegate.onTrustIDSaved()
         }
     }
     
-    public func getTrustID() -> String {
-        
-        guard let trustID = KeychainWrapper.standard.string(forKey: trustIDKey) else {
-            return ""
-        }
-        
-        return trustID
-    }
-    
     private func removeTrustID() {
         KeychainWrapper.standard.removeObject(forKey: trustIDKey)
     }
-    
-    public func checkTrustIDhasBeenSaved() -> Bool {
-        return KeychainWrapper.standard.string(forKey: trustIDKey) != nil
-    }
-    
-    private func getEventInfoAsParameters(carrier: CTCarrier) -> Parameters? {
-        
-        guard enable else {
-            return nil
-        }
+}
 
-        let parameters: Parameters = [
-            "trustid": getTrustID(),
-            "object": [
-                "carrierName": carrier.carrierName ?? "",
-                "mobileCountryCode": carrier.mobileCountryCode ?? "",
-                "mobileNetworkCode": carrier.mobileNetworkCode ?? "",
-                "ISOCountryCode": carrier.isoCountryCode ?? "",
-                "allowsVOIP": carrier.allowsVOIP ? "YES" : "NO"
-                ],
-            "key": "",
-            "value": "",
-            "geo": [
-                "lat": "-32",
-                "long": "-77"
-            ]
-        ]
-        
-        return parameters
-    }
-    
+// MARK: - Parameters Helpers
+extension TrustDeviceInfo {
     private func getDeviceInfoAsParameters() -> Parameters? {
-        
         guard enable else {
             return nil
         }
@@ -449,9 +367,7 @@ extension TrustDeviceInfo {
             print("Parameters: °\(parameters)")
         }
         
-        if checkTrustIDhasBeenSaved() {
-            let trustID = getTrustID()
-            
+        if let trustID = getTrustID() {
             parameters.updateValue(trustID, forKey: trustIDKey)
         }
         
@@ -474,6 +390,37 @@ extension TrustDeviceInfo {
         ]
         
         parameters.updateValue(carrierInfo, forKey: "sim")
+        
+        return parameters
+    }
+    
+    private func getEventInfoAsParameters(carrier: CTCarrier) -> Parameters? {
+        guard
+            enable,
+            let trustId = getTrustID() else {
+                return nil
+        }
+        
+        let parameters: Parameters = [
+            "trustid": trustId,
+            "object": [
+                "carrierName": carrier.carrierName ?? "",
+                "mobileCountryCode": carrier.mobileCountryCode ?? "",
+                "mobileNetworkCode": carrier.mobileNetworkCode ?? "",
+                "ISOCountryCode": carrier.isoCountryCode ?? "",
+                "allowsVOIP": carrier.allowsVOIP ? "YES" : "NO"
+            ],
+            "key": "",
+            "value": "",
+            "geo": [
+                "lat": "-32",
+                "long": "-77"
+            ]
+        ]
+        
+        defer {
+            print("Parameters: °\(parameters)")
+        }
         
         return parameters
     }

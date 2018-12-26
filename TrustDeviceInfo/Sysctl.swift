@@ -8,7 +8,6 @@
 
 // MARK: - Sysctl
 struct Sysctl {
-    
     enum Error: Swift.Error {
         case unknown
         case malformedUTF8

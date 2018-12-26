@@ -206,8 +206,11 @@ open class KeychainWrapper {
         if let results = result as? [[AnyHashable: Any]] {
             for attributes in results {
                 if let accountData = attributes[SecAttrAccount] as? Data,
-                    let account = String(data: accountData, encoding: String.Encoding.utf8) {
-                    keys.insert(account)
+                    let key = String(data: accountData, encoding: String.Encoding.utf8) {
+                    keys.insert(key)
+                } else if let accountData = attributes[kSecAttrAccount] as? Data,
+                    let key = String(data: accountData, encoding: String.Encoding.utf8) {
+                    keys.insert(key)
                 }
             }
         }
@@ -415,7 +418,7 @@ open class KeychainWrapper {
     }
     
     /// Remove all keychain data added through KeychainWrapper. This will only delete items matching the currnt ServiceName and AccessGroup if one is set.
-    open func removeAllKeys() -> Bool {
+    @discardableResult open func removeAllKeys() -> Bool {
         // Setup dictionary to access keychain and specify we are using a generic password (rather than a certificate, internet password, etc)
         var keychainQueryDictionary: [String:Any] = [SecClass:kSecClassGenericPassword]
         
