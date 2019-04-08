@@ -1,6 +1,6 @@
 PODS:
-  - Alamofire (4.8.0)
-  - DeviceKit (1.11.0)
+  - Alamofire (4.8.2)
+  - DeviceKit (1.13.0)
 
 DEPENDENCIES:
   - Alamofire
@@ -12,9 +12,9 @@ SPEC REPOS:
     - DeviceKit
 
 SPEC CHECKSUMS:
-  Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
-  DeviceKit: a3a86f8dddbe1317a9a243cdf9646858bf135dce
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  DeviceKit: 5a4accdb2918ce0b69e62dc3bef6e4d2cc06e2e4
 
-PODFILE CHECKSUM: 87263cb7758d6bb7b4889d694a7a2a61993723d2
+PODFILE CHECKSUM: eda142186375518abe8924ca9ac58f65101403ca
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.1

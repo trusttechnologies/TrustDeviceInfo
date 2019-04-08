@@ -8,7 +8,6 @@
 
 // MARK: - DiskStatus
 class DiskStatus {
-    
     class func MBFormatter(_ bytes: Int64) -> String {
         let formatter = ByteCountFormatter()
         
@@ -45,6 +44,8 @@ class DiskStatus {
                 totalDiskSpaceAsString = "128"
             case 130...257:
                 totalDiskSpaceAsString = "256"
+            case 258...513:
+                totalDiskSpaceAsString = "512"
             default: break
             }
 

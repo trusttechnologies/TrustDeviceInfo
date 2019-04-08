@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		13B8BBE63C4AE8CA81106576 /* libPods-TrustDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7E94303A7C158412C67C71 /* libPods-TrustDeviceInfo.a */; };
 		37269AD62134B97600AD949B /* TrustDeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37269AD52134B97600AD949B /* TrustDeviceInfo.swift */; };
 		378C8D0B21C972750069AB16 /* DiskStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C8D0A21C972750069AB16 /* DiskStatus.swift */; };
 		378C8D0D21C973A90069AB16 /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C8D0C21C973A90069AB16 /* Sysctl.swift */; };
@@ -15,6 +14,7 @@
 		378C8D1121D3B47C0069AB16 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C8D1021D3B47C0069AB16 /* Extensions.swift */; };
 		378C8D1321D3B7890069AB16 /* EventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C8D1221D3B7890069AB16 /* EventData.swift */; };
 		37A387062134B7F400DB87F7 /* TrustDeviceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 37A387042134B7F400DB87F7 /* TrustDeviceInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		38F22C00036E8815FE6BC901 /* Pods_TrustDeviceInfo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41871B023E2F33367CD3BBF9 /* Pods_TrustDeviceInfo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,8 +27,8 @@
 		37A387012134B7F400DB87F7 /* TrustDeviceInfo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TrustDeviceInfo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37A387042134B7F400DB87F7 /* TrustDeviceInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrustDeviceInfo.h; sourceTree = "<group>"; };
 		37A387052134B7F400DB87F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		41871B023E2F33367CD3BBF9 /* Pods_TrustDeviceInfo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrustDeviceInfo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9411D820E4EE850627AD03CB /* Pods-TrustDeviceInfo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustDeviceInfo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrustDeviceInfo/Pods-TrustDeviceInfo.debug.xcconfig"; sourceTree = "<group>"; };
-		BA7E94303A7C158412C67C71 /* libPods-TrustDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TrustDeviceInfo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAED780B5B11A6A8C032C88D /* Pods-TrustDeviceInfo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustDeviceInfo.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrustDeviceInfo/Pods-TrustDeviceInfo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -37,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13B8BBE63C4AE8CA81106576 /* libPods-TrustDeviceInfo.a in Frameworks */,
+				38F22C00036E8815FE6BC901 /* Pods_TrustDeviceInfo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,9 +47,28 @@
 		1D28F750987D06AF4CAE44D1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BA7E94303A7C158412C67C71 /* libPods-TrustDeviceInfo.a */,
+				41871B023E2F33367CD3BBF9 /* Pods_TrustDeviceInfo.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3770C46D2256A181001E5A18 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				378C8D0A21C972750069AB16 /* DiskStatus.swift */,
+				378C8D1021D3B47C0069AB16 /* Extensions.swift */,
+				378C8D0C21C973A90069AB16 /* Sysctl.swift */,
+				3770C46E2256A2CA001E5A18 /* KeychainWrapper */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		3770C46E2256A2CA001E5A18 /* KeychainWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				378C8D0E21C973E30069AB16 /* KeychainWrapper.swift */,
+			);
+			path = KeychainWrapper;
 			sourceTree = "<group>";
 		};
 		37A386F72134B7F400DB87F7 = {
@@ -75,12 +94,9 @@
 			children = (
 				37A387042134B7F400DB87F7 /* TrustDeviceInfo.h */,
 				37A387052134B7F400DB87F7 /* Info.plist */,
-				378C8D0A21C972750069AB16 /* DiskStatus.swift */,
 				378C8D1221D3B7890069AB16 /* EventData.swift */,
-				378C8D1021D3B47C0069AB16 /* Extensions.swift */,
-				378C8D0E21C973E30069AB16 /* KeychainWrapper.swift */,
-				378C8D0C21C973A90069AB16 /* Sysctl.swift */,
 				37269AD52134B97600AD949B /* TrustDeviceInfo.swift */,
+				3770C46D2256A181001E5A18 /* Utils */,
 			);
 			path = TrustDeviceInfo;
 			sourceTree = "<group>";
@@ -265,6 +281,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -321,6 +338,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.2;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
