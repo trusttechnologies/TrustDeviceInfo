@@ -168,6 +168,8 @@ extension TrustDeviceInfo {
         guard let parameters = getDeviceInfoAsParameters(identityInfo: identityInfo) else {
             return
         }
+        
+        print("URLRequested: \(deviceInfoCompleteURLAsString)")
 
         request(
             deviceInfoCompleteURLAsString,
@@ -344,7 +346,8 @@ extension TrustDeviceInfo {
                 "systemOS": device.systemName,
                 "systemVersion": device.systemVersion,
                 "totalDiskSpace": DiskStatus.totalDiskSpace,
-                "identifierForVendor": uiDevice.identifierForVendor?.uuidString ?? ""
+                "identifierForVendor": uiDevice.identifierForVendor?.uuidString ?? "",
+                "system_name": "iOS"
             ]
         ]
         
