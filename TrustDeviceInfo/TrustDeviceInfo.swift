@@ -14,11 +14,11 @@ import UIKit
 
 // MARK: - IdentityInfoDataSource
 public protocol IdentityInfoDataSource {
-    var dni: String {get set}
-    var name: String? {get set}
-    var lastname: String? {get set}
-    var email: String? {get set}
-    var phone: String? {get set}
+    var dni: String {get}
+    var name: String? {get}
+    var lastname: String? {get}
+    var email: String? {get}
+    var phone: String? {get}
 }
 
 // MARK: - SIMInfoDelegate
