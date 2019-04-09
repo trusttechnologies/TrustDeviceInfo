@@ -10,7 +10,7 @@ import Alamofire
 import DeviceKit
 
 // MARK: - Enum TransactionType
-public enum TransactionType: String {
+public enum OperationType: String {
     case sign = "Firma"
     case deny = "Rechaza"
 }
@@ -27,35 +27,48 @@ public struct EventData {
     
     private let device = Device()
     
-    var transactionType: TransactionType?
+    var operationType: OperationType?
     var authMethod: AuthMethod?
     var latitude: String?
     var longitude: String?
     var timestamp: String?
     
+    var auditType: String?
+    var connectionType: String?
+    var connectionName: String?
+    var transactionType: String?
+    var transactionResult: String?
+    
     public var asParameters: Parameters {
         return [
+            "type_audit": auditType ?? .empty,
+            "platform": "iOS",
+            "application": Bundle.main.displayName ?? .empty,
             "source": [
-                "trustid": TrustDeviceInfo.shared.getTrustID(),
+                "trust_id": TrustDeviceInfo.shared.getTrustID(),
                 "app_name": Bundle.main.displayName,
                 "bundle_id": Bundle.main.bundleIdentifier,
-                "system_name": device.systemName,
-                "system_version": device.systemVersion
+                "os": device.systemName,
+                "os_version": device.systemVersion,
+                "device_name": Sysctl.model,
+                "latGeo": latitude ?? .empty,
+                "lonGeo": longitude ?? .empty,
+                "connection_type": connectionType ?? .empty,
+                "connection_name": connectionName ?? .empty,
+                "version_app": "\(Bundle.main.versionNumber ?? "1").\(Bundle.main.buildNumber ?? "1")"
             ],
             "transaction": [
-                "operation": transactionType?.rawValue ?? "",
-                "method": authMethod?.rawValue ?? "",
-                "timestamp": timestamp ?? ""
-            ],
-            "geo": [
-                "lat": latitude ?? "",
-                "long": longitude ?? ""
+                "type": transactionType ?? .empty,
+                "result": transactionResult ?? .empty,
+                "timestamp": timestamp ?? .empty,
+                "method": authMethod?.rawValue ?? .empty,
+                "operation": operationType?.rawValue ?? .empty
             ]
         ]
     }
     
-    public init(transactionType: TransactionType, authMethod: AuthMethod, latitude: String, longitude: String, timestamp: String) {
-        self.transactionType = transactionType
+    public init(operationType: OperationType, authMethod: AuthMethod, latitude: String, longitude: String, timestamp: String) {
+        self.operationType = operationType
         self.authMethod = authMethod
         self.latitude = latitude
         self.longitude = longitude

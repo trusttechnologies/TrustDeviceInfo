@@ -8,6 +8,14 @@
 
 // MARK: Extension Bundle
 extension Bundle {
+    var versionNumber: String? {
+        return infoDictionary?["CFBundleShortVersionString"] as? String
+    }
+
+    var buildNumber: String? {
+        return infoDictionary?["CFBundleVersion"] as? String
+    }
+
     var displayName: String? {
         return object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
             object(forInfoDictionaryKey: "CFBundleName") as? String
@@ -16,6 +24,7 @@ extension Bundle {
 
 // MARK: - App Strings
 extension String {
+    static let empty = ""
     static let appLocale = "es_CL"
     static let yyyyMMddHHmmss = "yyyy-MM-dd HH:mm:ss"
 }

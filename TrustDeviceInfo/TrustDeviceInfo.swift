@@ -47,8 +47,9 @@ public enum ResponseStatus: String {
 
 // MARK: - TrustDeviceInfo
 public class TrustDeviceInfo {
-
+    private let systemName = "iOS"
     private let trustIDKey = "trustid"
+    private let deviceKey = Sysctl.model
 
     private let baseUrl = "http://api.trust.lat"
     private let apiVersion = "/api/v1"
@@ -297,12 +298,17 @@ extension TrustDeviceInfo {
     }
 
     public func getTrustID() -> String? {
-        return KeychainWrapper.standard.string(forKey: trustIDKey)
+        return KeychainWrapper.standard.string(forKey: deviceKey)
     }
 
     private func save(trustID: String) {
         if !hasTrustIDBeenSaved() {
-            KeychainWrapper.standard.set(trustID, forKey: trustIDKey)
+            if let savedTrustID = KeychainWrapper.standard.string(forKey: trustIDKey) {
+                KeychainWrapper.standard.set(savedTrustID, forKey: deviceKey)
+                KeychainWrapper.standard.removeObject(forKey: trustIDKey)
+            } else {
+                KeychainWrapper.standard.set(trustID, forKey: deviceKey)
+            }
         }
 
         if let delegate = trustIDDelegate {
@@ -311,7 +317,7 @@ extension TrustDeviceInfo {
     }
 
     private func removeTrustID() {
-        KeychainWrapper.standard.removeObject(forKey: trustIDKey)
+        KeychainWrapper.standard.removeObject(forKey: deviceKey)
     }
 }
 
@@ -347,21 +353,21 @@ extension TrustDeviceInfo {
                 "systemVersion": device.systemVersion,
                 "totalDiskSpace": DiskStatus.totalDiskSpace,
                 "identifierForVendor": uiDevice.identifierForVendor?.uuidString ?? "",
-                "system_name": "iOS"
+                "system_name": systemName
             ]
         ]
-        
+
         defer {
             print("Parameters: °\(parameters)")
         }
-        
+
         if let trustID = getTrustID() {
-            parameters.updateValue(trustID, forKey: trustIDKey)
+            parameters.updateValue(trustID, forKey: "trust_id")
         }
-        
+
         if let identityInfo = identityInfo {
             var identity = ["dni": identityInfo.dni]
-            
+
             if let name = identityInfo.name {
                 identity.updateValue(name, forKey: "name")
             }
