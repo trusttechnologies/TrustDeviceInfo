@@ -59,6 +59,9 @@ public class TrustDeviceInfo {
 
     private let auditURL = "/audit"
     private let auditEndpoint = "/audit"
+    
+    private let appStateURL = "/company"
+    private let appStateEndpoint = "/app/state"
 
     private lazy var deviceInfoCompleteURLAsString: String = {
         return "\(baseUrl)\(deviceInfoURL)\(apiVersion)\(deviceInfoEndpoint)"
@@ -66,6 +69,10 @@ public class TrustDeviceInfo {
 
     private lazy var auditCompleteURLAsString: String = {
         return "\(baseUrl)\(auditURL)\(apiVersion)\(auditEndpoint)"
+    }()
+    
+    private lazy var appStateCompleteURLAsString: String = {
+        return "\(baseUrl)\(appStateURL)\(apiVersion)\(appStateEndpoint)"
     }()
 
     private lazy var networkInfo: CTTelephonyNetworkInfo = {
@@ -251,44 +258,24 @@ extension TrustDeviceInfo {
                 }
             }
     }
-    /*func send(carrierData: CTCarrier) {
-     guard let parameters = getEventInfoAsParameters(carrier: carrierData) else {
-     return
-     }
-     
-     request(
-     carrierChangeEventUploadURLAsString,
-     method: .post,
-     parameters: parameters,
-     encoding: JSONEncoding.default).responseJSON {
-     [weak self] response in
-     
-     print("Status code: \(response.response?.statusCode ?? -1)")
-     print("Carrier Change response: \(response)")
-     
-     guard let self = self else {
-     return
-     }
-     
-     switch response.result {
-     case .success(let responseData):
-     guard
-     let json = responseData as? [String: Any],
-     let trifle = json["trifle"] as? [String: Any] else {
-     return
-     }
-     
-     guard let trustID = trifle[self.trustIDKey] as? String else {
-     print("No TrustID")
-     return
-     }
-     
-     print("TrustID: \(trustID)")
-     self.save(trustID: trustID)
-     default: break
-     }
-     }
-     }*/
+
+    public func setAppState(dni: String, bundleID: String) {
+
+        let parameters = AppStateParameters(dni: dni, bundleID: bundleID).asParameters
+
+        print("URLRequested: \(appStateCompleteURLAsString)")
+
+        request(
+            appStateCompleteURLAsString,
+            method: .post,
+            parameters: parameters,
+            encoding: JSONEncoding.default).responseJSON {
+                response in
+
+                print("Status code: \(response.response?.statusCode ?? -1)")
+                print("Response: \(response)")
+        }
+    }
 }
     
 // MARK: - TrustID Persistance related methods
@@ -409,34 +396,25 @@ extension TrustDeviceInfo {
         
         return parameters
     }
-    /*private func getEventInfoAsParameters(carrier: CTCarrier) -> Parameters? {
+}
+
+// MARK: - AppStateParameters
+struct AppStateParameters {
+    var dni: String?
+    var bundleID: String?
+    
+    public var asParameters: Parameters {
         guard
-            enable,
-            let trustId = getTrustID() else {
-                return nil
+            let dni = dni,
+            let bundleID = bundleID,
+            let trustID = TrustDeviceInfo.shared.getTrustID() else {
+                return [:]
         }
         
-        let parameters: Parameters = [
-            "trustid": trustId,
-            "object": [
-                "carrierName": carrier.carrierName ?? "",
-                "mobileCountryCode": carrier.mobileCountryCode ?? "",
-                "mobileNetworkCode": carrier.mobileNetworkCode ?? "",
-                "ISOCountryCode": carrier.isoCountryCode ?? "",
-                "allowsVOIP": carrier.allowsVOIP ? "YES" : "NO"
-            ],
-            "key": "",
-            "value": "",
-            "geo": [
-                "lat": "-32",
-                "long": "-77"
-            ]
+        return [
+            "trust_id": trustID,
+            "dni": dni,
+            "bundle_id": bundleID
         ]
-        
-        defer {
-            print("Parameters: °\(parameters)")
-        }
-        
-        return parameters
-    }*/
+    }
 }

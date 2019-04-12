@@ -3,10 +3,10 @@ Pod::Spec.new do |s|
   s.platform     = :ios
   s.ios.deployment_target = '12.1'
   s.name         = "TrustDeviceInfo"
-  s.summary      = "Small library that allows the user to obtain information about the device in use. Developed by Jumpitt Labs."
+  s.summary      = "Small library that allows the user to gather information about the device in use. Developed by Jumpitt Labs."
   s.requires_arc = true
 
-  s.version      = "0.2.4"
+  s.version      = "0.3.0"
 
   s.license      = { :type => "MIT", :file => "LICENSE" }
 
