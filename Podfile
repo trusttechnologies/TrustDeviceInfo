@@ -4,7 +4,7 @@ platform :ios, '12.1'
 use_frameworks!
 
 target 'TrustDeviceInfo' do
-    pod 'Alamofire'
+    pod 'Alamofire', '~> 4.8.2'
     pod 'DeviceKit', '~> 1.13'
 end
 
