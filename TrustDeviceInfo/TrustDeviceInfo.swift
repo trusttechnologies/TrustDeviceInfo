@@ -49,7 +49,7 @@ public enum ResponseStatus: String {
 public class TrustDeviceInfo {
     private let systemName = "iOS"
     private let trustIDKey = "trustid"
-    private let deviceKey = Sysctl.model
+    private let deviceKey = "\(Sysctl.model)\(DiskStatus.totalDiskSpace)"
 
     private let baseUrl = "http://api.trust.lat"
     private let apiVersion = "/api/v1"
@@ -92,6 +92,8 @@ public class TrustDeviceInfo {
                 }
                 
                 sendDeviceInfo()
+            } else if !enable && oldValue {
+                disableCarrierUpdateNotifier()
             }
         }
     }
@@ -105,7 +107,7 @@ public class TrustDeviceInfo {
     }
 
     // MARK: - Delegates
-    public weak var SIMInfoDelegate: SIMInfoDelegate?
+    public weak var simInfoDelegate: SIMInfoDelegate?
     public weak var sendDataDelegate: SendDeviceInfoDelegate?
     public weak var trustIDDelegate: TrustIDDelegate?
     
@@ -140,7 +142,7 @@ extension TrustDeviceInfo {
 
                 self.sendDeviceInfo()
 
-                guard let delegate = self.SIMInfoDelegate else {
+                guard let delegate = self.simInfoDelegate else {
                     return
                 }
 
@@ -149,6 +151,10 @@ extension TrustDeviceInfo {
         }
 
         networkInfo.serviceSubscriberCellularProvidersDidUpdateNotifier = updateNotifier
+    }
+    
+    private func disableCarrierUpdateNotifier() {
+        networkInfo.serviceSubscriberCellularProvidersDidUpdateNotifier = nil
     }
 }
 
@@ -293,6 +299,9 @@ extension TrustDeviceInfo {
             if let savedTrustID = KeychainWrapper.standard.string(forKey: trustIDKey) {
                 KeychainWrapper.standard.set(savedTrustID, forKey: deviceKey)
                 KeychainWrapper.standard.removeObject(forKey: trustIDKey)
+            } else if let savedTrustID = KeychainWrapper.standard.string(forKey: Sysctl.model) {
+                KeychainWrapper.standard.set(savedTrustID, forKey: deviceKey)
+                KeychainWrapper.standard.removeObject(forKey: Sysctl.model)
             } else {
                 KeychainWrapper.standard.set(trustID, forKey: deviceKey)
             }
