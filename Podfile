@@ -5,7 +5,8 @@ use_frameworks!
 
 target 'TrustDeviceInfo' do
     pod 'Alamofire', '~> 4.8.2'
-    pod 'DeviceKit', '~> 1.13'
+    pod 'AlamofireObjectMapper'
+    pod 'DeviceKit'
 end
 
 post_install do |installer|

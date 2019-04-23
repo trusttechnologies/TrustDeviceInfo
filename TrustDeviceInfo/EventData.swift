@@ -6,7 +6,7 @@
 //  Copyright © 2018 Jumpitt Labs. All rights reserved.
 //
 
-import Alamofire
+/*import Alamofire
 import DeviceKit
 
 // MARK: - Enum TransactionType
@@ -25,7 +25,7 @@ public enum AuthMethod: String {
 // MARK: - Struct EventData
 public struct EventData {
     
-    private let device = Device()
+    private let device = Device.current
     
     var operationType: OperationType?
     var authMethod: AuthMethod?
@@ -39,13 +39,17 @@ public struct EventData {
     var transactionType: String?
     var transactionResult: String?
     
+    var trustIDManager: TrustIDManagerProtocol {
+        return TrustIDManager()
+    }
+    
     public var asParameters: Parameters {
         return [
             "type_audit": auditType ?? .empty,
             "platform": "iOS",
             "application": Bundle.main.displayName ?? .empty,
             "source": [
-                "trust_id": TrustDeviceInfo.shared.getTrustID(),
+                "trust_id": trustIDManager.getTrustID(),
                 "app_name": Bundle.main.displayName,
                 "bundle_id": Bundle.main.bundleIdentifier,
                 "os": device.systemName,
@@ -53,8 +57,8 @@ public struct EventData {
                 "device_name": Sysctl.model,
                 "latGeo": latitude ?? .empty,
                 "lonGeo": longitude ?? .empty,
-                "connection_type": connectionType ?? .empty,
-                "connection_name": connectionName ?? .empty,
+                "connection_type": connectionType,
+                "connection_name": connectionName,
                 "version_app": "\(Bundle.main.versionNumber ?? "1").\(Bundle.main.buildNumber ?? "1")"
             ],
             "transaction": [
@@ -74,4 +78,4 @@ public struct EventData {
         self.longitude = longitude
         self.timestamp = timestamp
     }
-}
+}*/
