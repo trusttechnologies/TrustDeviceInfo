@@ -6,6 +6,17 @@
 //  Copyright © 2018 Jumpitt Labs. All rights reserved.
 //
 
+import Alamofire
+
+// MARK: - Parameterizable
+protocol Parameterizable {
+    var asParameters: Parameters {get}
+}
+
+// MARK: -  Typealias
+typealias CompletionHandler = (()->Void)?
+typealias SuccessHandler<T> = ((T)-> Void)?
+
 // MARK: Extension Bundle
 extension Bundle {
     var versionNumber: String? {
