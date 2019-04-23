@@ -162,6 +162,17 @@ extension TrustDeviceInfo {
         apiManager.setAppState(with: parameters)
     }
 }
+
+// MARK: - TrustID related methods
+extension TrustDeviceInfo {
+    public func hasTrustIDBeenSaved() -> Bool {
+        return getTrustID() != nil
+    }
+    
+    public func getTrustID() -> String? {
+        return trustIDManager.getTrustID()
+    }
+}
     
 // MARK: - APIManagerOutputProtocol
 extension TrustDeviceInfo: APIManagerOutputProtocol {
@@ -355,39 +366,6 @@ public enum ResponseStatus: String {
                 }
             }
     }*/
-    
-// MARK: - TrustID Persistance related methods
-/*extension TrustDeviceInfo {
-    public func hasTrustIDBeenSaved() -> Bool {
-        return getTrustID() != nil
-    }
-
-    public func getTrustID() -> String? {
-        return KeychainWrapper.standard.string(forKey: deviceKey)
-    }
-
-    private func save(trustID: String) {
-        if !hasTrustIDBeenSaved() {
-            if let savedTrustID = KeychainWrapper.standard.string(forKey: trustIDKey) {
-                KeychainWrapper.standard.set(savedTrustID, forKey: deviceKey)
-                KeychainWrapper.standard.removeObject(forKey: trustIDKey)
-            } else if let savedTrustID = KeychainWrapper.standard.string(forKey: Sysctl.model) {
-                KeychainWrapper.standard.set(savedTrustID, forKey: deviceKey)
-                KeychainWrapper.standard.removeObject(forKey: Sysctl.model)
-            } else {
-                KeychainWrapper.standard.set(trustID, forKey: deviceKey)
-            }
-        }
-
-        if let delegate = trustIDDelegate {
-            delegate.onTrustIDSaved()
-        }
-    }
-
-    private func removeTrustID() {
-        KeychainWrapper.standard.removeObject(forKey: deviceKey)
-    }
-}*/
 
 // MARK: - Parameters Helpers
 /*extension TrustDeviceInfo {
