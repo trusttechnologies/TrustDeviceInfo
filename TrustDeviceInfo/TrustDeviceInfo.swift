@@ -16,13 +16,10 @@ public protocol SIMInfoDelegate: AnyObject {
 
 // MARK: - TrustIDDelegate
 public protocol TrustDeviceInfoDelegate: AnyObject {
-}
-
-extension TrustDeviceInfoDelegate {
-    public func onClientCredentialsSaved(savedClientCredentials: ClientCredentials) {}
-    public func onTrustIDSaved(savedTrustID: String) {}
-    public func onRegisterFirebaseTokenSuccess(responseData: RegisterFirebaseTokenResponse) {}
-    public func onSendDeviceInfoResponse(status: ResponseStatus) {}
+    func onClientCredentialsSaved(savedClientCredentials: ClientCredentials)
+    func onTrustIDSaved(savedTrustID: String)
+    func onRegisterFirebaseTokenSuccess(responseData: RegisterFirebaseTokenResponse)
+    func onSendDeviceInfoResponse(status: ResponseStatus)
 }
 
 // MARK: - TrustDeviceInfo
@@ -204,6 +201,10 @@ extension TrustDeviceInfo {
 // MARK: - Outputs Protocols
 // MARK: - APIManagerOutputProtocol
 extension TrustDeviceInfo: APIManagerOutputProtocol {
+    func onSetAppStateResponse() {}
+    func onSetAppStateSuccess() {}
+    func onSetAppStateFailure() {}
+    
     func onSendDeviceInfoResponse(response: DataResponse<TrustID>) {
         let httpResponse = response.response
         
@@ -225,13 +226,23 @@ extension TrustDeviceInfo: APIManagerOutputProtocol {
         trustIDManager.save(trustID: trustID)
     }
     
+    func onSendDeviceInfoFailure() {}
+    
+    func onClientCredentialsResponse() {}
+    
     func onClientCredentialsSuccess(responseData: ClientCredentials) {
         clientCredentialsManager.save(clientCredentials: responseData)
     }
     
+    func onClientCredentialsFailure() {}
+    
+    func onRegisterFirebaseTokenResponse() {}
+    
     func onRegisterFirebaseTokenSuccess(responseData: RegisterFirebaseTokenResponse) {
         trustDeviceInfoDelegate?.onRegisterFirebaseTokenSuccess(responseData: responseData)
     }
+    
+    func onRegisterFirebaseTokenFailure() {}
 }
 
 // MARK: - ClientCredentialsDataManagerOutputProtocol

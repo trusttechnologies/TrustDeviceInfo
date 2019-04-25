@@ -20,25 +20,21 @@ protocol APIManagerProtocol: AnyObject {
 
 // MARK: - APIManagerOutputProtocol
 protocol APIManagerOutputProtocol: AnyObject {
-}
-
-// MARK: - Extension APIManagerOutputProtocol
-extension APIManagerOutputProtocol {
-    func onClientCredentialsResponse() {}
-    func onClientCredentialsSuccess(responseData: ClientCredentials) {}
-    func onClientCredentialsFailure() {}
+    func onClientCredentialsResponse()
+    func onClientCredentialsSuccess(responseData: ClientCredentials)
+    func onClientCredentialsFailure()
     
-    func onSendDeviceInfoResponse(response: DataResponse<TrustID>) {}
-    func onSendDeviceInfoSuccess(responseData: TrustID) {}
-    func onSendDeviceInfoFailure() {}
+    func onSendDeviceInfoResponse(response: DataResponse<TrustID>)
+    func onSendDeviceInfoSuccess(responseData: TrustID)
+    func onSendDeviceInfoFailure()
     
-    func onSetAppStateResponse() {}
-    func onSetAppStateSuccess() {}
-    func onSetAppStateFailure() {}
+    func onSetAppStateResponse()
+    func onSetAppStateSuccess()
+    func onSetAppStateFailure()
     
-    func onRegisterFirebaseTokenResponse() {}
-    func onRegisterFirebaseTokenSuccess(responseData: RegisterFirebaseTokenResponse) {}
-    func onRegisterFirebaseTokenFailure() {}
+    func onRegisterFirebaseTokenResponse()
+    func onRegisterFirebaseTokenSuccess(responseData: RegisterFirebaseTokenResponse)
+    func onRegisterFirebaseTokenFailure()
 }
 
 // MARK: - APIManager
