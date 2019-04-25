@@ -35,6 +35,22 @@ extension Bundle {
     }
 }
 
+// MARK: - CustomStringConvertible
+extension CustomStringConvertible {
+    public var description: String {
+        var description: String = .empty
+        let selfMirror = Mirror(reflecting: self)
+        
+        for child in selfMirror.children {
+            if let propertyName = child.label {
+                description += "\(propertyName): \(child.value)\n"
+            }
+        }
+        
+        return description
+    }
+}
+
 // MARK: - Extension Date
 extension Date {
     func toString(with format: String) -> String {

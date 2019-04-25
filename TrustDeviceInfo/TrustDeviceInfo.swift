@@ -19,10 +19,10 @@ public protocol TrustDeviceInfoDelegate: AnyObject {
 }
 
 extension TrustDeviceInfoDelegate {
-    func onClientCredentialsSaved(savedClientCredentials: ClientCredentials) {}
-    func onTrustIDSaved(savedTrustID: String) {}
-    func onRegisterFirebaseTokenSuccess(responseData: RegisterFirebaseTokenResponse) {}
-    func onSendDeviceInfoResponse(status: ResponseStatus) {}
+    public func onClientCredentialsSaved(savedClientCredentials: ClientCredentials) {}
+    public func onTrustIDSaved(savedTrustID: String) {}
+    public func onRegisterFirebaseTokenSuccess(responseData: RegisterFirebaseTokenResponse) {}
+    public func onSendDeviceInfoResponse(status: ResponseStatus) {}
 }
 
 // MARK: - TrustDeviceInfo

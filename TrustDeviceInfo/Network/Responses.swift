@@ -9,16 +9,16 @@
 import ObjectMapper
 
 // MARK: - TrustID
-class TrustID: Mappable {
+public class TrustID: Mappable, CustomStringConvertible {
     var status = false
     var message: String?
     var trustID: String?
 
-    required convenience init?(map: Map) {
+    public required convenience init?(map: Map) {
         self.init()
     }
     
-    func mapping(map: Map) {
+    public func mapping(map: Map) {
         status <- map["status"]
         message <- map["message"]
         trustID <- map["trustid"]
@@ -26,11 +26,11 @@ class TrustID: Mappable {
 }
 
 // MARK: - ClientCredentials
-public class ClientCredentials: Mappable {
+public class ClientCredentials: Mappable, CustomStringConvertible {
     var accessToken: String?
     var tokenType: String?
 
-    required convenience public init?(map: Map) {
+    public required convenience init?(map: Map) {
         self.init()
     }
 
@@ -41,12 +41,12 @@ public class ClientCredentials: Mappable {
 }
 
 // MARK: - RegisterFirebaseTokenResponse
-class RegisterFirebaseTokenResponse: Mappable {
+public class RegisterFirebaseTokenResponse: Mappable, CustomStringConvertible {
     var status: String?
     var code: Int?
     var message: String?
     
-    required convenience public init?(map: Map) {
+    public required convenience init?(map: Map) {
         self.init()
     }
     
