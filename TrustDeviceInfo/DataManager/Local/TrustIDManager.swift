@@ -18,7 +18,7 @@ protocol TrustIDManagerProtocol: AnyObject {
 
 // MARK: - TrustIDManagerOutputProtocol
 protocol TrustIDManagerOutputProtocol: AnyObject {
-    func onTrustIDSaved()
+    func onTrustIDSaved(savedTrustID: String)
 }
 
 // MARK: - TrustIDManager
@@ -50,7 +50,7 @@ class TrustIDManager: TrustIDManagerProtocol {
             }
         }
 
-        managerOutput?.onTrustIDSaved()
+        managerOutput?.onTrustIDSaved(savedTrustID: trustID)
     }
     
     func removeTrustID() {

@@ -19,6 +19,28 @@ public protocol IdentityInfoDataSource {
     var phone: String? {get}
 }
 
+// MARK: - ClientCredentialsParameters
+struct ClientCredentialsParameters: Parameterizable {
+    var clientID: String?
+    var clientSecret: String?
+    
+    let grantType = "client_credentials"
+    
+    public var asParameters: Parameters {
+        guard
+            let clientID = clientID,
+            let clientSecret = clientSecret else {
+                return [:]
+        }
+        
+        return [
+            "client_id": clientID,
+            "client_secret": clientSecret,
+            "grant_type": grantType
+        ]
+    }
+}
+
 // MARK: - AppStateParameters
 struct AppStateParameters: Parameterizable {
     var dni: String?
@@ -48,6 +70,36 @@ struct AppStateParameters: Parameterizable {
     }
 }
 
+// MARK: - RegisterFirebaseTokenParameters
+struct RegisterFirebaseTokenParameters: Parameterizable {
+    var firebaseToken: String?
+    var bundleID: String?
+    
+    private var trustID: String? {
+        return trustIDManager.getTrustID()
+    }
+    
+    private var trustIDManager: TrustIDManagerProtocol {
+        return TrustIDManager()
+    }
+    
+    public var asParameters: Parameters {
+        guard
+            let trustID = trustID,
+            let firebaseToken = firebaseToken,
+            let bundleID = bundleID else {
+                return [:]
+        }
+        
+        return [
+            "trust_id": trustID,
+            "firebase_token": firebaseToken,
+            "bundle_id": bundleID,
+            "platform": "IOS"
+        ]
+    }
+}
+
 // MARK: - DeviceInfoParameters
 struct DeviceInfoParameters: Parameterizable {
     var identityInfo: IdentityInfoDataSource?
@@ -70,10 +122,6 @@ struct DeviceInfoParameters: Parameterizable {
         }
 
         var parameters: Parameters = [:]
-        
-        defer {
-            print("Parameters: °\(parameters)")
-        }
         
         var deviceParameters: [String : Any] = [
             "activeCPUs": Sysctl.activeCPUs,

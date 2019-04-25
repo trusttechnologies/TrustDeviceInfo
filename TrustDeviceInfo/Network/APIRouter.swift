@@ -10,30 +10,40 @@ import Alamofire
 
 // MARK: - APIRouter
 enum APIRouter: URLRequestConvertible {
+    case clientCredentials(parameters: Parameterizable)
     case sendDeviceInfo(parameters: Parameterizable)
     case setAppState(parameters: Parameterizable)
+    case registerFirebaseToken(parameters: Parameterizable)
 
     var path: String {
         switch self {
+        case .clientCredentials:
+            return "/oauth/token/"
         case .sendDeviceInfo:
             return "/identification\(API.apiVersion)/device"
         case .setAppState:
             return "/company\(API.apiVersion)/app/state"
+        case .registerFirebaseToken:
+            return "/notifications/device/register"
         }
     }
 
     var method: HTTPMethod {
         switch self {
-        case .sendDeviceInfo, .setAppState:
+        case .clientCredentials, .sendDeviceInfo, .setAppState, .registerFirebaseToken:
             return .post
         }
     }
 
     var parameters: Parameters {
         switch self {
+        case .clientCredentials(let parameters):
+            return parameters.asParameters
         case .sendDeviceInfo(let parameters):
             return parameters.asParameters
         case .setAppState(let parameters):
+            return parameters.asParameters
+        case .registerFirebaseToken(let parameters):
             return parameters.asParameters
         }
     }
@@ -43,7 +53,14 @@ enum APIRouter: URLRequestConvertible {
             print("Parameters: \(parameters)")
         }
         
-        let baseURLAsString = API.baseURL
+        var baseURLAsString: String = .empty
+        
+        switch self {
+        case .clientCredentials:
+            baseURLAsString = API.clientCredentialsBaseURL
+        case .sendDeviceInfo, .setAppState, .registerFirebaseToken:
+            baseURLAsString = API.baseURL
+        }
         
         guard let url = URL(string: baseURLAsString) else {
             return URLRequest(url: URL(string: .empty)!)
@@ -54,7 +71,20 @@ enum APIRouter: URLRequestConvertible {
         urlRequest.httpMethod = method.rawValue
         
         switch self {
-        case .sendDeviceInfo, .setAppState:
+        case .sendDeviceInfo, .setAppState, .registerFirebaseToken:
+            let clientCredentialsManager = ClientCredentialsManager()
+            
+            if
+                let clientCredentials = clientCredentialsManager.getClientCredentials(),
+                let tokenType = clientCredentials.tokenType,
+                let accessToken = clientCredentials.accessToken {
+                urlRequest.addValue("\(tokenType) \(accessToken)", forHTTPHeaderField: "Authorization")
+            }
+        default: break
+        }
+
+        switch self {
+        case .clientCredentials, .sendDeviceInfo, .setAppState, .registerFirebaseToken:
             return try JSONEncoding.default.encode(urlRequest, with: parameters)
         }
     }

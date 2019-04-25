@@ -8,15 +8,26 @@
 
 import Alamofire
 import CoreTelephony
-import DeviceKit
-import Foundation
-import UIKit
+
+// MARK: - SIMInfoDelegate
+public protocol SIMInfoDelegate: AnyObject {
+    func onCarrierInfoHasChanged(carrier: String)
+}
+
+// MARK: - TrustIDDelegate
+public protocol TrustDeviceInfoDelegate: AnyObject {
+}
+
+extension TrustDeviceInfoDelegate {
+    func onClientCredentialsSaved(savedClientCredentials: ClientCredentials) {}
+    func onTrustIDSaved(savedTrustID: String) {}
+    func onRegisterFirebaseTokenSuccess(responseData: RegisterFirebaseTokenResponse) {}
+    func onSendDeviceInfoResponse(status: ResponseStatus) {}
+}
 
 // MARK: - TrustDeviceInfo
 public class TrustDeviceInfo {
     private let trustIDKey = "trustid"
-    private let deviceKey = "\(Sysctl.model)\(DiskStatus.totalDiskSpace)"
-    
     private var sendDeviceInfoOnEnabled: Bool = false
     
     private var enable = false {
@@ -27,8 +38,8 @@ public class TrustDeviceInfo {
                 guard sendDeviceInfoOnEnabled else {
                     return
                 }
-                
-                sendDeviceInfo()
+
+                createClientCredentials()
             } else if !enable && oldValue {
                 disableCarrierUpdateNotifier()
             }
@@ -45,21 +56,24 @@ public class TrustDeviceInfo {
         return trustDeviceInfo
     }
 
+    // MARK: - ClientCredentialsManager
+    private lazy var clientCredentialsManager: ClientCredentialsManagerProtocol = {
+        let clientCredentialsDataManager = ClientCredentialsManager()
+        clientCredentialsDataManager.managerOutput = self
+        return clientCredentialsDataManager
+    }()
+    
     // MARK: - TrustIDManager
     private lazy var trustIDManager: TrustIDManagerProtocol = {
         let trustIDManager = TrustIDManager()
-        
         trustIDManager.managerOutput = self
-        
         return trustIDManager
     }()
     
     // MARK: - APIManager
     private lazy var apiManager: APIManagerProtocol = {
         let apiManager = APIManager()
-        
         apiManager.managerOutput = self
-        
         return apiManager
     }()
     
@@ -71,8 +85,7 @@ public class TrustDeviceInfo {
     
     // MARK: - Delegates
     public weak var simInfoDelegate: SIMInfoDelegate?
-    public weak var sendDeviceInfoDelegate: SendDeviceInfoDelegate?
-    public weak var trustIDDelegate: TrustIDDelegate?
+    public weak var trustDeviceInfoDelegate: TrustDeviceInfoDelegate?
     
     public var sendDeviceInfoCompletionHandler: ((ResponseStatus) -> Void)?
     
@@ -127,7 +140,7 @@ extension TrustDeviceInfo {
     }
 }
 
-// MARK: - SendDeviceInfo related methods
+// MARK: - getResponseStatus
 extension TrustDeviceInfo {
     private func getResponseStatus(response: HTTPURLResponse?) -> ResponseStatus {
         guard let statusCode = response?.statusCode else {
@@ -146,7 +159,16 @@ extension TrustDeviceInfo {
             return .error
         }
     }
-    
+}
+
+// MARK: - Public Methods
+extension TrustDeviceInfo {
+    public func createClientCredentials(clientID: String = "adcc11078bee4ba2d7880a48c4bed02758a5f5328276b08fa14493306f1e9efb", clientSecret: String = "1f647aab37f4a7d7a0da408015437e7a963daca43da06a7789608c319c2930bd") {
+        let parameters = ClientCredentialsParameters(clientID: clientID, clientSecret: clientSecret)
+
+        apiManager.getClientCredentials(with: parameters)
+    }
+
     public func sendDeviceInfo(identityInfo: IdentityInfoDataSource? = nil, completionHandler: ((ResponseStatus) -> Void)? = nil) {
         let parameters = DeviceInfoParameters(identityInfo: identityInfo, networkInfo: networkInfo)
         
@@ -156,15 +178,17 @@ extension TrustDeviceInfo {
     }
     
     public func setAppState(dni: String, bundleID: String) {
-        
         let parameters = AppStateParameters(dni: dni, bundleID: bundleID)
         
         apiManager.setAppState(with: parameters)
     }
-}
 
-// MARK: - TrustID related methods
-extension TrustDeviceInfo {
+    public func registerFirebaseToken(firebaseToken: String, bundleID: String) {
+        let parameters = RegisterFirebaseTokenParameters(firebaseToken: firebaseToken, bundleID: bundleID)
+        
+        apiManager.registerFirebaseToken(with: parameters)
+    }
+    
     public func hasTrustIDBeenSaved() -> Bool {
         return getTrustID() != nil
     }
@@ -172,312 +196,55 @@ extension TrustDeviceInfo {
     public func getTrustID() -> String? {
         return trustIDManager.getTrustID()
     }
-}
     
+    public func getClientCredentials() -> ClientCredentials? {
+        return clientCredentialsManager.getClientCredentials()
+    }
+}
+// MARK: - Outputs Protocols
 // MARK: - APIManagerOutputProtocol
 extension TrustDeviceInfo: APIManagerOutputProtocol {
-    func onSendDeviceInfoResponse(response: DataResponse<Any>) {
+    func onSendDeviceInfoResponse(response: DataResponse<TrustID>) {
         let httpResponse = response.response
         
-        sendDeviceInfoDelegate?.onResponse(status: getResponseStatus(response: httpResponse))
+        trustDeviceInfoDelegate?.onSendDeviceInfoResponse(status: getResponseStatus(response: httpResponse))
         sendDeviceInfoCompletionHandler?(getResponseStatus(response: httpResponse))
     }
 
-    func onSendDeviceInfoSuccess(response: Any) {
-        guard let json = response as? [String: Any], let status = json["status"] as? Bool else {
+    func onSendDeviceInfoSuccess(responseData: TrustID) {
+        guard responseData.status else {
             return
         }
 
-        guard status else {
-            return
-        }
-        
-        guard let trustID = json[trustIDKey] as? String else {
+        guard let trustID = responseData.trustID else {
             print("No TrustID")
             return
         }
-        
+
         print("TrustID: \(trustID)")
         trustIDManager.save(trustID: trustID)
     }
     
-    // MARK: - Unused
-    func onSendDeviceInfoFailure() {print("onSendDeviceInfoFailure")}
+    func onClientCredentialsSuccess(responseData: ClientCredentials) {
+        clientCredentialsManager.save(clientCredentials: responseData)
+    }
     
-    // MARK: - Unused
-    func onSetAppStateResponse() {print("onSetAppStateResponse")}
-    func onSetAppStateSuccess() {print("onSetAppStateSuccess")}
-    func onSetAppStateFailure() {print("onSetAppStateFailure")}
+    func onRegisterFirebaseTokenSuccess(responseData: RegisterFirebaseTokenResponse) {
+        trustDeviceInfoDelegate?.onRegisterFirebaseTokenSuccess(responseData: responseData)
+    }
+}
+
+// MARK: - ClientCredentialsDataManagerOutputProtocol
+extension TrustDeviceInfo: ClientCredentialsManagerOutputProtocol {
+    func onClientCredentialsSaved(savedClientCredentials: ClientCredentials) {
+        sendDeviceInfo()
+        trustDeviceInfoDelegate?.onClientCredentialsSaved(savedClientCredentials: savedClientCredentials)
+    }
 }
 
 // MARK: - TrustIDManagerOutputProtocol
 extension TrustDeviceInfo: TrustIDManagerOutputProtocol {
-    func onTrustIDSaved() {
-        trustIDDelegate?.onTrustIDSaved()
+    func onTrustIDSaved(savedTrustID: String) {
+        trustDeviceInfoDelegate?.onTrustIDSaved(savedTrustID: savedTrustID)
     }
 }
-
-// MARK: - SIMInfoDelegate
-public protocol SIMInfoDelegate: AnyObject {
-    func onCarrierInfoHasChanged(carrier: CTCarrier)
-    func onCarrierInfoHasChanged(carrier: String)
-}
-
-// MARK: - SendDataDelegate
-public protocol SendDeviceInfoDelegate: AnyObject {
-    func onResponse(status: ResponseStatus)
-}
-
-// MARK: - TrustIDDelegate
-public protocol TrustIDDelegate: AnyObject {
-    func onTrustIDSaved()
-}
-
-// MARK: - ResponseStatus
-public enum ResponseStatus: String {
-    case created = "TrustID Creado"
-    case noChanges = "No hay cambios"
-    case updated = "Datos actualizados"
-    case error = "Ha ocurrido un error en el envío de datos"
-}
-
-//private let deviceInfoURL = "/identification"
-//private let deviceInfoEndpoint = "/device"
-
-//private let auditURL = "/audit"
-//private let auditEndpoint = "/audit"
-
-/*private let appStateURL = "/company"
- private let appStateEndpoint = "/app/state"*/
-
-/*private lazy var deviceInfoCompleteURLAsString: String = {
- return "\(baseUrl)\(deviceInfoURL)\(apiVersion)\(deviceInfoEndpoint)"
- }()*/
-
-/*private lazy var auditCompleteURLAsString: String = {
- return "\(baseUrl)\(auditURL)\(apiVersion)\(auditEndpoint)"
- }()*/
-
-/*private lazy var appStateCompleteURLAsString: String = {
- return "\(baseUrl)\(appStateURL)\(apiVersion)\(appStateEndpoint)"
- }()*/
-
-/*
- public func sendDeviceInfo(identityInfo: IdentityInfoDataSource? = nil, completionHandler: ((ResponseStatus) -> Void)? = nil) {
- guard let parameters = getDeviceInfoAsParameters(identityInfo: identityInfo) else {
- return
- }
- 
- print("URLRequested: \(deviceInfoCompleteURLAsString)")
- 
- request(
- deviceInfoCompleteURLAsString,
- method: .post,
- parameters: parameters.asParameters,
- encoding: JSONEncoding.default).responseJSON {
- [weak self] response in
- 
- print("Status code: \(response.response?.statusCode ?? -1)")
- print("Response: \(response)")
- 
- guard let self = self else {
- return
- }
- 
- let httpResponse = response.response
- 
- if let delegate = self.sendDeviceInfoDelegate {
- delegate.onResponse(status: self.getResponseStatus(response: httpResponse))
- }
- 
- if let completionHandler = completionHandler {
- completionHandler(self.getResponseStatus(response: httpResponse))
- }
- 
- switch response.result {
- case .success(let responseData):
- guard
- let json = responseData as? [String: Any],
- let status = json["status"] as? Bool else {
- return
- }
- 
- guard status else {
- return
- }
- 
- guard let trustID = json[self.trustIDKey] as? String else {
- print("No TrustID")
- return
- }
- 
- print("TrustID: \(trustID)")
- self.trustIDManager.save(trustID: trustID)
- default: break
- }
- }*/
-    
-    /*
-     public func setAppState(dni: String, bundleID: String) {
-     let parameters = AppStateParameters(dni: dni, bundleID: bundleID).asParameters
-     
-     print("URLRequested: \(appStateCompleteURLAsString)")
-     
-     request(
-     appStateCompleteURLAsString,
-     method: .post,
-     parameters: parameters,
-     encoding: JSONEncoding.default).responseJSON {
-     response in
-     
-     print("Status code: \(response.response?.statusCode ?? -1)")
-     print("Response: \(response)")
-     }
-     }*/
-
-    /*public func send(eventData: EventData, onResponse: (()->Void)? = nil, onSuccess: (()->Void)? = nil, onFailure: (()->Void)? = nil) {
-        
-        let parameters = eventData.asParameters
-        
-        request(
-            auditCompleteURLAsString,
-            method: .post,
-            parameters: parameters,
-            encoding: JSONEncoding.default)
-            .responseJSON {
-                response in
-
-                print("Status code: \(response.response?.statusCode ?? -1)")
-                print("Event response: \(response)")
-
-                if let onResponse = onResponse {
-                    onResponse()
-                }
-
-                switch response.result {
-                    case .success:
-                        if let onSuccess = onSuccess {
-                            onSuccess()
-                        }
-                    case .failure:
-                        if let onFailure = onFailure {
-                            onFailure()
-                        }
-                }
-            }
-    }*/
-
-// MARK: - Parameters Helpers
-/*extension TrustDeviceInfo {
-    private func getDeviceInfoAsParameters(identityInfo: IdentityInfoDataSource? = nil) -> Parameters? {
-        guard enable else {
-            return nil
-        }
-        
-        let systemName = "iOS"
-
-        let device = Device.current
-        let uiDevice = UIDevice()
-
-        var parameters: Parameters = [:]
-        
-        var deviceParameters: [String : Any] = [
-            "activeCPUs": Sysctl.activeCPUs,
-            "hostname": Sysctl.hostName,
-            "model": Sysctl.machine,
-            "machine": Sysctl.model,
-            "osRelease": Sysctl.osRelease,
-            "osType": Sysctl.osType,
-            "osVersion": Sysctl.osVersion,
-            "version": Sysctl.version,
-            "description": device.description,
-            "screenBrightness": device.screenBrightness,
-            "screenDiagonalLength": device.diagonal,
-            "totalDiskSpace": DiskStatus.totalDiskSpace,
-            "identifierForVendor": uiDevice.identifierForVendor?.uuidString ?? "",
-            "system_name": systemName
-            ]
-        
-        if let batteryLevel = device.batteryLevel {
-            deviceParameters.updateValue(batteryLevel, forKey: "batteryLevel")
-        }
-        
-        if let localizedModel = device.localizedModel {
-            deviceParameters.updateValue(localizedModel, forKey: "localizedModel")
-        }
-        
-        if let deviceModel = device.model {
-            deviceParameters.updateValue(deviceModel, forKey: "deviceModel")
-        }
-        
-        if let name = device.name {
-            deviceParameters.updateValue(name, forKey: "name")
-        }
-        
-        if let screenPPI = device.ppi {
-            deviceParameters.updateValue(screenPPI, forKey: "screenPPI")
-        }
-        
-        if let systemOS = device.systemName {
-            deviceParameters.updateValue(systemOS, forKey: "systemOS")
-        }
-        
-        if let systemVersion = device.systemVersion {
-            deviceParameters.updateValue(systemVersion, forKey: "systemVersion")
-        }
-        
-        parameters.updateValue(deviceParameters, forKey: "device")
-
-        defer {
-            print("Parameters: °\(parameters)")
-        }
-
-        if let trustID = trustIDManager.getTrustID() {
-            parameters.updateValue(trustID, forKey: "trust_id")
-        }
-
-        if let identityInfo = identityInfo {
-            var identity = ["dni": identityInfo.dni]
-
-            if let name = identityInfo.name {
-                identity.updateValue(name, forKey: "name")
-            }
-            
-            if let lastname = identityInfo.lastname {
-                identity.updateValue(lastname, forKey: "lastname")
-            }
-            
-            if let email = identityInfo.email {
-                identity.updateValue(email, forKey: "email")
-            }
-            
-            if let phone = identityInfo.phone {
-                identity.updateValue(phone, forKey: "phone")
-            }
-            
-            parameters.updateValue(identity, forKey: "identity")
-        }
-        
-        guard
-            let serviceSubscriberCellularProviders = networkInfo.serviceSubscriberCellularProviders,
-            !serviceSubscriberCellularProviders.isEmpty,
-            let carrierKey =  serviceSubscriberCellularProviders.keys.first,
-            let carrier = serviceSubscriberCellularProviders[carrierKey] else {
-                return parameters
-        }
-        
-        let carrierInfo = [
-            [
-                "carrierName": carrier.carrierName ?? "",
-                "mobileCountryCode": carrier.mobileCountryCode ?? "",
-                "mobileNetworkCode": carrier.mobileNetworkCode ?? "",
-                "ISOCountryCode": carrier.isoCountryCode ?? "",
-                "allowsVOIP": carrier.allowsVOIP ? "YES" : "NO"
-            ]
-        ]
-        
-        parameters.updateValue(carrierInfo, forKey: "sim")
-        
-        return parameters
-    }
-}*/

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3720DC27226FBC7200C00B99 /* ClientCredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720DC26226FBC7200C00B99 /* ClientCredentialsManager.swift */; };
+		3720DC732270C37100C00B99 /* Responses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720DC722270C37100C00B99 /* Responses.swift */; };
 		37269AD62134B97600AD949B /* TrustDeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37269AD52134B97600AD949B /* TrustDeviceInfo.swift */; };
 		375FDF3A226E1B0F00C1935F /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375FDF39226E1B0F00C1935F /* API.swift */; };
 		375FDF3C226E1B1D00C1935F /* APIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375FDF3B226E1B1D00C1935F /* APIRouter.swift */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3720DC26226FBC7200C00B99 /* ClientCredentialsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCredentialsManager.swift; sourceTree = "<group>"; };
+		3720DC722270C37100C00B99 /* Responses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Responses.swift; sourceTree = "<group>"; };
 		37269AD52134B97600AD949B /* TrustDeviceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustDeviceInfo.swift; sourceTree = "<group>"; };
 		375FDF39226E1B0F00C1935F /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		375FDF3B226E1B1D00C1935F /* APIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRouter.swift; sourceTree = "<group>"; };
@@ -62,12 +66,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3720DC742270EEC600C00B99 /* DeviceInfo */ = {
+			isa = PBXGroup;
+			children = (
+				378C8D0A21C972750069AB16 /* DiskStatus.swift */,
+				378C8D0C21C973A90069AB16 /* Sysctl.swift */,
+			);
+			path = DeviceInfo;
+			sourceTree = "<group>";
+		};
 		375FDF3D226E1D1200C1935F /* Network */ = {
 			isa = PBXGroup;
 			children = (
 				375FDF39226E1B0F00C1935F /* API.swift */,
 				375FDF3B226E1B1D00C1935F /* APIRouter.swift */,
 				375FDF41226E3C2900C1935F /* Parameters.swift */,
+				3720DC722270C37100C00B99 /* Responses.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -84,6 +98,7 @@
 		375FDF45226E557A00C1935F /* Local */ = {
 			isa = PBXGroup;
 			children = (
+				3720DC26226FBC7200C00B99 /* ClientCredentialsManager.swift */,
 				375FDF3E226E294B00C1935F /* TrustIDManager.swift */,
 			);
 			path = Local;
@@ -100,9 +115,8 @@
 		3770C46D2256A181001E5A18 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				378C8D0A21C972750069AB16 /* DiskStatus.swift */,
 				378C8D1021D3B47C0069AB16 /* Extensions.swift */,
-				378C8D0C21C973A90069AB16 /* Sysctl.swift */,
+				3720DC742270EEC600C00B99 /* DeviceInfo */,
 				3770C46E2256A2CA001E5A18 /* KeychainWrapper */,
 			);
 			path = Utils;
@@ -265,6 +279,8 @@
 				375FDF44226E4AFD00C1935F /* APIManager.swift in Sources */,
 				37269AD62134B97600AD949B /* TrustDeviceInfo.swift in Sources */,
 				375FDF42226E3C2900C1935F /* Parameters.swift in Sources */,
+				3720DC27226FBC7200C00B99 /* ClientCredentialsManager.swift in Sources */,
+				3720DC732270C37100C00B99 /* Responses.swift in Sources */,
 				375FDF3C226E1B1D00C1935F /* APIRouter.swift in Sources */,
 				375FDF3F226E294B00C1935F /* TrustIDManager.swift in Sources */,
 				378C8D0D21C973A90069AB16 /* Sysctl.swift in Sources */,
