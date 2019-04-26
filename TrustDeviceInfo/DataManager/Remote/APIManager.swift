@@ -64,7 +64,7 @@ class APIManager: APIManagerProtocol {
     func sendDeviceInfo(with parameters: DeviceInfoParameters) {
         API.call(
             responseDataType: TrustID.self,
-            resource: .clientCredentials(parameters: parameters),
+            resource: .sendDeviceInfo(parameters: parameters),
             onResponse: {
                 [weak self] response in
                 guard let self = self else {return}

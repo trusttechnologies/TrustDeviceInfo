@@ -33,13 +33,12 @@ class API {
 extension API {
     // MARK: - handle(httpResponse)
     static func handle(httpResponse: HTTPURLResponse?, onExpiredAuthToken: CompletionHandler) {
-        guard
-            let httpResponse = httpResponse,
-            let statusCode = StatusCode(rawValue: httpResponse.statusCode) else {
-                return
-        }
+        guard let httpResponse = httpResponse else {return}
         
         print("handle() httpResponse.statusCode: \(httpResponse.statusCode)")
+        
+        guard let statusCode = StatusCode(rawValue: httpResponse.statusCode) else {return}
+
         print("handle() statusCode: \(statusCode)")
         
         switch statusCode {

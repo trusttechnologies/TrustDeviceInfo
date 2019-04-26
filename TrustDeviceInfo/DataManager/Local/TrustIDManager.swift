@@ -38,19 +38,23 @@ class TrustIDManager: TrustIDManagerProtocol {
     }
     
     func save(trustID: String) {
+        var finalSavedTrustID = trustID
+
         if !hasTrustIDBeenSaved() {
             if let savedTrustID = KeychainWrapper.standard.string(forKey: trustIDKey) {
                 KeychainWrapper.standard.set(savedTrustID, forKey: deviceKey)
+                finalSavedTrustID = savedTrustID
                 KeychainWrapper.standard.removeObject(forKey: trustIDKey)
             } else if let savedTrustID = KeychainWrapper.standard.string(forKey: oldDeviceKey) {
                 KeychainWrapper.standard.set(savedTrustID, forKey: deviceKey)
+                finalSavedTrustID = savedTrustID
                 KeychainWrapper.standard.removeObject(forKey: oldDeviceKey)
             } else {
                 KeychainWrapper.standard.set(trustID, forKey: deviceKey)
             }
         }
 
-        managerOutput?.onTrustIDSaved(savedTrustID: trustID)
+        managerOutput?.onTrustIDSaved(savedTrustID: finalSavedTrustID)
     }
     
     func removeTrustID() {

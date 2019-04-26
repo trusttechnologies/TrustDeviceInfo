@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.summary      = "Small library that allows the user to gather information about the device in use. Developed by Jumpitt Labs."
   s.requires_arc = true
 
-  s.version      = "0.3.11"
+  s.version      = "0.3.12"
 
   s.license      = { :type => "MIT", :file => "LICENSE" }
 
