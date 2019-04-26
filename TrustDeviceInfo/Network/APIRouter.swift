@@ -83,7 +83,12 @@ enum APIRouter: URLRequestConvertible {
                 let clientCredentials = clientCredentialsManager.getClientCredentials(),
                 let tokenType = clientCredentials.tokenType,
                 let accessToken = clientCredentials.accessToken {
-                urlRequest.addValue("\(tokenType) \(accessToken)", forHTTPHeaderField: "Authorization")
+                
+                let authorizationHeaderValue = "\(tokenType) \(accessToken)"
+                
+                print(authorizationHeaderValue)
+                
+                urlRequest.addValue(authorizationHeaderValue, forHTTPHeaderField: "Authorization")
             }
         default: break
         }
