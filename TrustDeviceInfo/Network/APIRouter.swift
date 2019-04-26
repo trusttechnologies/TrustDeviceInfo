@@ -68,6 +68,11 @@ enum APIRouter: URLRequestConvertible {
         
         var urlRequest = URLRequest(url: url.appendingPathComponent(path))
         
+        defer {
+            print("urlRequest: \(urlRequest)")
+            print("urlRequest.allHTTPHeaderFields: \(String(describing: urlRequest.allHTTPHeaderFields))")
+        }
+        
         urlRequest.httpMethod = method.rawValue
         
         switch self {

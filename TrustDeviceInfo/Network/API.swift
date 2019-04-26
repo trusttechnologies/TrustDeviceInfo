@@ -38,6 +38,10 @@ extension API {
             let statusCode = StatusCode(rawValue: httpResponse.statusCode) else {
                 return
         }
+        
+        print("handle() httpResponse.statusCode: \(httpResponse.statusCode)")
+        print("handle() statusCode: \(statusCode)")
+        
         switch statusCode {
         case .invalidToken:
             guard let onExpiredAuthToken = onExpiredAuthToken else {return}

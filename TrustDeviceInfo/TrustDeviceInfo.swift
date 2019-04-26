@@ -201,33 +201,6 @@ extension TrustDeviceInfo {
 // MARK: - Outputs Protocols
 // MARK: - APIManagerOutputProtocol
 extension TrustDeviceInfo: APIManagerOutputProtocol {
-    func onSetAppStateResponse() {}
-    func onSetAppStateSuccess() {}
-    func onSetAppStateFailure() {}
-    
-    func onSendDeviceInfoResponse(response: DataResponse<TrustID>) {
-        let httpResponse = response.response
-        
-        trustDeviceInfoDelegate?.onSendDeviceInfoResponse(status: getResponseStatus(response: httpResponse))
-        sendDeviceInfoCompletionHandler?(getResponseStatus(response: httpResponse))
-    }
-
-    func onSendDeviceInfoSuccess(responseData: TrustID) {
-        guard responseData.status else {
-            return
-        }
-
-        guard let trustID = responseData.trustID else {
-            print("No TrustID")
-            return
-        }
-
-        print("TrustID: \(trustID)")
-        trustIDManager.save(trustID: trustID)
-    }
-    
-    func onSendDeviceInfoFailure() {}
-    
     func onClientCredentialsResponse() {}
     
     func onClientCredentialsSuccess(responseData: ClientCredentials) {
@@ -235,6 +208,33 @@ extension TrustDeviceInfo: APIManagerOutputProtocol {
     }
     
     func onClientCredentialsFailure() {}
+    
+    func onSendDeviceInfoResponse(response: DataResponse<TrustID>) {
+        let httpResponse = response.response
+        
+        trustDeviceInfoDelegate?.onSendDeviceInfoResponse(status: getResponseStatus(response: httpResponse))
+        sendDeviceInfoCompletionHandler?(getResponseStatus(response: httpResponse))
+    }
+    
+    func onSendDeviceInfoSuccess(responseData: TrustID) {
+        guard responseData.status else {
+            return
+        }
+        
+        guard let trustID = responseData.trustID else {
+            print("No TrustID")
+            return
+        }
+        
+        print("TrustID: \(trustID)")
+        trustIDManager.save(trustID: trustID)
+    }
+    
+    func onSendDeviceInfoFailure() {}
+    
+    func onSetAppStateResponse() {}
+    func onSetAppStateSuccess() {}
+    func onSetAppStateFailure() {}
     
     func onRegisterFirebaseTokenResponse() {}
     
@@ -248,8 +248,8 @@ extension TrustDeviceInfo: APIManagerOutputProtocol {
 // MARK: - ClientCredentialsDataManagerOutputProtocol
 extension TrustDeviceInfo: ClientCredentialsManagerOutputProtocol {
     func onClientCredentialsSaved(savedClientCredentials: ClientCredentials) {
-        sendDeviceInfo()
         trustDeviceInfoDelegate?.onClientCredentialsSaved(savedClientCredentials: savedClientCredentials)
+        sendDeviceInfo()
     }
 }
 

@@ -112,7 +112,7 @@ struct DeviceInfoParameters: Parameterizable {
         return TrustIDManager()
     }
 
-    var asParameters: Parameters {
+    public var asParameters: Parameters {
         let systemName = "iOS"
         let device = Device.current
         let uiDevice = UIDevice()
