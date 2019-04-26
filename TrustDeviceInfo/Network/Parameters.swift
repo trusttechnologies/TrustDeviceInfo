@@ -72,22 +72,21 @@ struct AppStateParameters: Parameterizable {
 
 // MARK: - CreateAuditParameters
 public struct CreateAuditParameters: Parameterizable {
-    public var auditType: String?
-    public var platform: String?
-    public var application: String?
-    public var source: Source?
-    public var transaction: Transaction?
-    
-    public var asParameters: Parameters {
-        guard
-            let auditType = auditType,
-            let platform = platform,
-            let application = application,
-            let source = source,
-            let transaction = transaction else {
-                return [:]
-        }
+    public var auditType: String
+    public var platform: String
+    public var application: String
+    public var source: Source
+    public var transaction: Transaction
 
+    public init(auditType: String, platform: String, application: String, source: Source, transaction: Transaction) {
+        self.auditType = auditType
+        self.platform = platform
+        self.application = application
+        self.source = source
+        self.transaction = transaction
+    }
+
+    public var asParameters: Parameters {
         return [
             "type_audit": auditType,
             "platform": platform,
@@ -98,6 +97,7 @@ public struct CreateAuditParameters: Parameterizable {
     }
 }
 
+// MARK: - Source
 public struct Source: Parameterizable {
     private var trustID: String? {
         return trustIDManager.getTrustID()
@@ -107,24 +107,26 @@ public struct Source: Parameterizable {
         return TrustIDManager()
     }
 
-    public var appName: String?
-    public var bundleID: String?
-    public var latitude: String?
-    public var longitude: String?
-    public var connectionType: String?
-    public var connectionName: String?
-    public var appVersion: String?
+    public var appName: String
+    public var bundleID: String
+    public var latitude: String
+    public var longitude: String
+    public var connectionType: String
+    public var connectionName: String
+    public var appVersion: String
+    
+    public init(appName: String, bundleID: String, latitude: String, longitude: String, connectionType: String, connectionName: String, appVersion: String) {
+        self.appName = appName
+        self.bundleID = bundleID
+        self.latitude = latitude
+        self.longitude = longitude
+        self.connectionType = connectionType
+        self.connectionName = connectionName
+        self.appVersion = appVersion
+    }
 
     public var asParameters: Parameters {
-        guard
-        let trustID = trustID,
-        let appName = appName,
-        let bundleID = bundleID,
-        let latitude = latitude,
-        let longitude = longitude,
-        let connectionType = connectionType,
-        let connectionName = connectionName,
-        let appVersion = appVersion else {return [:]}
+        guard let trustID = trustID else {return [:]}
         
         let device = Device.current
         
@@ -144,21 +146,23 @@ public struct Source: Parameterizable {
     }
 }
 
+// MARK: - Transaction
 public struct Transaction: Parameterizable {
-    public var type: String?
-    public var result: String?
-    public var timestamp: String?
-    public var method: String?
-    public var operation: String?
+    public var type: String
+    public var result: String
+    public var timestamp: String
+    public var method: String
+    public var operation: String
+    
+    public init(type: String, result: String, timestamp: String, method: String, operation: String) {
+        self.type = type
+        self.result = result
+        self.timestamp = timestamp
+        self.method = method
+        self.operation = operation
+    }
 
     public var asParameters: Parameters {
-        guard
-            let type = type,
-            let result = result,
-            let timestamp = timestamp,
-            let method = method,
-            let operation = operation else {return [:]}
-
         return [
             "type": type,
             "result": result,
