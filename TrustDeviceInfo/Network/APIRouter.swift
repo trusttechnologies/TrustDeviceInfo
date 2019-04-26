@@ -14,6 +14,7 @@ enum APIRouter: URLRequestConvertible {
     case sendDeviceInfo(parameters: Parameterizable)
     case setAppState(parameters: Parameterizable)
     case registerFirebaseToken(parameters: Parameterizable)
+    case createAudit(parameters: Parameterizable)
 
     var path: String {
         switch self {
@@ -25,12 +26,14 @@ enum APIRouter: URLRequestConvertible {
             return "/company\(API.apiVersion)/app/state"
         case .registerFirebaseToken:
             return "/notifications/device/register"
+        case .createAudit:
+            return "/audit\(API.apiVersion)/audit"
         }
     }
 
     var method: HTTPMethod {
         switch self {
-        case .clientCredentials, .sendDeviceInfo, .setAppState, .registerFirebaseToken:
+        case .clientCredentials, .sendDeviceInfo, .setAppState, .registerFirebaseToken, .createAudit:
             return .post
         }
     }
@@ -45,6 +48,8 @@ enum APIRouter: URLRequestConvertible {
             return parameters.asParameters
         case .registerFirebaseToken(let parameters):
             return parameters.asParameters
+        case .createAudit(let parameters):
+            return parameters.asParameters
         }
     }
 
@@ -58,7 +63,7 @@ enum APIRouter: URLRequestConvertible {
         switch self {
         case .clientCredentials:
             baseURLAsString = API.clientCredentialsBaseURL
-        case .sendDeviceInfo, .setAppState, .registerFirebaseToken:
+        case .sendDeviceInfo, .setAppState, .registerFirebaseToken, .createAudit:
             baseURLAsString = API.baseURL
         }
         
@@ -76,7 +81,7 @@ enum APIRouter: URLRequestConvertible {
         urlRequest.httpMethod = method.rawValue
         
         switch self {
-        case .sendDeviceInfo, .setAppState, .registerFirebaseToken:
+        case .sendDeviceInfo, .setAppState, .registerFirebaseToken, .createAudit:
             let clientCredentialsManager = ClientCredentialsManager()
             
             if
@@ -94,7 +99,7 @@ enum APIRouter: URLRequestConvertible {
         }
 
         switch self {
-        case .clientCredentials, .sendDeviceInfo, .setAppState, .registerFirebaseToken:
+        case .clientCredentials, .sendDeviceInfo, .setAppState, .registerFirebaseToken, .createAudit:
             return try JSONEncoding.default.encode(urlRequest, with: parameters)
         }
     }

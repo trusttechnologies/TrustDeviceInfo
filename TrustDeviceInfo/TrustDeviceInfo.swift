@@ -20,6 +20,9 @@ public protocol TrustDeviceInfoDelegate: AnyObject {
     func onTrustIDSaved(savedTrustID: String)
     func onRegisterFirebaseTokenSuccess(responseData: RegisterFirebaseTokenResponse)
     func onSendDeviceInfoResponse(status: ResponseStatus)
+    func onCreateAuditResponse()
+    func onCreateAuditSuccess(responseData: CreateAuditResponse)
+    func onCreateAuditFailure()
 }
 
 // MARK: - TrustDeviceInfo
@@ -186,6 +189,10 @@ extension TrustDeviceInfo {
         apiManager.registerFirebaseToken(with: parameters)
     }
     
+    public func createAudit(with parameters: CreateAuditParameters) {
+        apiManager.createAudit(with: parameters)
+    }
+    
     public func hasTrustIDBeenSaved() -> Bool {
         return getTrustID() != nil
     }
@@ -243,6 +250,18 @@ extension TrustDeviceInfo: APIManagerOutputProtocol {
     }
     
     func onRegisterFirebaseTokenFailure() {}
+
+    func onCreateAuditResponse() {
+        trustDeviceInfoDelegate?.onCreateAuditResponse()
+    }
+    
+    func onCreateAuditSuccess(responseData: CreateAuditResponse) {
+        trustDeviceInfoDelegate?.onCreateAuditSuccess(responseData: responseData)
+    }
+    
+    func onCreateAuditFailure() {
+        trustDeviceInfoDelegate?.onCreateAuditFailure()
+    }
 }
 
 // MARK: - ClientCredentialsDataManagerOutputProtocol

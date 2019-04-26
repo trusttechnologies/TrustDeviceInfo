@@ -15,6 +15,7 @@ typealias SuccessHandler<T> = ((T)-> Void)?
 // MARK: - App Strings
 extension String {
     static let empty = ""
+    static let zero = "0"
     static let appLocale = "es_CL"
     static let yyyyMMddHHmmss = "yyyy-MM-dd HH:mm:ss"
 }
@@ -32,6 +33,10 @@ extension Bundle {
     var displayName: String? {
         return object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
             object(forInfoDictionaryKey: "CFBundleName") as? String
+    }
+    
+    var appVersion: String {
+        return "\(versionNumber ?? .zero).\(buildNumber ?? .zero)"
     }
 }
 

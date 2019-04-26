@@ -70,6 +70,105 @@ struct AppStateParameters: Parameterizable {
     }
 }
 
+// MARK: - CreateAuditParameters
+public struct CreateAuditParameters: Parameterizable {
+    public var auditType: String?
+    public var platform: String?
+    public var application: String?
+    public var source: Source?
+    public var transaction: Transaction?
+    
+    public var asParameters: Parameters {
+        guard
+            let auditType = auditType,
+            let platform = platform,
+            let application = application,
+            let source = source,
+            let transaction = transaction else {
+                return [:]
+        }
+
+        return [
+            "type_audit": auditType,
+            "platform": platform,
+            "application": application,
+            "source": source.asParameters,
+            "transaction": transaction.asParameters
+        ]
+    }
+}
+
+public struct Source: Parameterizable {
+    private var trustID: String? {
+        return trustIDManager.getTrustID()
+    }
+
+    private var trustIDManager: TrustIDManagerProtocol {
+        return TrustIDManager()
+    }
+
+    public var appName: String?
+    public var bundleID: String?
+    public var latitude: String?
+    public var longitude: String?
+    public var connectionType: String?
+    public var connectionName: String?
+    public var appVersion: String?
+
+    public var asParameters: Parameters {
+        guard
+        let trustID = trustID,
+        let appName = appName,
+        let bundleID = bundleID,
+        let latitude = latitude,
+        let longitude = longitude,
+        let connectionType = connectionType,
+        let connectionName = connectionName,
+        let appVersion = appVersion else {return [:]}
+        
+        let device = Device.current
+        
+        return [
+            "trust_id": trustID,
+            "app_name": appName,
+            "bundle_id": bundleID,
+            "os": "IOS",
+            "os_version": device.systemVersion ?? .zero,
+            "device_name": Sysctl.model,
+            "latGeo": latitude,
+            "lonGeo": longitude,
+            "connection_type": connectionType,
+            "connection_name": connectionName,
+            "version_app": appVersion
+        ]
+    }
+}
+
+public struct Transaction: Parameterizable {
+    public var type: String?
+    public var result: String?
+    public var timestamp: String?
+    public var method: String?
+    public var operation: String?
+
+    public var asParameters: Parameters {
+        guard
+            let type = type,
+            let result = result,
+            let timestamp = timestamp,
+            let method = method,
+            let operation = operation else {return [:]}
+
+        return [
+            "type": type,
+            "result": result,
+            "timestamp": timestamp,
+            "method": method,
+            "operation": operation
+        ]
+    }
+}
+
 // MARK: - RegisterFirebaseTokenParameters
 struct RegisterFirebaseTokenParameters: Parameterizable {
     var firebaseToken: String?

@@ -56,3 +56,18 @@ public class RegisterFirebaseTokenResponse: Mappable, CustomStringConvertible {
         message <- map["message"]
     }
 }
+
+// MARK: - CreateAuditResponse
+public class CreateAuditResponse: Mappable, CustomStringConvertible {
+    var status: String?
+    var message: String?
+
+    public required convenience init?(map: Map) {
+        self.init()
+    }
+
+    public func mapping(map: Map) {
+        status <- map["status"]
+        message <- map["message"]
+    }
+}

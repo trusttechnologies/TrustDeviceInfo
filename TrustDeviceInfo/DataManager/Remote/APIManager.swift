@@ -16,6 +16,7 @@ protocol APIManagerProtocol: AnyObject {
     func sendDeviceInfo(with parameters: DeviceInfoParameters)
     func setAppState(with parameters: AppStateParameters)
     func registerFirebaseToken(with parameters: RegisterFirebaseTokenParameters)
+    func createAudit(with parameters: CreateAuditParameters)
 }
 
 // MARK: - APIManagerOutputProtocol
@@ -35,7 +36,13 @@ protocol APIManagerOutputProtocol: AnyObject {
     func onRegisterFirebaseTokenResponse()
     func onRegisterFirebaseTokenSuccess(responseData: RegisterFirebaseTokenResponse)
     func onRegisterFirebaseTokenFailure()
+    
+    func onCreateAuditResponse()
+    func onCreateAuditSuccess(responseData: CreateAuditResponse)
+    func onCreateAuditFailure()
 }
+
+
 
 // MARK: - APIManager
 class APIManager: APIManagerProtocol {
@@ -116,6 +123,26 @@ class APIManager: APIManagerProtocol {
                 [weak self] in
                 guard let self = self else {return}
                 self.managerOutput?.onRegisterFirebaseTokenFailure()
+            }
+        )
+    }
+    
+    func createAudit(with parameters: CreateAuditParameters) {
+        API.call(
+            responseDataType: CreateAuditResponse.self,
+            resource: .createAudit(parameters: parameters),
+            onResponse: {
+                [weak self] in
+                guard let self = self else {return}
+                self.managerOutput?.onCreateAuditResponse()
+            }, onSuccess: {
+                [weak self] responseData in
+                guard let self = self else {return}
+                self.managerOutput?.onCreateAuditSuccess(responseData: responseData)
+            }, onFailure: {
+                [weak self] in
+                guard let self = self else {return}
+                self.managerOutput?.onCreateAuditFailure()
             }
         )
     }
