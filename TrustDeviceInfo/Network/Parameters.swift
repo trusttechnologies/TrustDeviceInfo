@@ -150,11 +150,11 @@ public struct Source: Parameterizable {
 public struct Transaction: Parameterizable {
     public var type: String
     public var result: String
-    public var timestamp: String
+    public var timestamp: Int
     public var method: String
     public var operation: String
     
-    public init(type: String, result: String, timestamp: String, method: String, operation: String) {
+    public init(type: String, result: String, timestamp: Int, method: String, operation: String) {
         self.type = type
         self.result = result
         self.timestamp = timestamp
