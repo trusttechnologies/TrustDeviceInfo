@@ -54,10 +54,6 @@ enum APIRouter: URLRequestConvertible {
     }
 
     func asURLRequest() throws -> URLRequest {
-        defer {
-            print("Parameters: \(parameters)")
-        }
-        
         var baseURLAsString: String = .empty
         
         switch self {
@@ -76,6 +72,7 @@ enum APIRouter: URLRequestConvertible {
         defer {
             print("urlRequest: \(urlRequest)")
             print("urlRequest.allHTTPHeaderFields: \(String(describing: urlRequest.allHTTPHeaderFields))")
+            print("Parameters: \(parameters)")
         }
         
         urlRequest.httpMethod = method.rawValue
