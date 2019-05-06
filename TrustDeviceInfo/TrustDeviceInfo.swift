@@ -176,33 +176,37 @@ extension TrustDeviceInfo {
         
         sendDeviceInfoCompletionHandler = completionHandler
     }
-    
+
     public func setAppState(dni: String, bundleID: String) {
         let parameters = AppStateParameters(dni: dni, bundleID: bundleID)
-        
+
         apiManager.setAppState(with: parameters)
     }
 
     public func registerFirebaseToken(firebaseToken: String, bundleID: String) {
         let parameters = RegisterFirebaseTokenParameters(firebaseToken: firebaseToken, bundleID: bundleID)
-        
+
         apiManager.registerFirebaseToken(with: parameters)
     }
-    
+
     public func createAudit(with parameters: CreateAuditParameters) {
         apiManager.createAudit(with: parameters)
     }
-    
+
     public func hasTrustIDBeenSaved() -> Bool {
         return getTrustID() != nil
     }
-    
+
     public func getTrustID() -> String? {
         return trustIDManager.getTrustID()
     }
-    
+
     public func getClientCredentials() -> ClientCredentials? {
         return clientCredentialsManager.getClientCredentials()
+    }
+
+    public func deleteTrustID() -> Bool {
+        return trustIDManager.removeTrustID()
     }
 }
 // MARK: - Outputs Protocols

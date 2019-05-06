@@ -13,7 +13,7 @@ protocol TrustIDManagerProtocol: AnyObject {
     func hasTrustIDBeenSaved() -> Bool
     func getTrustID() -> String?
     func save(trustID: String)
-    func removeTrustID()
+    func removeTrustID() -> Bool
 }
 
 // MARK: - TrustIDManagerOutputProtocol
@@ -56,8 +56,8 @@ class TrustIDManager: TrustIDManagerProtocol {
 
         managerOutput?.onTrustIDSaved(savedTrustID: finalSavedTrustID)
     }
-    
-    func removeTrustID() {
-        KeychainWrapper.standard.removeObject(forKey: deviceKey)
+
+    func removeTrustID() -> Bool {
+        return KeychainWrapper.standard.removeObject(forKey: deviceKey)
     }
 }
