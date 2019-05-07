@@ -27,7 +27,6 @@ public protocol TrustDeviceInfoDelegate: AnyObject {
 
 // MARK: - TrustDeviceInfo
 public class TrustDeviceInfo {
-    private let trustIDKey = "trustid"
     private var sendDeviceInfoOnEnabled: Bool = false
     
     private var enable = false {
@@ -163,7 +162,10 @@ extension TrustDeviceInfo {
 
 // MARK: - Public Methods
 extension TrustDeviceInfo {
-    public func createClientCredentials(clientID: String = "adcc11078bee4ba2d7880a48c4bed02758a5f5328276b08fa14493306f1e9efb", clientSecret: String = "1f647aab37f4a7d7a0da408015437e7a963daca43da06a7789608c319c2930bd") {
+    public func createClientCredentials(
+        clientID: String = "adcc11078bee4ba2d7880a48c4bed02758a5f5328276b08fa14493306f1e9efb",
+        clientSecret: String = "1f647aab37f4a7d7a0da408015437e7a963daca43da06a7789608c319c2930bd") {
+        
         let parameters = ClientCredentialsParameters(clientID: clientID, clientSecret: clientSecret)
 
         apiManager.getClientCredentials(with: parameters)
@@ -194,19 +196,19 @@ extension TrustDeviceInfo {
     }
 
     public func hasTrustIDBeenSaved() -> Bool {
-        return getTrustID() != nil
+        return trustIDManager.hasTrustIDBeenSaved()
     }
 
     public func getTrustID() -> String? {
         return trustIDManager.getTrustID()
     }
+    
+    public func deleteTrustID() -> Bool {
+        return trustIDManager.removeTrustID()
+    }
 
     public func getClientCredentials() -> ClientCredentials? {
         return clientCredentialsManager.getClientCredentials()
-    }
-
-    public func deleteTrustID() -> Bool {
-        return trustIDManager.removeTrustID()
     }
 }
 // MARK: - Outputs Protocols
@@ -233,11 +235,11 @@ extension TrustDeviceInfo: APIManagerOutputProtocol {
         }
         
         guard let trustID = responseData.trustID else {
-            print("No TrustID")
+            print("onSendDeviceInfoSuccess: No TrustID")
             return
         }
         
-        print("TrustID: \(trustID)")
+        print("onSendDeviceInfoSuccess TrustID: \(trustID)")
         trustIDManager.save(trustID: trustID)
     }
     

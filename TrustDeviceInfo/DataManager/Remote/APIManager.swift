@@ -42,8 +42,6 @@ protocol APIManagerOutputProtocol: AnyObject {
     func onCreateAuditFailure()
 }
 
-
-
 // MARK: - APIManager
 class APIManager: APIManagerProtocol {
     weak var managerOutput: APIManagerOutputProtocol?

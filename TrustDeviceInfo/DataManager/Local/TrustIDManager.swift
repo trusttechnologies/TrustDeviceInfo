@@ -23,7 +23,7 @@ protocol TrustIDManagerOutputProtocol: AnyObject {
 
 // MARK: - TrustIDManager
 class TrustIDManager: TrustIDManagerProtocol {
-    private let trustIDKey = "trustid"
+    private let oldTrustIDKey = "trustid"
     private let oldDeviceKey = Sysctl.model
     private let deviceKey = "\(Sysctl.model)\(DiskStatus.totalDiskSpace)"
     
@@ -38,20 +38,12 @@ class TrustIDManager: TrustIDManagerProtocol {
     }
     
     func save(trustID: String) {
-        var finalSavedTrustID = trustID
-        
-        defer {
-            managerOutput?.onTrustIDSaved(savedTrustID: finalSavedTrustID)
-        }
-
         if !hasTrustIDBeenSaved() {
-            if let savedTrustID = KeychainWrapper.standard.string(forKey: trustIDKey) {
+            if let savedTrustID = KeychainWrapper.standard.string(forKey: oldTrustIDKey) {
                 KeychainWrapper.standard.set(savedTrustID, forKey: deviceKey)
-                finalSavedTrustID = savedTrustID
-                KeychainWrapper.standard.removeObject(forKey: trustIDKey)
+                KeychainWrapper.standard.removeObject(forKey: oldTrustIDKey)
             } else if let savedTrustID = KeychainWrapper.standard.string(forKey: oldDeviceKey) {
                 KeychainWrapper.standard.set(savedTrustID, forKey: deviceKey)
-                finalSavedTrustID = savedTrustID
                 KeychainWrapper.standard.removeObject(forKey: oldDeviceKey)
             } else {
                 KeychainWrapper.standard.set(trustID, forKey: deviceKey)
@@ -62,6 +54,10 @@ class TrustIDManager: TrustIDManagerProtocol {
                     KeychainWrapper.standard.set(trustID, forKey: deviceKey)
                 }
             }
+        }
+
+        if let trustID = getTrustID() {
+            managerOutput?.onTrustIDSaved(savedTrustID: trustID)
         }
     }
 
