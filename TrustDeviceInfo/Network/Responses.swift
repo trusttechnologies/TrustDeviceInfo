@@ -27,8 +27,8 @@ public class TrustID: Mappable, CustomStringConvertible {
 
 // MARK: - ClientCredentials
 public class ClientCredentials: Mappable, CustomStringConvertible {
-    var accessToken: String?
-    var tokenType: String?
+    public var accessToken: String?
+    public var tokenType: String?
 
     public required convenience init?(map: Map) {
         self.init()
