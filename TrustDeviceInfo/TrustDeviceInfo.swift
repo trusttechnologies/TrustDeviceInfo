@@ -34,9 +34,7 @@ public class TrustDeviceInfo {
             if enable && !oldValue {
                 setCarrierUpdateNotifier()
                 
-                guard sendDeviceInfoOnEnabled else {
-                    return
-                }
+                guard sendDeviceInfoOnEnabled else { return }
 
                 createClientCredentials()
             } else if !enable && oldValue {
@@ -54,17 +52,27 @@ public class TrustDeviceInfo {
     public static var shared: TrustDeviceInfo {
         return trustDeviceInfo
     }
+    
+    static var accessGroup: String {
+        return UserDefaults.standard.string(forKey: "accessGroup") ?? ""
+    }
+    
+    static var serviceName: String {
+        return UserDefaults.standard.string(forKey: "serviceName") ?? Bundle.main.bundleIdentifier ?? "SwiftKeychainWrapper"
+    }
 
     // MARK: - ClientCredentialsManager
     private lazy var clientCredentialsManager: ClientCredentialsManagerProtocol = {
-        let clientCredentialsDataManager = ClientCredentialsManager()
+        let clientCredentialsDataManager = ClientCredentialsManager(serviceName: TrustDeviceInfo.serviceName, accessGroup: TrustDeviceInfo.accessGroup)
+        
         clientCredentialsDataManager.managerOutput = self
         return clientCredentialsDataManager
     }()
     
     // MARK: - TrustIDManager
     private lazy var trustIDManager: TrustIDManagerProtocol = {
-        let trustIDManager = TrustIDManager()
+        let trustIDManager = TrustIDManager(serviceName: TrustDeviceInfo.serviceName, accessGroup: TrustDeviceInfo.accessGroup)
+        
         trustIDManager.managerOutput = self
         return trustIDManager
     }()
@@ -117,15 +125,11 @@ extension TrustDeviceInfo {
             DispatchQueue.main.async {
                 [weak self] in
 
-                guard let self = self else {
-                    return
-                }
+                guard let self = self else { return }
 
                 self.sendDeviceInfo()
 
-                guard let delegate = self.simInfoDelegate else {
-                    return
-                }
+                guard let delegate = self.simInfoDelegate else { return }
 
                 delegate.onCarrierInfoHasChanged(carrier: carrier)
             }
@@ -162,6 +166,11 @@ extension TrustDeviceInfo {
 
 // MARK: - Public Methods
 extension TrustDeviceInfo {
+    public func set(serviceName: String, accessGroup: String) {
+        UserDefaults.standard.set(serviceName, forKey: "serviceName")
+        UserDefaults.standard.set(accessGroup, forKey: "accessGroup")
+    }
+    
     public func createClientCredentials(
         clientID: String = "adcc11078bee4ba2d7880a48c4bed02758a5f5328276b08fa14493306f1e9efb",
         clientSecret: String = "1f647aab37f4a7d7a0da408015437e7a963daca43da06a7789608c319c2930bd") {

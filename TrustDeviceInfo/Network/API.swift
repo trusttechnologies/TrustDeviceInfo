@@ -68,7 +68,10 @@ extension API {
                     onSuccess: {
                         responseData in
                         
-                        let clientCredentialsManager = ClientCredentialsManager()
+                        let serviceName = TrustDeviceInfo.serviceName
+                        let accessGroup = TrustDeviceInfo.accessGroup
+                        
+                        let clientCredentialsManager = ClientCredentialsManager(serviceName: serviceName, accessGroup: accessGroup)
                         
                         clientCredentialsManager.save(clientCredentials: responseData)
                         
@@ -124,7 +127,10 @@ extension API {
                     onSuccess: {
                         responseData in
                         
-                        let clientCredentialsManager = ClientCredentialsManager()
+                        let serviceName = TrustDeviceInfo.serviceName
+                        let accessGroup = TrustDeviceInfo.accessGroup
+                        
+                        let clientCredentialsManager = ClientCredentialsManager(serviceName: serviceName, accessGroup: accessGroup)
                         
                         clientCredentialsManager.save(clientCredentials: responseData)
                         
@@ -180,7 +186,10 @@ extension API {
                     onSuccess: {
                         responseData in
                         
-                        let clientCredentialsManager = ClientCredentialsManager()
+                        let serviceName = TrustDeviceInfo.serviceName
+                        let accessGroup = TrustDeviceInfo.accessGroup
+                        
+                        let clientCredentialsManager = ClientCredentialsManager(serviceName: serviceName, accessGroup: accessGroup)
                         
                         clientCredentialsManager.save(clientCredentials: responseData)
                         

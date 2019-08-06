@@ -79,7 +79,11 @@ enum APIRouter: URLRequestConvertible {
         
         switch self {
         case .sendDeviceInfo, .setAppState, .registerFirebaseToken, .createAudit:
-            let clientCredentialsManager = ClientCredentialsManager()
+            
+            let serviceName = TrustDeviceInfo.serviceName
+            let accessGroup = TrustDeviceInfo.accessGroup
+            
+            let clientCredentialsManager = ClientCredentialsManager(serviceName: serviceName, accessGroup: accessGroup)
             
             if
                 let clientCredentials = clientCredentialsManager.getClientCredentials(),

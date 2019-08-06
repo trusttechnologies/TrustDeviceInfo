@@ -51,7 +51,10 @@ struct AppStateParameters: Parameterizable {
     }
 
     private var trustIDManager: TrustIDManagerProtocol {
-        return TrustIDManager()
+        let serviceName = TrustDeviceInfo.serviceName
+        let accessGroup = TrustDeviceInfo.accessGroup
+        
+        return TrustIDManager(serviceName: serviceName, accessGroup: accessGroup)
     }
     
     public var asParameters: Parameters {
@@ -104,7 +107,10 @@ public struct Source: Parameterizable {
     }
 
     private var trustIDManager: TrustIDManagerProtocol {
-        return TrustIDManager()
+        let serviceName = TrustDeviceInfo.serviceName
+        let accessGroup = TrustDeviceInfo.accessGroup
+        
+        return TrustIDManager(serviceName: serviceName, accessGroup: accessGroup)
     }
 
     public var appName: String
@@ -183,7 +189,10 @@ struct RegisterFirebaseTokenParameters: Parameterizable {
     }
     
     private var trustIDManager: TrustIDManagerProtocol {
-        return TrustIDManager()
+        let serviceName = TrustDeviceInfo.serviceName
+        let accessGroup = TrustDeviceInfo.accessGroup
+        
+        return TrustIDManager(serviceName: serviceName, accessGroup: accessGroup)
     }
     
     public var asParameters: Parameters {
@@ -212,7 +221,10 @@ struct DeviceInfoParameters: Parameterizable {
     }
     
     private var trustIDManager: TrustIDManagerProtocol {
-        return TrustIDManager()
+        let serviceName = TrustDeviceInfo.serviceName
+        let accessGroup = TrustDeviceInfo.accessGroup
+        
+        return TrustIDManager(serviceName: serviceName, accessGroup: accessGroup)
     }
 
     public var asParameters: Parameters {
@@ -221,7 +233,10 @@ struct DeviceInfoParameters: Parameterizable {
         let uiDevice = UIDevice()
         
         var trustIDManager: TrustIDManagerProtocol {
-            return TrustIDManager()
+            let serviceName = TrustDeviceInfo.serviceName
+            let accessGroup = TrustDeviceInfo.accessGroup
+            
+            return TrustIDManager(serviceName: serviceName, accessGroup: accessGroup)
         }
 
         var parameters: Parameters = [:]

@@ -23,22 +23,34 @@ protocol ClientCredentialsManagerOutputProtocol: AnyObject {
 // MARK: - ClientCredentialsManager
 class ClientCredentialsManager: ClientCredentialsManagerProtocol {
     weak var managerOutput: ClientCredentialsManagerOutputProtocol?
+    
+    var accessGroup: String
+    var serviceName: String
+    
+    var keychain: KeychainWrapper {
+        return KeychainWrapper(serviceName: serviceName, accessGroup: accessGroup)
+    }
+    
+    init(serviceName: String, accessGroup: String) {
+        self.serviceName = serviceName
+        self.accessGroup = accessGroup
+    }
 
     func save(clientCredentials: ClientCredentials) {
         guard
             let tokenType = clientCredentials.tokenType,
             let accessToken = clientCredentials.accessToken else {return}
 
-        KeychainWrapper.ClientCredentials.set(tokenType, forKey: .tokenType)
-        KeychainWrapper.ClientCredentials.set(accessToken, forKey: .accessToken)
+        keychain.set(tokenType, forKey: "tokenType")
+        keychain.set(accessToken, forKey: "accessToken")
 
         managerOutput?.onClientCredentialsSaved(savedClientCredentials: clientCredentials)
     }
 
     func getClientCredentials() -> ClientCredentials? {
         guard
-            let tokenType = KeychainWrapper.ClientCredentials.string(forKey: .tokenType),
-            let accessToken = KeychainWrapper.ClientCredentials.string(forKey: .accessToken) else {return nil}
+            let tokenType = keychain.string(forKey: "tokenType"),
+            let accessToken = keychain.string(forKey: "accessToken") else {return nil}
         
         let clientCredentials = ClientCredentials()
             
@@ -49,7 +61,7 @@ class ClientCredentialsManager: ClientCredentialsManagerProtocol {
     }
 
     func deleteClientCredentials() {
-        KeychainWrapper.ClientCredentials.remove(forKey: .accessToken)
-        KeychainWrapper.ClientCredentials.remove(forKey: .tokenType)
+        keychain.remove(key: "accessToken")
+        keychain.remove(key: "tokenType")
     }
 }

@@ -69,7 +69,7 @@ extension Date {
 }
 
 // MARK: - KeyNamespaceable
-protocol KeyNamespaceable {}
+/*protocol KeyNamespaceable {}
 
 extension KeyNamespaceable {
     static func namespace<T>(_ key: T) -> String where T: RawRepresentable {
@@ -107,7 +107,7 @@ extension KeychainWrapper {
             case tokenType
         }
     }
-}
+}*/
 
 // MARK: - Parameterizable
 protocol Parameterizable {

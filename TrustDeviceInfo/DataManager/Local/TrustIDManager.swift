@@ -27,6 +27,18 @@ class TrustIDManager: TrustIDManagerProtocol {
     private let oldDeviceKey = Sysctl.model
     private let deviceKey = "\(Sysctl.model)\(DiskStatus.totalDiskSpace)"
     
+    var serviceName: String
+    var accessGroup: String
+    
+    var keychain: KeychainWrapper {
+        return KeychainWrapper(serviceName: serviceName, accessGroup: accessGroup)
+    }
+    
+    init(serviceName: String, accessGroup: String) {
+        self.serviceName = serviceName
+        self.accessGroup = accessGroup
+    }
+    
     weak var managerOutput: TrustIDManagerOutputProtocol?
     
     func hasTrustIDBeenSaved() -> Bool {
@@ -34,24 +46,24 @@ class TrustIDManager: TrustIDManagerProtocol {
     }
     
     func getTrustID() -> String? {
-        return KeychainWrapper.standard.string(forKey: deviceKey)
+        return keychain.string(forKey: deviceKey)
     }
     
     func save(trustID: String) {
         if !hasTrustIDBeenSaved() {
-            if let savedTrustID = KeychainWrapper.standard.string(forKey: oldTrustIDKey) {
-                KeychainWrapper.standard.set(savedTrustID, forKey: deviceKey)
-                KeychainWrapper.standard.removeObject(forKey: oldTrustIDKey)
-            } else if let savedTrustID = KeychainWrapper.standard.string(forKey: oldDeviceKey) {
-                KeychainWrapper.standard.set(savedTrustID, forKey: deviceKey)
-                KeychainWrapper.standard.removeObject(forKey: oldDeviceKey)
+            if let savedTrustID = keychain.string(forKey: oldTrustIDKey) {
+                keychain.set(savedTrustID, forKey: deviceKey)
+                keychain.removeObject(forKey: oldTrustIDKey)
+            } else if let savedTrustID = keychain.string(forKey: oldDeviceKey) {
+                keychain.set(savedTrustID, forKey: deviceKey)
+                keychain.removeObject(forKey: oldDeviceKey)
             } else {
-                KeychainWrapper.standard.set(trustID, forKey: deviceKey)
+                keychain.set(trustID, forKey: deviceKey)
             }
         } else {
             if let savedTrustID = getTrustID() {
                 if !savedTrustID.elementsEqual(trustID) {
-                    KeychainWrapper.standard.set(trustID, forKey: deviceKey)
+                    keychain.set(trustID, forKey: deviceKey)
                 }
             }
         }
@@ -62,6 +74,6 @@ class TrustIDManager: TrustIDManagerProtocol {
     }
 
     func removeTrustID() -> Bool {
-        return KeychainWrapper.standard.removeObject(forKey: deviceKey)
+        return keychain.removeObject(forKey: deviceKey)
     }
 }

@@ -118,31 +118,33 @@ private let SecReturnAttributes: String = kSecReturnAttributes as String
 /// KeychainWrapper is a class to help make Keychain access in Swift more straightforward. It is designed to make accessing the Keychain services more like using NSUserDefaults, which is much more familiar to people.
 open class KeychainWrapper {
     
-    @available(*, deprecated: 2.2.1, message: "KeychainWrapper.defaultKeychainWrapper is deprecated, use KeychainWrapper.standard instead")
-    public static let defaultKeychainWrapper = KeychainWrapper.standard
+//    @available(*, deprecated: 2.2.1, message: "KeychainWrapper.defaultKeychainWrapper is deprecated, use KeychainWrapper.standard instead")
+//    public static let defaultKeychainWrapper = KeychainWrapper.standard
     
     /// Default keychain wrapper access
-    public static let standard = KeychainWrapper()
+    // public static let standard = KeychainWrapper()
     
     /// ServiceName is used for the kSecAttrService property to uniquely identify this keychain accessor. If no service name is specified, KeychainWrapper will default to using the bundleIdentifier.
     private (set) public var serviceName: String
     
     /// AccessGroup is used for the kSecAttrAccessGroup property to identify which Keychain Access Group this entry belongs to. This allows you to use the KeychainWrapper with shared keychain access between different applications.
-    private (set) public var accessGroup: String?
+    private (set) public var accessGroup: String
     
-    private static let defaultServiceName: String = {
-        return Bundle.main.bundleIdentifier ?? "SwiftKeychainWrapper"
-    }()
-    
-    private convenience init() {
-        self.init(serviceName: KeychainWrapper.defaultServiceName)
-    }
-    
+//    private static let defaultServiceName: String = {
+//        return Bundle.main.bundleIdentifier ?? "SwiftKeychainWrapper"
+//    }()
+//    private static let defaultAccesGroup: String = {
+//        return Bundle.main.bundleIdentifier ?? "P896AB2AMC.testTrustID.testTrustID"
+//    }()
+//    private convenience init() {
+//        self.init(serviceName: KeychainWrapper.defaultServiceName, accessGroup: KeychainWrapper.defaultAccesGroup)
+//    }
+
     /// Create a custom instance of KeychainWrapper with a custom Service Name and optional custom access group.
     ///
     /// - parameter serviceName: The ServiceName for this instance. Used to uniquely identify all keys stored using this keychain wrapper instance.
     /// - parameter accessGroup: Optional unique AccessGroup for this instance. Use a matching AccessGroup between applications to allow shared keychain access.
-    public init(serviceName: String, accessGroup: String? = nil) {
+    public init(serviceName: String, accessGroup: String) {
         self.serviceName = serviceName
         self.accessGroup = accessGroup
     }
@@ -194,9 +196,9 @@ open class KeychainWrapper {
             SecMatchLimit: kSecMatchLimitAll,
             ]
         
-        if let accessGroup = self.accessGroup {
+        //if let accessGroup = self.accessGroup {
             keychainQueryDictionary[SecAttrAccessGroup] = accessGroup
-        }
+        //}
         
         var result: AnyObject?
         let status = SecItemCopyMatching(keychainQueryDictionary as CFDictionary, &result)
@@ -427,9 +429,9 @@ open class KeychainWrapper {
         keychainQueryDictionary[SecAttrService] = serviceName
         
         // Set the keychain access group if defined
-        if let accessGroup = self.accessGroup {
+        //if let accessGroup = self.accessGroup {
             keychainQueryDictionary[SecAttrAccessGroup] = accessGroup
-        }
+        //}
         
         let status: OSStatus = SecItemDelete(keychainQueryDictionary as CFDictionary)
         
@@ -506,9 +508,9 @@ open class KeychainWrapper {
         }
         
         // Set the keychain access group if defined
-        if let accessGroup = self.accessGroup {
+        //if let accessGroup = self.accessGroup {
             keychainQueryDictionary[SecAttrAccessGroup] = accessGroup
-        }
+        //}
         
         // Uniquely identify the account who will be accessing the keychain
         let encodedIdentifier: Data? = key.data(using: String.Encoding.utf8)
