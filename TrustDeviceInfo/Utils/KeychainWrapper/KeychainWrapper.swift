@@ -133,9 +133,7 @@ open class KeychainWrapper {
 //    private static let defaultServiceName: String = {
 //        return Bundle.main.bundleIdentifier ?? "SwiftKeychainWrapper"
 //    }()
-//    private static let defaultAccesGroup: String = {
-//        return Bundle.main.bundleIdentifier ?? "P896AB2AMC.testTrustID.testTrustID"
-//    }()
+    
 //    private convenience init() {
 //        self.init(serviceName: KeychainWrapper.defaultServiceName, accessGroup: KeychainWrapper.defaultAccesGroup)
 //    }
