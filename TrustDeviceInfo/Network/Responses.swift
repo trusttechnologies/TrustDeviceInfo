@@ -13,7 +13,7 @@ public class TrustID: Mappable, CustomStringConvertible {
     var status = false
     var message: String?
     var trustID: String?
-
+    
     public required convenience init?(map: Map) {
         self.init()
     }
@@ -29,11 +29,11 @@ public class TrustID: Mappable, CustomStringConvertible {
 public class ClientCredentials: Mappable, CustomStringConvertible {
     public var accessToken: String?
     public var tokenType: String?
-
+    
     public required convenience init?(map: Map) {
         self.init()
     }
-
+    
     public func mapping(map: Map) {
         accessToken <- map["access_token"]
         tokenType <- map["token_type"]
@@ -53,21 +53,6 @@ public class RegisterFirebaseTokenResponse: Mappable, CustomStringConvertible {
     public func mapping(map: Map) {
         status <- map["status"]
         code <- map["code"]
-        message <- map["message"]
-    }
-}
-
-// MARK: - CreateAuditResponse
-public class CreateAuditResponse: Mappable, CustomStringConvertible {
-    var status: String?
-    var message: String?
-
-    public required convenience init?(map: Map) {
-        self.init()
-    }
-
-    public func mapping(map: Map) {
-        status <- map["status"]
         message <- map["message"]
     }
 }

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		3720DC27226FBC7200C00B99 /* ClientCredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720DC26226FBC7200C00B99 /* ClientCredentialsManager.swift */; };
 		3720DC732270C37100C00B99 /* Responses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720DC722270C37100C00B99 /* Responses.swift */; };
-		37269AD62134B97600AD949B /* TrustDeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37269AD52134B97600AD949B /* TrustDeviceInfo.swift */; };
 		375FDF3A226E1B0F00C1935F /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375FDF39226E1B0F00C1935F /* API.swift */; };
 		375FDF3C226E1B1D00C1935F /* APIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375FDF3B226E1B1D00C1935F /* APIRouter.swift */; };
 		375FDF3F226E294B00C1935F /* TrustIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375FDF3E226E294B00C1935F /* TrustIDManager.swift */; };
@@ -22,12 +21,12 @@
 		378C8D1321D3B7890069AB16 /* EventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C8D1221D3B7890069AB16 /* EventData.swift */; };
 		37A387062134B7F400DB87F7 /* TrustDeviceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 37A387042134B7F400DB87F7 /* TrustDeviceInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		38F22C00036E8815FE6BC901 /* Pods_TrustDeviceInfo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41871B023E2F33367CD3BBF9 /* Pods_TrustDeviceInfo.framework */; };
+		FEE2991823079CE8006DE4D5 /* Identify.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE2991723079CE8006DE4D5 /* Identify.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3720DC26226FBC7200C00B99 /* ClientCredentialsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCredentialsManager.swift; sourceTree = "<group>"; };
 		3720DC722270C37100C00B99 /* Responses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Responses.swift; sourceTree = "<group>"; };
-		37269AD52134B97600AD949B /* TrustDeviceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustDeviceInfo.swift; sourceTree = "<group>"; };
 		375FDF39226E1B0F00C1935F /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		375FDF3B226E1B1D00C1935F /* APIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRouter.swift; sourceTree = "<group>"; };
 		375FDF3E226E294B00C1935F /* TrustIDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustIDManager.swift; sourceTree = "<group>"; };
@@ -44,6 +43,7 @@
 		41871B023E2F33367CD3BBF9 /* Pods_TrustDeviceInfo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrustDeviceInfo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9411D820E4EE850627AD03CB /* Pods-TrustDeviceInfo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustDeviceInfo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrustDeviceInfo/Pods-TrustDeviceInfo.debug.xcconfig"; sourceTree = "<group>"; };
 		DAED780B5B11A6A8C032C88D /* Pods-TrustDeviceInfo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustDeviceInfo.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrustDeviceInfo/Pods-TrustDeviceInfo.release.xcconfig"; sourceTree = "<group>"; };
+		FEE2991723079CE8006DE4D5 /* Identify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identify.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,7 +154,7 @@
 				37A387042134B7F400DB87F7 /* TrustDeviceInfo.h */,
 				37A387052134B7F400DB87F7 /* Info.plist */,
 				378C8D1221D3B7890069AB16 /* EventData.swift */,
-				37269AD52134B97600AD949B /* TrustDeviceInfo.swift */,
+				FEE2991723079CE8006DE4D5 /* Identify.swift */,
 				375FDF40226E3AA500C1935F /* DataManager */,
 				375FDF3D226E1D1200C1935F /* Network */,
 				3770C46D2256A181001E5A18 /* Utils */,
@@ -278,7 +278,7 @@
 				378C8D1321D3B7890069AB16 /* EventData.swift in Sources */,
 				378C8D0F21C973E30069AB16 /* KeychainWrapper.swift in Sources */,
 				375FDF44226E4AFD00C1935F /* APIManager.swift in Sources */,
-				37269AD62134B97600AD949B /* TrustDeviceInfo.swift in Sources */,
+				FEE2991823079CE8006DE4D5 /* Identify.swift in Sources */,
 				375FDF42226E3C2900C1935F /* Parameters.swift in Sources */,
 				3720DC27226FBC7200C00B99 /* ClientCredentialsManager.swift in Sources */,
 				3720DC732270C37100C00B99 /* Responses.swift in Sources */,

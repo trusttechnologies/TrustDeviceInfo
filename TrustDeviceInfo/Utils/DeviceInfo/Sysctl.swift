@@ -6,6 +6,8 @@
 //  Copyright © 2018 Jumpitt Labs. All rights reserved.
 //
 
+import Foundation
+
 // MARK: - Sysctl
 struct Sysctl {
     enum Error: Swift.Error {

@@ -6,11 +6,11 @@ Pod::Spec.new do |s|
   s.summary      = "Small library that allows the user to gather information about the device in use. Developed by Jumpitt Labs."
   s.requires_arc = true
 
-  s.version      = "0.4.2"
+  s.version      = "1.0.0"
 
   s.license      = { :type => "MIT", :file => "LICENSE" }
 
-  s.author       = { "Diego Villouta Fredes" => "diegov17@gmail.com" }
+  s.author       = { "Kevin Torres" => "ktorres@jumpitt.com" }
   
   s.homepage     = "https://github.com/trusttechnologies/TrustDeviceInfo"
 

@@ -14,8 +14,7 @@ enum APIRouter: URLRequestConvertible {
     case sendDeviceInfo(parameters: Parameterizable)
     case setAppState(parameters: Parameterizable)
     case registerFirebaseToken(parameters: Parameterizable)
-    case createAudit(parameters: Parameterizable)
-
+    
     var path: String {
         switch self {
         case .clientCredentials:
@@ -26,18 +25,16 @@ enum APIRouter: URLRequestConvertible {
             return "/company\(API.apiVersion)/app/state"
         case .registerFirebaseToken:
             return "/notifications/device/register"
-        case .createAudit:
-            return "/audit\(API.apiVersion)/audit"
         }
     }
-
+    
     var method: HTTPMethod {
         switch self {
-        case .clientCredentials, .sendDeviceInfo, .setAppState, .registerFirebaseToken, .createAudit:
+        case .clientCredentials, .sendDeviceInfo, .setAppState, .registerFirebaseToken:
             return .post
         }
     }
-
+    
     var parameters: Parameters {
         switch self {
         case .clientCredentials(let parameters):
@@ -48,18 +45,16 @@ enum APIRouter: URLRequestConvertible {
             return parameters.asParameters
         case .registerFirebaseToken(let parameters):
             return parameters.asParameters
-        case .createAudit(let parameters):
-            return parameters.asParameters
         }
     }
-
+    
     func asURLRequest() throws -> URLRequest {
         var baseURLAsString: String = .empty
         
         switch self {
         case .clientCredentials:
             baseURLAsString = API.clientCredentialsBaseURL
-        case .sendDeviceInfo, .setAppState, .registerFirebaseToken, .createAudit:
+        case .sendDeviceInfo, .setAppState, .registerFirebaseToken:
             baseURLAsString = API.baseURL
         }
         
@@ -78,10 +73,10 @@ enum APIRouter: URLRequestConvertible {
         urlRequest.httpMethod = method.rawValue
         
         switch self {
-        case .sendDeviceInfo, .setAppState, .registerFirebaseToken, .createAudit:
+        case .sendDeviceInfo, .setAppState, .registerFirebaseToken:
             
-            let serviceName = TrustDeviceInfo.serviceName
-            let accessGroup = TrustDeviceInfo.accessGroup
+            let serviceName = Identify.serviceName
+            let accessGroup = Identify.accessGroup
             
             let clientCredentialsManager = ClientCredentialsManager(serviceName: serviceName, accessGroup: accessGroup)
             
@@ -98,9 +93,9 @@ enum APIRouter: URLRequestConvertible {
             }
         default: break
         }
-
+        
         switch self {
-        case .clientCredentials, .sendDeviceInfo, .setAppState, .registerFirebaseToken, .createAudit:
+        case .clientCredentials, .sendDeviceInfo, .setAppState, .registerFirebaseToken:
             return try JSONEncoding.default.encode(urlRequest, with: parameters)
         }
     }

@@ -38,7 +38,7 @@ extension API {
         print("handle() httpResponse.statusCode: \(httpResponse.statusCode)")
         
         guard let statusCode = StatusCode(rawValue: httpResponse.statusCode) else {return}
-
+        
         print("handle() statusCode: \(statusCode)")
         
         switch statusCode {
@@ -52,9 +52,6 @@ extension API {
     static func call<T: Mappable>(responseDataType: T.Type, resource: APIRouter, onResponse: CompletionHandler = nil, onSuccess: SuccessHandler<T> = nil, onFailure: CompletionHandler = nil) {
         request(resource).responseObject {
             (response: DataResponse<T>) in
-            
-            print("API.call() Response: \(response)")
-            
             handle(httpResponse: response.response) {
                 let parameters = ClientCredentialsParameters(
                     clientID: "adcc11078bee4ba2d7880a48c4bed02758a5f5328276b08fa14493306f1e9efb",
@@ -68,13 +65,12 @@ extension API {
                     onSuccess: {
                         responseData in
                         
-                        let serviceName = TrustDeviceInfo.serviceName
-                        let accessGroup = TrustDeviceInfo.accessGroup
+                        let serviceName = Identify.serviceName
+                        let accessGroup = Identify.accessGroup
                         
                         let clientCredentialsManager = ClientCredentialsManager(serviceName: serviceName, accessGroup: accessGroup)
                         
                         clientCredentialsManager.save(clientCredentials: responseData)
-                        
                         call(
                             responseDataType: responseDataType,
                             resource: resource,
@@ -82,7 +78,7 @@ extension API {
                             onSuccess: onSuccess,
                             onFailure: onFailure
                         )
-                    }
+                }
                 )
             }
             
@@ -111,9 +107,6 @@ extension API {
     static func call<T: Mappable>(responseDataType: T.Type, resource: APIRouter, onResponse: SuccessHandler<DataResponse<T>> = nil, onSuccess: SuccessHandler<T> = nil, onFailure: CompletionHandler = nil) {
         request(resource).responseObject {
             (response: DataResponse<T>) in
-            
-            print("API.call() Response: \(response)")
-            
             handle(httpResponse: response.response) {
                 let parameters = ClientCredentialsParameters(
                     clientID: "adcc11078bee4ba2d7880a48c4bed02758a5f5328276b08fa14493306f1e9efb",
@@ -127,8 +120,8 @@ extension API {
                     onSuccess: {
                         responseData in
                         
-                        let serviceName = TrustDeviceInfo.serviceName
-                        let accessGroup = TrustDeviceInfo.accessGroup
+                        let serviceName = Identify.serviceName
+                        let accessGroup = Identify.accessGroup
                         
                         let clientCredentialsManager = ClientCredentialsManager(serviceName: serviceName, accessGroup: accessGroup)
                         
@@ -141,7 +134,7 @@ extension API {
                             onSuccess: onSuccess,
                             onFailure: onFailure
                         )
-                    }
+                }
                 )
             }
             
@@ -186,8 +179,8 @@ extension API {
                     onSuccess: {
                         responseData in
                         
-                        let serviceName = TrustDeviceInfo.serviceName
-                        let accessGroup = TrustDeviceInfo.accessGroup
+                        let serviceName = Identify.serviceName
+                        let accessGroup = Identify.accessGroup
                         
                         let clientCredentialsManager = ClientCredentialsManager(serviceName: serviceName, accessGroup: accessGroup)
                         
@@ -199,7 +192,7 @@ extension API {
                             onSuccess: onSuccess,
                             onFailure: onFailure
                         )
-                    }
+                }
                 )
             }
             

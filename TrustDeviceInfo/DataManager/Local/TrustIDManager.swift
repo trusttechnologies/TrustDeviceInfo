@@ -9,7 +9,7 @@
 // MARK: - TrustIDManagerProtocol
 protocol TrustIDManagerProtocol: AnyObject {
     var managerOutput: TrustIDManagerOutputProtocol? {get set}
-
+    
     func hasTrustIDBeenSaved() -> Bool
     func getTrustID() -> String?
     func save(trustID: String)
@@ -67,12 +67,12 @@ class TrustIDManager: TrustIDManagerProtocol {
                 }
             }
         }
-
+        
         if let trustID = getTrustID() {
             managerOutput?.onTrustIDSaved(savedTrustID: trustID)
         }
     }
-
+    
     func removeTrustID() -> Bool {
         return keychain.removeObject(forKey: deviceKey)
     }

@@ -49,10 +49,10 @@ struct AppStateParameters: Parameterizable {
     private var trustID: String? {
         return trustIDManager.getTrustID()
     }
-
+    
     private var trustIDManager: TrustIDManagerProtocol {
-        let serviceName = TrustDeviceInfo.serviceName
-        let accessGroup = TrustDeviceInfo.accessGroup
+        let serviceName = Identify.serviceName
+        let accessGroup = Identify.accessGroup
         
         return TrustIDManager(serviceName: serviceName, accessGroup: accessGroup)
     }
@@ -73,46 +73,19 @@ struct AppStateParameters: Parameterizable {
     }
 }
 
-// MARK: - CreateAuditParameters
-public struct CreateAuditParameters: Parameterizable {
-    public var auditType: String
-    public var platform: String
-    public var application: String
-    public var source: Source
-    public var transaction: Transaction
-
-    public init(auditType: String, platform: String, application: String, source: Source, transaction: Transaction) {
-        self.auditType = auditType
-        self.platform = platform
-        self.application = application
-        self.source = source
-        self.transaction = transaction
-    }
-
-    public var asParameters: Parameters {
-        return [
-            "type_audit": auditType,
-            "platform": platform,
-            "application": application,
-            "source": source.asParameters,
-            "transaction": transaction.asParameters
-        ]
-    }
-}
-
 // MARK: - Source
 public struct Source: Parameterizable {
     private var trustID: String? {
         return trustIDManager.getTrustID()
     }
-
+    
     private var trustIDManager: TrustIDManagerProtocol {
-        let serviceName = TrustDeviceInfo.serviceName
-        let accessGroup = TrustDeviceInfo.accessGroup
+        let serviceName = Identify.serviceName
+        let accessGroup = Identify.accessGroup
         
         return TrustIDManager(serviceName: serviceName, accessGroup: accessGroup)
     }
-
+    
     public var appName: String
     public var bundleID: String
     public var latitude: String
@@ -130,7 +103,7 @@ public struct Source: Parameterizable {
         self.connectionName = connectionName
         self.appVersion = appVersion
     }
-
+    
     public var asParameters: Parameters {
         guard let trustID = trustID else {return [:]}
         
@@ -152,33 +125,6 @@ public struct Source: Parameterizable {
     }
 }
 
-// MARK: - Transaction
-public struct Transaction: Parameterizable {
-    public var type: String
-    public var result: String
-    public var timestamp: Int
-    public var method: String
-    public var operation: String
-    
-    public init(type: String, result: String, timestamp: Int, method: String, operation: String) {
-        self.type = type
-        self.result = result
-        self.timestamp = timestamp
-        self.method = method
-        self.operation = operation
-    }
-
-    public var asParameters: Parameters {
-        return [
-            "type": type,
-            "result": result,
-            "timestamp": timestamp,
-            "method": method,
-            "operation": operation
-        ]
-    }
-}
-
 // MARK: - RegisterFirebaseTokenParameters
 struct RegisterFirebaseTokenParameters: Parameterizable {
     var firebaseToken: String?
@@ -189,8 +135,8 @@ struct RegisterFirebaseTokenParameters: Parameterizable {
     }
     
     private var trustIDManager: TrustIDManagerProtocol {
-        let serviceName = TrustDeviceInfo.serviceName
-        let accessGroup = TrustDeviceInfo.accessGroup
+        let serviceName = Identify.serviceName
+        let accessGroup = Identify.accessGroup
         
         return TrustIDManager(serviceName: serviceName, accessGroup: accessGroup)
     }
@@ -221,24 +167,24 @@ struct DeviceInfoParameters: Parameterizable {
     }
     
     private var trustIDManager: TrustIDManagerProtocol {
-        let serviceName = TrustDeviceInfo.serviceName
-        let accessGroup = TrustDeviceInfo.accessGroup
+        let serviceName = Identify.serviceName
+        let accessGroup = Identify.accessGroup
         
         return TrustIDManager(serviceName: serviceName, accessGroup: accessGroup)
     }
-
+    
     public var asParameters: Parameters {
         let systemName = "iOS"
         let device = Device.current
         let uiDevice = UIDevice()
         
         var trustIDManager: TrustIDManagerProtocol {
-            let serviceName = TrustDeviceInfo.serviceName
-            let accessGroup = TrustDeviceInfo.accessGroup
+            let serviceName = Identify.serviceName
+            let accessGroup = Identify.accessGroup
             
             return TrustIDManager(serviceName: serviceName, accessGroup: accessGroup)
         }
-
+        
         var parameters: Parameters = [:]
         
         var deviceParameters: [String : Any] = [

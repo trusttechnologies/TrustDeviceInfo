@@ -6,6 +6,8 @@
 //  Copyright © 2018 Jumpitt Labs. All rights reserved.
 //
 
+import Foundation
+
 // MARK: - DiskStatus
 class DiskStatus {
     class func MBFormatter(_ bytes: Int64) -> String {
@@ -20,21 +22,21 @@ class DiskStatus {
     
     class var totalDiskSpace: String {
         get {
-
+            
             let formatter = ByteCountFormatter()
-
+            
             formatter.allowedUnits = .useGB
             formatter.countStyle = .decimal
             formatter.includesUnit = false
-
+            
             let totalDiskSpace = formatter.string(fromByteCount: totalDiskSpaceInBytes).replacingOccurrences(of: ",", with: ".")
-
+            
             guard let totalDiskSpaceAsDouble = Double(totalDiskSpace) else {
                 return ""
             }
-
+            
             var totalDiskSpaceAsString = String(format: "%.f", totalDiskSpaceAsDouble)
-
+            
             switch totalDiskSpaceAsDouble {
             case 0...33:
                 totalDiskSpaceAsString = "32"
@@ -48,7 +50,7 @@ class DiskStatus {
                 totalDiskSpaceAsString = "512"
             default: break
             }
-
+            
             return totalDiskSpaceAsString
         }
     }
