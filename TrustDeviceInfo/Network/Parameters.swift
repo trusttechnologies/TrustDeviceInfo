@@ -73,58 +73,6 @@ struct AppStateParameters: Parameterizable {
     }
 }
 
-// MARK: - Source
-public struct Source: Parameterizable {
-    private var trustID: String? {
-        return trustIDManager.getTrustID()
-    }
-    
-    private var trustIDManager: TrustIDManagerProtocol {
-        let serviceName = Identify.serviceName
-        let accessGroup = Identify.accessGroup
-        
-        return TrustIDManager(serviceName: serviceName, accessGroup: accessGroup)
-    }
-    
-    public var appName: String
-    public var bundleID: String
-    public var latitude: String
-    public var longitude: String
-    public var connectionType: String
-    public var connectionName: String
-    public var appVersion: String
-    
-    public init(appName: String, bundleID: String, latitude: String, longitude: String, connectionType: String, connectionName: String, appVersion: String) {
-        self.appName = appName
-        self.bundleID = bundleID
-        self.latitude = latitude
-        self.longitude = longitude
-        self.connectionType = connectionType
-        self.connectionName = connectionName
-        self.appVersion = appVersion
-    }
-    
-    public var asParameters: Parameters {
-        guard let trustID = trustID else {return [:]}
-        
-        let device = Device.current
-        
-        return [
-            "trust_id": trustID,
-            "app_name": appName,
-            "bundle_id": bundleID,
-            "os": "IOS",
-            "os_version": device.systemVersion ?? .zero,
-            "device_name": Sysctl.model,
-            "latGeo": latitude,
-            "lonGeo": longitude,
-            "connection_type": connectionType,
-            "connection_name": connectionName,
-            "version_app": appVersion
-        ]
-    }
-}
-
 // MARK: - RegisterFirebaseTokenParameters
 struct RegisterFirebaseTokenParameters: Parameterizable {
     var firebaseToken: String?
