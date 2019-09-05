@@ -26,23 +26,12 @@ public protocol TrustDeviceInfoDelegate: AnyObject { //Implement in class
 public class Identify {
     private var sendDeviceInfoOnEnabled: Bool = false
     
-    var clientId: String?
-    var clientSecret: String?
-    
     private var enable = false {
         didSet {
             if enable && !oldValue {
                 setCarrierUpdateNotifier()
                 
                 guard sendDeviceInfoOnEnabled else { return }
-                
-                guard
-                    let id = self.clientId,
-                    let secret = self.clientSecret else {
-                        return
-                }
-                
-                createClientCredentials(clientID: id, clientSecret: secret)
             } else if !enable && oldValue {
                 disableCarrierUpdateNotifier()
             }
@@ -179,9 +168,6 @@ extension Identify {
     }
     
     public func createClientCredentials (clientID: String , clientSecret: String) {
-        self.clientId = clientID
-        self.clientSecret = clientSecret
-        
         let parameters = ClientCredentialsParameters(clientID: clientID, clientSecret: clientSecret)
         
         apiManager.getClientCredentials(with: parameters)
