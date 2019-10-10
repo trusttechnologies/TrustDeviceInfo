@@ -5,7 +5,7 @@ use_frameworks!
 
 target 'TrustDeviceInfo' do
     pod 'Alamofire', '~> 4.8.2'
-    pod 'AlamofireObjectMapper'
+    #pod 'AlamofireObjectMapper'
     pod 'DeviceKit'
 end
 

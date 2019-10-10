@@ -6,53 +6,41 @@
 //  Copyright © 2019 Jumpitt Labs. All rights reserved.
 //
 
-import ObjectMapper
+//import ObjectMapper
 
 // MARK: - TrustID
-public class TrustID: Mappable, CustomStringConvertible {
+public class TrustID: Codable, CustomStringConvertible {
     var status = false
     var message: String?
     var trustID: String?
     
-    public required convenience init?(map: Map) {
-        self.init()
-    }
-    
-    public func mapping(map: Map) {
-        status <- map["status"]
-        message <- map["message"]
-        trustID <- map["trustid"]
+    enum CodingKeys: String, CodingKey {
+        case status = "status"
+        case message = "message"
+        case trustID = "trustid"
     }
 }
 
 // MARK: - ClientCredentials
-public class ClientCredentials: Mappable, CustomStringConvertible {
+public class ClientCredentials: Codable, CustomStringConvertible {
     public var accessToken: String?
     public var tokenType: String?
     
-    public required convenience init?(map: Map) {
-        self.init()
-    }
-    
-    public func mapping(map: Map) {
-        accessToken <- map["access_token"]
-        tokenType <- map["token_type"]
-    }
+    /*enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+        case tokenType = "token_type"
+    }*/
 }
 
 // MARK: - RegisterFirebaseTokenResponse
-public class RegisterFirebaseTokenResponse: Mappable, CustomStringConvertible {
+public class RegisterFirebaseTokenResponse: Codable, CustomStringConvertible {
     var status: String?
     var code: Int?
     var message: String?
     
-    public required convenience init?(map: Map) {
-        self.init()
-    }
-    
-    public func mapping(map: Map) {
-        status <- map["status"]
-        code <- map["code"]
-        message <- map["message"]
-    }
+    /*enum CodingKeys: String, CodingKey {
+        case status = "status"
+        case code = "code"
+        case message = "message"
+    }*/
 }

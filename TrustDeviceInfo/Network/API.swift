@@ -7,8 +7,6 @@
 //
 
 import Alamofire
-import AlamofireObjectMapper
-import ObjectMapper
 
 // MARK: - ResponseStatus Enum
 public enum ResponseStatus: String {
@@ -48,10 +46,11 @@ extension API {
         }
     }
     
-    // MARK: - call<T: Mappable>(onResponse: CompletionHandler), onResponse without response data
-    static func call<T: Mappable>(responseDataType: T.Type, resource: APIRouter, onResponse: CompletionHandler = nil, onSuccess: SuccessHandler<T> = nil, onFailure: CompletionHandler = nil) {
-        request(resource).responseObject {
-            (response: DataResponse<T>) in
+    // MARK: - call<T: Codable>(onResponse: CompletionHandler), onResponse without response data
+    static func call<T: Codable>(resource: APIRouter, onResponse: CompletionHandler = nil, onSuccess: SuccessHandler<T> = nil, onFailure: CompletionHandler = nil) {
+        request(resource).responseJSON {
+            response in
+
             handle(httpResponse: response.response) {
                 let parameters = ClientCredentialsParameters(
                     clientID: "adcc11078bee4ba2d7880a48c4bed02758a5f5328276b08fa14493306f1e9efb",
@@ -59,11 +58,10 @@ extension API {
                 )
                 
                 call(
-                    responseDataType: ClientCredentials.self,
                     resource: .clientCredentials(parameters: parameters),
-                    onResponse: {},
+                    onResponse: nil,
                     onSuccess: {
-                        responseData in
+                        (responseData: ClientCredentials) in
                         
                         let serviceName = Identify.serviceName
                         let accessGroup = Identify.accessGroup
@@ -71,42 +69,49 @@ extension API {
                         let clientCredentialsManager = ClientCredentialsManager(serviceName: serviceName, accessGroup: accessGroup)
                         
                         clientCredentialsManager.save(clientCredentials: responseData)
+                        
                         call(
-                            responseDataType: responseDataType,
                             resource: resource,
                             onResponse: onResponse,
                             onSuccess: onSuccess,
                             onFailure: onFailure
                         )
-                }
+                    }
                 )
             }
             
-            if let onResponse = onResponse {
-                onResponse()
+            switch response.result {
+            case .success(let jsonObject):
+                do {
+                    let jsonDecoder = JSONDecoder()
+                    let jsonData = try JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted)
+                    
+                    jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                    
+                    let decodedResponse = try jsonDecoder.decode(T.self, from: jsonData)
+                    
+                    print("decodedResponse: \(decodedResponse)")
+                    
+                    onSuccess?(decodedResponse)
+                } catch {
+                    onFailure?()
+                }
+            case .failure(let error):
+                print("error.localizedDescription: \(error.localizedDescription)")
+                onFailure?()
             }
             
-            switch (response.result) {
-            case .success(let response):
-                guard let onSuccess = onSuccess else {
-                    return
-                }
-                
-                onSuccess(response)
-            case .failure(_):
-                guard let onFailure = onFailure else {
-                    return
-                }
-                
-                onFailure()
-            }
+            
         }
     }
     
-    // MARK: - call<T: Mappable>(onResponse: SuccessHandler<DataResponse<T>>), onResponse with response data
-    static func call<T: Mappable>(responseDataType: T.Type, resource: APIRouter, onResponse: SuccessHandler<DataResponse<T>> = nil, onSuccess: SuccessHandler<T> = nil, onFailure: CompletionHandler = nil) {
-        request(resource).responseObject {
-            (response: DataResponse<T>) in
+    // MARK: - call<T: Codable>(onResponse: SuccessHandler<DataResponse<T>>), onResponse with response data
+    static func call<T: Codable>(resource: APIRouter, onResponseWithData: SuccessHandler<DataResponse<T>> = nil, onSuccess: SuccessHandler<T> = nil, onFailure: CompletionHandler = nil) {
+        request(resource).responseJSON {
+            response in
+
+            print("API.call() Response: \(response)")
+            
             handle(httpResponse: response.response) {
                 let parameters = ClientCredentialsParameters(
                     clientID: "adcc11078bee4ba2d7880a48c4bed02758a5f5328276b08fa14493306f1e9efb",
@@ -114,11 +119,10 @@ extension API {
                 )
                 
                 call(
-                    responseDataType: ClientCredentials.self,
                     resource: .clientCredentials(parameters: parameters),
-                    onResponse: {},
+                    onResponse: nil,
                     onSuccess: {
-                        responseData in
+                        (responseData: ClientCredentials) in
                         
                         let serviceName = Identify.serviceName
                         let accessGroup = Identify.accessGroup
@@ -128,21 +132,43 @@ extension API {
                         clientCredentialsManager.save(clientCredentials: responseData)
                         
                         call(
-                            responseDataType: responseDataType,
                             resource: resource,
-                            onResponse: onResponse,
+                            onResponseWithData: onResponseWithData,
                             onSuccess: onSuccess,
                             onFailure: onFailure
                         )
-                }
+                    }
                 )
             }
             
-            if let onResponse = onResponse {
-                onResponse(response)
+            
+            switch response.result {
+            case .success(let jsonObject):
+                do {
+                    let jsonDecoder = JSONDecoder()
+                    let jsonData = try JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted)
+                    
+                    jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                    
+                    let decodedResponse = try jsonDecoder.decode(T.self, from: jsonData)
+                    
+                    print("decodedResponse: \(decodedResponse)")
+                    
+                    onSuccess?(decodedResponse)
+                } catch {
+                    onFailure?()
+                }
+            case .failure(let error):
+                print("error.localizedDescription: \(error.localizedDescription)")
+                onFailure?()
             }
             
-            switch (response.result) {
+            
+//            if let onResponse = onResponse {
+//                onResponse(response)
+//            }
+            
+            /*switch (response.result) {
             case .success(let response):
                 guard let onSuccess = onSuccess else {
                     return
@@ -155,7 +181,7 @@ extension API {
                 }
                 
                 onFailure()
-            }
+            } */
         }
     }
     
@@ -172,12 +198,9 @@ extension API {
                     clientSecret: "1f647aab37f4a7d7a0da408015437e7a963daca43da06a7789608c319c2930bd"
                 )
                 
-                call(
-                    responseDataType: ClientCredentials.self,
-                    resource: .clientCredentials(parameters: parameters),
-                    onResponse: {},
+                /*call(
                     onSuccess: {
-                        responseData in
+                        (responseData: ClientCredentials) in
                         
                         let serviceName = Identify.serviceName
                         let accessGroup = Identify.accessGroup
@@ -192,13 +215,13 @@ extension API {
                             onSuccess: onSuccess,
                             onFailure: onFailure
                         )
-                }
-                )
+                    }
+                )*/
             }
             
-            if let onResponse = onResponse {
-                onResponse()
-            }
+            
+                onResponse?()
+            
             
             switch (response.result) {
             case .success(let responseData):

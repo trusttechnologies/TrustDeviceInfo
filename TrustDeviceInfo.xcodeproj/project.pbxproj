@@ -210,7 +210,7 @@
 		37A386F82134B7F400DB87F7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "Jumpitt Labs";
 				TargetAttributes = {
 					37A387002134B7F400DB87F7 = {
@@ -419,7 +419,7 @@
 			baseConfigurationReference = 9411D820E4EE850627AD03CB /* Pods-TrustDeviceInfo.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
