@@ -51,7 +51,7 @@ Team ID: Found it in [https://developer.apple.com/](https://developer.apple.com/
 
 Access group example: "A2D9N3HN.trustID.example"
 
-clientID and clientSecret was generated in backend, request access codes to the provider.
+clientID and clientSecret are generated in backend, request access codes to the provider.
 
  ```swift
 import TrustDeviceInfo
