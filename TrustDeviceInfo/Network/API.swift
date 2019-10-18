@@ -198,7 +198,9 @@ extension API {
                     clientSecret: "1f647aab37f4a7d7a0da408015437e7a963daca43da06a7789608c319c2930bd"
                 )
                 
-                /*call(
+                call(
+                    resource: .clientCredentials(parameters: parameters),
+                    onResponse: nil,
                     onSuccess: {
                         (responseData: ClientCredentials) in
                         
@@ -216,7 +218,7 @@ extension API {
                             onFailure: onFailure
                         )
                     }
-                )*/
+                )
             }
             
             
