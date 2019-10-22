@@ -45,8 +45,7 @@ struct ClientCredentialsParameters: Parameterizable {
 struct AppStateParameters: Parameterizable {
     var dni: String?
     var bundleID: String?
-    
-    private var trustID: String? {
+    var trustID: String? {
         return trustIDManager.getTrustID()
     }
     

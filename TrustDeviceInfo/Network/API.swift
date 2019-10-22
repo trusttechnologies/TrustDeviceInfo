@@ -100,8 +100,6 @@ extension API {
                 print("error.localizedDescription: \(error.localizedDescription)")
                 onFailure?()
             }
-            
-            
         }
     }
     
@@ -140,7 +138,6 @@ extension API {
                     }
                 )
             }
-            
             
             switch response.result {
             case .success(let jsonObject):
@@ -221,9 +218,7 @@ extension API {
                 )
             }
             
-            
-                onResponse?()
-            
+            onResponse?()
             
             switch (response.result) {
             case .success(let responseData):
