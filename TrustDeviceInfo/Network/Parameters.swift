@@ -121,6 +121,9 @@ struct DeviceInfoParameters: Parameterizable {
     }
     
     public var asParameters: Parameters {
+        let brand = "apple"//
+        let manufacturer = "apple" //
+        let imei = ""
         let systemName = "iOS"
         let device = Device.current
         let uiDevice = UIDevice()
@@ -135,48 +138,51 @@ struct DeviceInfoParameters: Parameterizable {
         var parameters: Parameters = [:]
         
         var deviceParameters: [String : Any] = [
-            "activeCPUs": Sysctl.activeCPUs,
-            "hostname": Sysctl.hostName,
-            "model": Sysctl.machine,
-            "machine": Sysctl.model,
-            "osRelease": Sysctl.osRelease,
-            "osType": Sysctl.osType,
-            "osVersion": Sysctl.osVersion,
-            "version": Sysctl.version,
-            "description": device.description,
-            "screenBrightness": device.screenBrightness,
-            "screenDiagonalLength": device.diagonal,
-            "totalDiskSpace": DiskStatus.totalDiskSpace,
-            "identifierForVendor": uiDevice.identifierForVendor?.uuidString ?? "",
-            "system_name": systemName
+            "processor_quantity": Sysctl.activeCPUs, //
+            "host": Sysctl.hostName, //
+            "model": Sysctl.model, //
+            "board": Sysctl.machine, //
+            "osRelease": Sysctl.osRelease, //?? "osRelease": "19.0.0",
+            "osType": Sysctl.osType, //?? "osType": "Darwin"
+            "osVersion": Sysctl.osVersion, //?? "osVersion": "17A860"
+            "version": Sysctl.version, //?? "version": "",
+            "id": device.description, //
+            "screenBrightness": device.screenBrightness, //preguntar
+            "display": device.diagonal, //
+            "mem_total": DiskStatus.totalDiskSpace, //
+            "identifierForVendor": uiDevice.identifierForVendor?.uuidString ?? "", //?? "identifierForVendor": "AEC1886E-E4A4-4906-A0E5-C3DBEC907106",
+            "system_name": systemName, // ok
+            "brand": brand, // ok
+            "manufacturer": manufacturer, //
+            "imei": imei // ok
         ]
         
-        if let batteryLevel = device.batteryLevel {
+        if let batteryLevel = device.batteryLevel { //
             deviceParameters.updateValue(batteryLevel, forKey: "batteryLevel")
         }
         
-        if let localizedModel = device.localizedModel {
+        if let localizedModel = device.localizedModel { //?? "localizedModel": "iPhone",
             deviceParameters.updateValue(localizedModel, forKey: "localizedModel")
         }
         
-        if let deviceModel = device.model {
-            deviceParameters.updateValue(deviceModel, forKey: "deviceModel")
+        if let model = device.model { // ok
+            deviceParameters.updateValue(model, forKey: "model")
         }
         
-        if let name = device.name {
+        if let name = device.name { //?? "name": "Kvn"
             deviceParameters.updateValue(name, forKey: "name")
         }
         
-        if let screenPPI = device.ppi {
+        if let screenPPI = device.ppi { //?? "screenPPI": 401
             deviceParameters.updateValue(screenPPI, forKey: "screenPPI")
         }
         
-        if let systemOS = device.systemName {
+        if let systemOS = device.systemName { //
             deviceParameters.updateValue(systemOS, forKey: "systemOS")
         }
         
-        if let systemVersion = device.systemVersion {
-            deviceParameters.updateValue(systemVersion, forKey: "systemVersion")
+        if let system_version = device.systemVersion { //
+            deviceParameters.updateValue(system_version, forKey: "system_version")
         }
         
         parameters.updateValue(deviceParameters, forKey: "device")
