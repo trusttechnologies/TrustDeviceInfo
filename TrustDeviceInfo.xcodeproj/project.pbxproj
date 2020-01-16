@@ -21,7 +21,6 @@
 		378C8D1321D3B7890069AB16 /* EventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C8D1221D3B7890069AB16 /* EventData.swift */; };
 		37A387062134B7F400DB87F7 /* TrustDeviceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 37A387042134B7F400DB87F7 /* TrustDeviceInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		38F22C00036E8815FE6BC901 /* Pods_TrustDeviceInfo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41871B023E2F33367CD3BBF9 /* Pods_TrustDeviceInfo.framework */; };
-		FE99D24623D0DD2500819A36 /* KeychainItemAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE99D24523D0DD2500819A36 /* KeychainItemAccessibility.swift */; };
 		FEE2991823079CE8006DE4D5 /* Identify.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE2991723079CE8006DE4D5 /* Identify.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,7 +43,6 @@
 		41871B023E2F33367CD3BBF9 /* Pods_TrustDeviceInfo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrustDeviceInfo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9411D820E4EE850627AD03CB /* Pods-TrustDeviceInfo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustDeviceInfo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrustDeviceInfo/Pods-TrustDeviceInfo.debug.xcconfig"; sourceTree = "<group>"; };
 		DAED780B5B11A6A8C032C88D /* Pods-TrustDeviceInfo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustDeviceInfo.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrustDeviceInfo/Pods-TrustDeviceInfo.release.xcconfig"; sourceTree = "<group>"; };
-		FE99D24523D0DD2500819A36 /* KeychainItemAccessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainItemAccessibility.swift; sourceTree = "<group>"; };
 		FEE2991723079CE8006DE4D5 /* Identify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identify.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,7 +126,6 @@
 			isa = PBXGroup;
 			children = (
 				378C8D0E21C973E30069AB16 /* KeychainWrapper.swift */,
-				FE99D24523D0DD2500819A36 /* KeychainItemAccessibility.swift */,
 			);
 			path = KeychainWrapper;
 			sourceTree = "<group>";
@@ -281,7 +278,6 @@
 				378C8D1321D3B7890069AB16 /* EventData.swift in Sources */,
 				378C8D0F21C973E30069AB16 /* KeychainWrapper.swift in Sources */,
 				375FDF44226E4AFD00C1935F /* APIManager.swift in Sources */,
-				FE99D24623D0DD2500819A36 /* KeychainItemAccessibility.swift in Sources */,
 				FEE2991823079CE8006DE4D5 /* Identify.swift in Sources */,
 				375FDF42226E3C2900C1935F /* Parameters.swift in Sources */,
 				3720DC27226FBC7200C00B99 /* ClientCredentialsManager.swift in Sources */,

@@ -5,8 +5,101 @@
 //  Created by Diego Villouta Fredes on 12/18/18.
 //  Copyright © 2018 Jumpitt Labs. All rights reserved.
 //
-
 import Foundation
+
+// MARK: - KeychainAttrRepresentable
+protocol KeychainAttrRepresentable {
+    var keychainAttrValue: CFString { get }
+}
+
+// MARK: - KeychainItemAccessibility
+public enum KeychainItemAccessibility {
+    /**
+     The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
+     
+     After the first unlock, the data remains accessible until the next restart. This is recommended for items that need to be accessed by background applications. Items with this attribute migrate to a new device when using encrypted backups.
+     */
+    @available(iOS 4, *)
+    case afterFirstUnlock
+    
+    /**
+     The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
+     
+     After the first unlock, the data remains accessible until the next restart. This is recommended for items that need to be accessed by background applications. Items with this attribute do not migrate to a new device. Thus, after restoring from a backup of a different device, these items will not be present.
+     */
+    @available(iOS 4, *)
+    case afterFirstUnlockThisDeviceOnly
+    
+    /**
+     The data in the keychain item can always be accessed regardless of whether the device is locked.
+     
+     This is not recommended for application use. Items with this attribute migrate to a new device when using encrypted backups.
+     */
+    @available(iOS 4, *)
+    case always
+    
+    /**
+     The data in the keychain can only be accessed when the device is unlocked. Only available if a passcode is set on the device.
+     
+     This is recommended for items that only need to be accessible while the application is in the foreground. Items with this attribute never migrate to a new device. After a backup is restored to a new device, these items are missing. No items can be stored in this class on devices without a passcode. Disabling the device passcode causes all items in this class to be deleted.
+     */
+    @available(iOS 8, *)
+    case whenPasscodeSetThisDeviceOnly
+    
+    /**
+     The data in the keychain item can always be accessed regardless of whether the device is locked.
+     
+     This is not recommended for application use. Items with this attribute do not migrate to a new device. Thus, after restoring from a backup of a different device, these items will not be present.
+     */
+    @available(iOS 4, *)
+    case alwaysThisDeviceOnly
+    
+    /**
+     The data in the keychain item can be accessed only while the device is unlocked by the user.
+     
+     This is recommended for items that need to be accessible only while the application is in the foreground. Items with this attribute migrate to a new device when using encrypted backups.
+     
+     This is the default value for keychain items added without explicitly setting an accessibility constant.
+     */
+    @available(iOS 4, *)
+    case whenUnlocked
+    
+    /**
+     The data in the keychain item can be accessed only while the device is unlocked by the user.
+     
+     This is recommended for items that need to be accessible only while the application is in the foreground. Items with this attribute do not migrate to a new device. Thus, after restoring from a backup of a different device, these items will not be present.
+     */
+    @available(iOS 4, *)
+    case whenUnlockedThisDeviceOnly
+    
+    static func accessibilityForAttributeValue(_ keychainAttrValue: CFString) -> KeychainItemAccessibility? {
+        for (key, value) in keychainItemAccessibilityLookup {
+            if value == keychainAttrValue {
+                return key
+            }
+        }
+        
+        return nil
+    }
+}
+
+private let keychainItemAccessibilityLookup: [KeychainItemAccessibility:CFString] = {
+    var lookup: [KeychainItemAccessibility:CFString] = [
+        .afterFirstUnlock: kSecAttrAccessibleAfterFirstUnlock,
+        .afterFirstUnlockThisDeviceOnly: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
+        .whenPasscodeSetThisDeviceOnly: kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+        .whenUnlocked: kSecAttrAccessibleWhenUnlocked,
+        .whenUnlockedThisDeviceOnly: kSecAttrAccessibleWhenUnlockedThisDeviceOnly
+    ]
+    
+    return lookup
+}()
+
+extension KeychainItemAccessibility : KeychainAttrRepresentable {
+    internal var keychainAttrValue: CFString {
+        return keychainItemAccessibilityLookup[self]!
+    }
+}
 
 private let SecMatchLimit: String! = kSecMatchLimit as String
 private let SecReturnData: String! = kSecReturnData as String
@@ -18,16 +111,17 @@ private let SecAttrService: String! = kSecAttrService as String
 private let SecAttrGeneric: String! = kSecAttrGeneric as String
 private let SecAttrAccount: String! = kSecAttrAccount as String
 private let SecAttrAccessGroup: String! = kSecAttrAccessGroup as String
+private let SecAttrSynchronizable: String! = kSecAttrSynchronizable as String
 private let SecReturnAttributes: String = kSecReturnAttributes as String
 
 /// KeychainWrapper is a class to help make Keychain access in Swift more straightforward. It is designed to make accessing the Keychain services more like using NSUserDefaults, which is much more familiar to people.
 open class KeychainWrapper {
     
-    @available(*, deprecated, message: "KeychainWrapper.defaultKeychainWrapper is deprecated, use KeychainWrapper.standard instead")
-    public static let defaultKeychainWrapper = KeychainWrapper.standard
+    //    @available(*, deprecated: 2.2.1, message: "KeychainWrapper.defaultKeychainWrapper is deprecated, use KeychainWrapper.standard instead")
+    //    public static let defaultKeychainWrapper = KeychainWrapper.standard
     
     /// Default keychain wrapper access
-    public static let standard = KeychainWrapper()
+    // public static let standard = KeychainWrapper()
     
     /// ServiceName is used for the kSecAttrService property to uniquely identify this keychain accessor. If no service name is specified, KeychainWrapper will default to using the bundleIdentifier.
     private (set) public var serviceName: String
@@ -35,19 +129,19 @@ open class KeychainWrapper {
     /// AccessGroup is used for the kSecAttrAccessGroup property to identify which Keychain Access Group this entry belongs to. This allows you to use the KeychainWrapper with shared keychain access between different applications.
     private (set) public var accessGroup: String?
     
-    private static let defaultServiceName: String = {
-        return Bundle.main.bundleIdentifier ?? "SwiftKeychainWrapper"
-    }()
+    //    private static let defaultServiceName: String = {
+    //        return Bundle.main.bundleIdentifier ?? "SwiftKeychainWrapper"
+    //    }()
     
-    private convenience init() {
-        self.init(serviceName: KeychainWrapper.defaultServiceName)
-    }
+    //    private convenience init() {
+    //        self.init(serviceName: KeychainWrapper.defaultServiceName, accessGroup: KeychainWrapper.defaultAccesGroup)
+    //    }
     
     /// Create a custom instance of KeychainWrapper with a custom Service Name and optional custom access group.
     ///
     /// - parameter serviceName: The ServiceName for this instance. Used to uniquely identify all keys stored using this keychain wrapper instance.
     /// - parameter accessGroup: Optional unique AccessGroup for this instance. Use a matching AccessGroup between applications to allow shared keychain access.
-    public init(serviceName: String, accessGroup: String? = nil) {
+    public init(serviceName: String, accessGroup: String) {
         self.serviceName = serviceName
         self.accessGroup = accessGroup
     }
@@ -97,7 +191,7 @@ open class KeychainWrapper {
             SecAttrService: serviceName,
             SecReturnAttributes: kCFBooleanTrue ?? true,
             SecMatchLimit: kSecMatchLimitAll,
-            ]
+        ]
         
         if let accessGroup = self.accessGroup {
             keychainQueryDictionary[SecAttrAccessGroup] = accessGroup
@@ -112,8 +206,11 @@ open class KeychainWrapper {
         if let results = result as? [[AnyHashable: Any]] {
             for attributes in results {
                 if let accountData = attributes[SecAttrAccount] as? Data,
-                    let account = String(data: accountData, encoding: String.Encoding.utf8) {
-                    keys.insert(account)
+                    let key = String(data: accountData, encoding: String.Encoding.utf8) {
+                    keys.insert(key)
+                } else if let accountData = attributes[kSecAttrAccount] as? Data,
+                    let key = String(data: accountData, encoding: String.Encoding.utf8) {
+                    keys.insert(key)
                 }
             }
         }
@@ -297,7 +394,6 @@ open class KeychainWrapper {
         }
     }
     
-    @available(*, deprecated, message: "remove is deprecated, use removeObject instead")
     @discardableResult open func remove(key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
         return removeObject(forKey: key, withAccessibility: accessibility)
     }
@@ -321,7 +417,7 @@ open class KeychainWrapper {
     }
     
     /// Remove all keychain data added through KeychainWrapper. This will only delete items matching the currnt ServiceName and AccessGroup if one is set.
-    open func removeAllKeys() -> Bool {
+    @discardableResult open func removeAllKeys() -> Bool {
         // Setup dictionary to access keychain and specify we are using a generic password (rather than a certificate, internet password, etc)
         var keychainQueryDictionary: [String:Any] = [SecClass:kSecClassGenericPassword]
         
@@ -418,6 +514,8 @@ open class KeychainWrapper {
         keychainQueryDictionary[SecAttrGeneric] = encodedIdentifier
         
         keychainQueryDictionary[SecAttrAccount] = encodedIdentifier
+        
+        keychainQueryDictionary[SecAttrSynchronizable] = kCFBooleanTrue
         
         return keychainQueryDictionary
     }
