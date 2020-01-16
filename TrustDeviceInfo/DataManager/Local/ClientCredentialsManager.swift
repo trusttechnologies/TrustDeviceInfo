@@ -61,7 +61,9 @@ class ClientCredentialsManager: ClientCredentialsManagerProtocol {
     }
     
     func deleteClientCredentials() {
-        keychain.remove(key: "accessToken")
-        keychain.remove(key: "tokenType")
+        keychain.removeObject(forKey: "accessToken")
+        keychain.removeObject(forKey: "tokenType")
+//        keychain.remove(key: "accessToken")
+//        keychain.remove(key: "tokenType")
     }
 }
