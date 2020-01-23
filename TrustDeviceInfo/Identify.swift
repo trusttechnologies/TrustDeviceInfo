@@ -175,6 +175,10 @@ extension Identify {
         UserDefaults.standard.set(currentEnvironment, forKey: "currentEnvironment")
     }
     
+    public func getCurrentEnvironment() -> String {
+        return UserDefaults.standard.string(forKey: "currentEnvironment") ?? "Check Lib"
+    }
+    
     public func createClientCredentials (clientID: String , clientSecret: String) {
         let parameters = ClientCredentialsParameters(clientID: clientID, clientSecret: clientSecret)
         

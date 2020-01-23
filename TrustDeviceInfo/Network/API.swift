@@ -33,21 +33,6 @@ class API {
     static let apiVersion = "/api/v1"
 }
 
-// MARK: - NOTIFICATIONS
-//Joven Felipe, [23.01.20 12:58]
-//public static final String BASE_URL = "https://api.trust.lat/notifications/";
-//    public static final String BASE_URL_TEST = "https://api-tst.trust.lat/notifications/";
-//
-// MARK: - CREDENTIALS
-//Joven Felipe, [23.01.20 12:58]
-//private static final String BASE_URL = "https://atenea.trust.lat/";
-//    private static final String BASE_URL_TEST = "https://atenea-tst.trust.lat/";
-//
-//Joven Felipe, [23.01.20 13:00]
-//private static final String URL_PROD = "https://api.trust.lat/";
-//    private static final String URL_TST = "https://api-tst.trust.lat/";
-
-
 extension API {
     // MARK: - handle(httpResponse)
     static func handle(httpResponse: HTTPURLResponse?, onExpiredAuthToken: CompletionHandler) {
