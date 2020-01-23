@@ -49,7 +49,7 @@ public class Identify {
     }
 
     static var currentEnvironment: String {
-        return UserDefaults.standard.string(forKey: "currentEnvironment") ?? "test"
+        return UserDefaults.standard.string(forKey: "currentEnvironment") ?? "prod"
     }
 
     // MARK: - Shared keychain values
