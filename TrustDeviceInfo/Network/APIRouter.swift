@@ -27,7 +27,8 @@ enum APIRouter: URLRequestConvertible {
             return "/notifications/device/register"
         }
     }
-    
+//    var currentEnvironment = 
+
     var method: HTTPMethod {
         switch self {
         case .clientCredentials, .sendDeviceInfo, .setAppState, .registerFirebaseToken:
@@ -53,9 +54,17 @@ enum APIRouter: URLRequestConvertible {
         
         switch self {
         case .clientCredentials:
-            baseURLAsString = API.clientCredentialsBaseURL
+            if UserDefaults.standard.string(forKey: "currentEnvironment") == "prod" {
+                baseURLAsString = API.clientCredentialsBaseURL
+            } else {
+                baseURLAsString = API.clientCredentialsBaseURLTest
+            }
         case .sendDeviceInfo, .setAppState, .registerFirebaseToken:
-            baseURLAsString = API.baseURL
+            if UserDefaults.standard.string(forKey: "currentEnvironment") == "prod" {
+                baseURLAsString = API.baseURL
+            } else {
+                baseURLAsString = API.baseURLTest
+            }
         }
         
         guard let url = URL(string: baseURLAsString) else {

@@ -47,7 +47,11 @@ public class Identify {
     public static var shared: Identify {
         return trustDeviceInfo
     }
-    
+
+    static var currentEnvironment: String {
+        return UserDefaults.standard.string(forKey: "currentEnvironment") ?? "test"
+    }
+
     // MARK: - Shared keychain values
     static var accessGroup: String {
         return UserDefaults.standard.string(forKey: "accessGroup") ?? ""
@@ -165,6 +169,10 @@ extension Identify {
     public func set(serviceName: String, accessGroup: String) {
         UserDefaults.standard.set(serviceName, forKey: "serviceName")
         UserDefaults.standard.set(accessGroup, forKey: "accessGroup")
+    }
+    
+    public func set(currentEnvironment: String) {
+        UserDefaults.standard.set(currentEnvironment, forKey: "currentEnvironment")
     }
     
     public func createClientCredentials (clientID: String , clientSecret: String) {
