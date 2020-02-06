@@ -22,6 +22,7 @@ public protocol TrustDeviceInfoDelegate: AnyObject { //Implement in class
     func onSendDeviceInfoResponse(status: ResponseStatus)
 }
 
+
 // MARK: - Identify
 public class Identify {
     private var sendDeviceInfoOnEnabled: Bool = false
@@ -164,6 +165,11 @@ extension Identify {
     }
 }
 
+public enum Environment: String {
+    case prod
+    case test
+}
+
 // MARK: - Public Methods
 extension Identify {
     public func set(serviceName: String, accessGroup: String) {
@@ -171,8 +177,8 @@ extension Identify {
         UserDefaults.standard.set(accessGroup, forKey: "accessGroup")
     }
     
-    public func set(currentEnvironment: String) {
-        UserDefaults.standard.set(currentEnvironment, forKey: "currentEnvironment")
+    public func set(currentEnvironment: Environment) {
+        UserDefaults.standard.set(currentEnvironment.rawValue, forKey: "currentEnvironment")
     }
     
     public func getCurrentEnvironment() -> String {

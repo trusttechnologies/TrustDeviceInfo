@@ -54,13 +54,14 @@ enum APIRouter: URLRequestConvertible {
         
         switch self {
         case .clientCredentials:
-            if UserDefaults.standard.string(forKey: "currentEnvironment") == "prod" {
+            
+            if Identify.currentEnvironment == "prod" {
                 baseURLAsString = API.clientCredentialsBaseURL
             } else {
                 baseURLAsString = API.clientCredentialsBaseURLTest
             }
         case .sendDeviceInfo, .setAppState, .registerFirebaseToken:
-            if UserDefaults.standard.string(forKey: "currentEnvironment") == "prod" {
+            if Identify.currentEnvironment == "prod" {
                 baseURLAsString = API.baseURL
             } else {
                 baseURLAsString = API.baseURLTest
