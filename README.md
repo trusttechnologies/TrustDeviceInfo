@@ -66,6 +66,7 @@ extension AppDelegate: TrustDeviceInfoDelegate {
 
 		Identify.shared.trustDeviceInfoDelegate = self
 		Identify.shared.set(serviceName: serviceName, accessGroup: accessGroup) // Sharing Access to Keychain 
+		Identify.shared.set(currentEnvironment: .prod) // Set environment
 		Identify.shared.createClientCredentials(clientID: clientID, clientSecret: clientSecret)
 		Identify.shared.enable()
 
@@ -77,7 +78,7 @@ extension AppDelegate: TrustDeviceInfoDelegate {
 	}
 
 	func onTrustIDSaved(savedTrustID: String) {
-		Identify.shared.set(currentEnvironment: .prod) // Set environment
+		Identify.shared.setAppState(dni: "", bundleID: "Set_your_bundle_id")
 	}
 
 	func onRegisterFirebaseTokenSuccess(responseData: RegisterFirebaseTokenResponse) {
