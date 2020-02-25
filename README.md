@@ -65,7 +65,8 @@ extension AppDelegate: TrustDeviceInfoDelegate {
 		let clientSecret = "example8015437e7a963dacaa778961f647aa37f6730bd"
 
 		Identify.shared.trustDeviceInfoDelegate = self
-		Identify.shared.set(serviceName: serviceName, accessGroup: accessGroup)
+		Identify.shared.set(serviceName: serviceName, accessGroup: accessGroup) // Sharing Access to Keychain 
+		Identify.shared.set(currentEnvironment: .prod) // Set environment
 		Identify.shared.createClientCredentials(clientID: clientID, clientSecret: clientSecret)
 		Identify.shared.enable()
 
@@ -89,6 +90,14 @@ extension AppDelegate: TrustDeviceInfoDelegate {
 	}
 }
 ```
+# Optional Methods
+
+When you need to change the environment between production and test you must use the following method:
+- Identify.shared.set(currentEnvironment: .prod)
+- Identify.shared.set(currentEnvironment: .test)
+
+When you need to register your device in Enrollment
+- Identify.shared.setAppState(dni: "", bundleID: "Set_your_bundle_id")
 
 # Permissions
 
