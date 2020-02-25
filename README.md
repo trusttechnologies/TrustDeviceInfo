@@ -11,6 +11,7 @@ Trust is a platform that allows building trust and security between people and t
 **Trust-device-info**  allows you to obtain a unique universal ID for each device from a set of characteristics of this device. It also allows the monitoring of device status changes, to have knowledge of the device status at all times.  
 
 # Implementation
+
 Add in your podfile:
 
 ``` Swift
