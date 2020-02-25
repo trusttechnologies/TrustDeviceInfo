@@ -45,6 +45,7 @@ To generate a new trustID
 AccessGroup: To generate a new accessGroup we need activate our keychain sharing capability in our app, we must also belong to an Apple development group to access its identifier.
 
 Team ID: Found it in [https://developer.apple.com/](https://developer.apple.com/)
+
 ![image](https://github.com/trusttechnologies/lat_trust_mobile_ios_trust-identify_library/blob/master/Apple%20Team%20id.png?raw=true)
 
 "accessGroup" struct: "teamID.keychainName.id". 
