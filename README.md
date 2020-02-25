@@ -43,8 +43,7 @@ pod install
 # Initialize
 
 To generate a new TrustID
-
-AccessGroup: To generate a new accessGroup you need to activate our keychain sharing capability in our app, you must also  be part of an Apple development group to access to its identifier.
+AccessGroup: To generate a new accessGroup you need to activate your keychain sharing capability in Signing & Capabilities, you must also be part of an Apple development group to access to its identifier to generate your access group.
 
 Team ID: Found it in [https://developer.apple.com/](https://developer.apple.com/)
 
