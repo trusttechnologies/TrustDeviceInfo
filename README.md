@@ -40,9 +40,10 @@ pod install
 
 ```
 # Initialize
-To generate a new trustID
 
-AccessGroup: To generate a new accessGroup we need activate our keychain sharing capability in our app, we must also belong to an Apple development group to access its identifier.
+To generate a new TrustID
+
+AccessGroup: To generate a new accessGroup you need to activate our keychain sharing capability in our app, you must also  be part of an Apple development group to access to its identifier.
 
 Team ID: Found it in [https://developer.apple.com/](https://developer.apple.com/)
 
@@ -93,11 +94,11 @@ extension AppDelegate: TrustDeviceInfoDelegate {
 ```
 # Optional Methods
 
-When you need to change the environment between production and test you must use the following method:
+If you need to change the environment between production and test you must use the following method:
 - Identify.shared.set(currentEnvironment: .prod)
 - Identify.shared.set(currentEnvironment: .test)
 
-When you need to register your device in Enrollment
+If you need to register your device in Enrollment
 - Identify.shared.setAppState(dni: "", bundleID: "Set_your_bundle_id")
 
 # Permissions
