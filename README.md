@@ -92,14 +92,19 @@ extension AppDelegate: TrustDeviceInfoDelegate {
 	}
 }
 ```
-# Optional Methods
+# Methods
 
 If you need to change the environment between production and test you must use the following method:
 - Identify.shared.set(currentEnvironment: .prod)
 - Identify.shared.set(currentEnvironment: .test)
 
-If you need to register your device in Enrollment
+If you need to register your device in Enrol
 - Identify.shared.setAppState(dni: "", bundleID: "Set_your_bundle_id")
+
+if you need to register identity in Enrol
+- Identify.shared.sendDeviceInfo(identityInfo: userIdentity)
+
+userIdentity must need to be: IdentityInfoDataSource protocol type
 
 # Permissions
 
