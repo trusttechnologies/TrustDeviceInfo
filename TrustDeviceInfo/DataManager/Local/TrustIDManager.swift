@@ -7,9 +7,7 @@
 //
 
 // MARK: - TrustIDManagerProtocol
-protocol TrustIDManagerProtocol: AnyObject {
-    var managerOutput: TrustIDManagerOutputProtocol? {get set}
-    
+protocol TrustIDManagerProtocol: AnyObject {    
     func hasTrustIDBeenSaved() -> Bool
     func getTrustID() -> String?
     func save(trustID: String)
@@ -22,7 +20,7 @@ protocol TrustIDManagerOutputProtocol: AnyObject {
 }
 
 // MARK: - TrustIDManager
-class TrustIDManager: TrustIDManagerProtocol {
+final class TrustIDManager {
     private let oldTrustIDKey = "trustid"
     private let oldDeviceKey = Sysctl.model
     private let deviceKey = "\(Sysctl.model)\(DiskStatus.totalDiskSpace)"
@@ -40,7 +38,10 @@ class TrustIDManager: TrustIDManagerProtocol {
     }
     
     weak var managerOutput: TrustIDManagerOutputProtocol?
-    
+}
+
+// MARK: - TrustIDManagerProtocol
+extension TrustIDManager: TrustIDManagerProtocol {
     func hasTrustIDBeenSaved() -> Bool {
         return getTrustID() != nil
     }

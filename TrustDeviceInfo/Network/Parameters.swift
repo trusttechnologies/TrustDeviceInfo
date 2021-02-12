@@ -122,8 +122,8 @@ struct DeviceInfoParameters: Parameterizable {
     }
 
     public var asParameters: Parameters {
-        let brand = "apple"//
-        let manufacturer = "apple" //
+        let brand = "apple"
+        let manufacturer = "apple"
         let imei = ""
         let systemName = "iOS"
         let device = Device.current
@@ -152,10 +152,10 @@ struct DeviceInfoParameters: Parameterizable {
             "display": device.diagonal, //
             "mem_total": DiskStatus.totalDiskSpace, //
             "identifierForVendor": uiDevice.identifierForVendor?.uuidString ?? "", //?? "identifierForVendor": "AEC1886E-E4A4-4906-A0E5-C3DBEC907106",
-            "system_name": systemName, // ok
-            "brand": brand, // ok
+            "system_name": systemName, //
+            "brand": brand, //
             "manufacturer": manufacturer, //
-            "imei": imei // ok
+            "imei": imei //
         ]
 
         if let batteryLevel = device.batteryLevel { //
@@ -166,7 +166,7 @@ struct DeviceInfoParameters: Parameterizable {
             deviceParameters.updateValue(localizedModel, forKey: "localizedModel")
         }
 
-        if let model = device.model { // ok
+        if let model = device.model { //
             deviceParameters.updateValue(model, forKey: "model")
         }
 

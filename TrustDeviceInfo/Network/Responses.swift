@@ -6,10 +6,8 @@
 //  Copyright © 2019 Jumpitt Labs. All rights reserved.
 //
 
-//import ObjectMapper
-
 // MARK: - TrustID
-public class TrustID: Codable, CustomStringConvertible {
+public class TrustID: Decodable, CustomStringConvertible {
     var status = false
     var message: String?
     var trustID: String?
@@ -22,25 +20,14 @@ public class TrustID: Codable, CustomStringConvertible {
 }
 
 // MARK: - ClientCredentials
-public class ClientCredentials: Codable, CustomStringConvertible {
+public class ClientCredentials: Decodable, CustomStringConvertible {
     public var accessToken: String?
     public var tokenType: String?
-    
-    /*enum CodingKeys: String, CodingKey {
-        case accessToken = "access_token"
-        case tokenType = "token_type"
-    }*/
 }
 
 // MARK: - RegisterFirebaseTokenResponse
-public class RegisterFirebaseTokenResponse: Codable, CustomStringConvertible {
+public class RegisterFirebaseTokenResponse: Decodable, CustomStringConvertible {
     var status: String?
     var code: Int?
     var message: String?
-    
-    /*enum CodingKeys: String, CodingKey {
-        case status = "status"
-        case code = "code"
-        case message = "message"
-    }*/
 }

@@ -14,7 +14,8 @@ enum APIRouter: URLRequestConvertible {
     case sendDeviceInfo(parameters: Parameterizable)
     case setAppState(parameters: Parameterizable)
     case registerFirebaseToken(parameters: Parameterizable)
-    
+
+    // MARK: - Path
     var path: String {
         switch self {
         case .clientCredentials:
@@ -27,15 +28,16 @@ enum APIRouter: URLRequestConvertible {
             return "/notifications/device/register"
         }
     }
-//    var currentEnvironment = 
 
+    // MARK: - Method
     var method: HTTPMethod {
         switch self {
         case .clientCredentials, .sendDeviceInfo, .setAppState, .registerFirebaseToken:
             return .post
         }
     }
-    
+
+    // MARK: - Parameters
     var parameters: Parameters {
         switch self {
         case .clientCredentials(let parameters):
@@ -48,13 +50,12 @@ enum APIRouter: URLRequestConvertible {
             return parameters.asParameters
         }
     }
-    
+
     func asURLRequest() throws -> URLRequest {
         var baseURLAsString: String = .empty
         
         switch self {
         case .clientCredentials:
-            
             if Identify.currentEnvironment == "prod" {
                 baseURLAsString = API.clientCredentialsBaseURL
             } else {

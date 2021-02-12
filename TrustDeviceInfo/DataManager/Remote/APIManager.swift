@@ -8,10 +8,17 @@
 
 import Alamofire
 
+// FIXME: - Improve APIManager by separating into different managers.
+/*
+ All in remote:
+ - ClientCredentialsManager
+ - DeviceInfoManager
+ - AppStateManager
+ - FirebaseTokenManager
+ */
+
 // MARK: - APIManagerProtocol
 protocol APIManagerProtocol: AnyObject {
-    var managerOutput: APIManagerOutputProtocol? {get set}
-    
     func getClientCredentials(with parameters: ClientCredentialsParameters)
     func sendDeviceInfo(with parameters: DeviceInfoParameters)
     func setAppState(with parameters: AppStateParameters)
@@ -24,7 +31,7 @@ protocol APIManagerOutputProtocol: AnyObject {
     func onClientCredentialsSuccess(responseData: ClientCredentials)
     func onClientCredentialsFailure()
     
-    func onSendDeviceInfoResponse(response: DataResponse<TrustID>)
+    func onSendDeviceInfoResponse(response: AFDataResponse<TrustID>)
     func onSendDeviceInfoSuccess(responseData: TrustID)
     func onSendDeviceInfoFailure()
     
@@ -38,21 +45,20 @@ protocol APIManagerOutputProtocol: AnyObject {
 }
 
 // MARK: - APIManager
-class APIManager: APIManagerProtocol {
+final class APIManager {
     weak var managerOutput: APIManagerOutputProtocol?
-    
+}
+
+// MARK: - APIManagerProtocol
+extension APIManager: APIManagerProtocol {
     func getClientCredentials(with parameters: ClientCredentialsParameters) {
         API.call(
             resource: .clientCredentials(parameters: parameters),
             onResponse: {
-                [weak self] in guard let self = self else {return}
                 self.managerOutput?.onClientCredentialsResponse()
-            }, onSuccess: {
-                [weak self] (responseData: ClientCredentials) in guard let self = self else {return}
+            }, onSuccess: { (responseData: ClientCredentials) in
                 self.managerOutput?.onClientCredentialsSuccess(responseData: responseData)
             }, onFailure: {
-                [weak self] in
-                guard let self = self else {return}
                 self.managerOutput?.onClientCredentialsFailure()
             }
         )
@@ -61,17 +67,11 @@ class APIManager: APIManagerProtocol {
     func sendDeviceInfo(with parameters: DeviceInfoParameters) {
         API.call(
             resource: .sendDeviceInfo(parameters: parameters),
-            onResponseWithData: {
-                [weak self] response in
-                guard let self = self else {return}
+            onResponseWithData: { response in
                 self.managerOutput?.onSendDeviceInfoResponse(response: response)
-            }, onSuccess: {
-                [weak self] (responseData: TrustID) in
-                guard let self = self else {return}
+            }, onSuccess: { (responseData: TrustID) in
                 self.managerOutput?.onSendDeviceInfoSuccess(responseData: responseData)
             }, onFailure: {
-                [weak self] in
-                guard let self = self else {return}
                 self.managerOutput?.onSendDeviceInfoFailure()
             }
         )
@@ -81,16 +81,10 @@ class APIManager: APIManagerProtocol {
         API.callAsJSON(
             resource: .setAppState(parameters: parameters),
             onResponse: {
-                [weak self] in
-                guard let self = self else {return}
                 self.managerOutput?.onSetAppStateResponse()
-            }, onSuccess: {
-                [weak self] _ in
-                guard let self = self else {return}
+            }, onSuccess: { _ in
                 self.managerOutput?.onSetAppStateSuccess()
             }, onFailure: {
-                [weak self] in
-                guard let self = self else {return}
                 self.managerOutput?.onSetAppStateFailure()
             }
         )
@@ -100,15 +94,10 @@ class APIManager: APIManagerProtocol {
         API.call(
             resource: .registerFirebaseToken(parameters: parameters),
             onResponse: {
-                [weak self] in
-                guard let self = self else {return}
                 self.managerOutput?.onRegisterFirebaseTokenResponse()
-            }, onSuccess: {
-                [weak self] (responseData: RegisterFirebaseTokenResponse) in guard let self = self else {return}
+            }, onSuccess: { (responseData: RegisterFirebaseTokenResponse) in
                 self.managerOutput?.onRegisterFirebaseTokenSuccess(responseData: responseData)
             }, onFailure: {
-                [weak self] in
-                guard let self = self else {return}
                 self.managerOutput?.onRegisterFirebaseTokenFailure()
             }
         )

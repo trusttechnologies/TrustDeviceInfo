@@ -22,7 +22,6 @@ public protocol TrustDeviceInfoDelegate: AnyObject { //Implement in class
     func onSendDeviceInfoResponse(status: ResponseStatus)
 }
 
-
 // MARK: - Identify
 public class Identify {
     private var sendDeviceInfoOnEnabled: Bool = false
@@ -238,9 +237,9 @@ extension Identify: APIManagerOutputProtocol {
     
     func onClientCredentialsFailure() {}
     
-    func onSendDeviceInfoResponse(response: DataResponse<TrustID>) {
+    func onSendDeviceInfoResponse(response: AFDataResponse<TrustID>) {
         let httpResponse = response.response
-        
+
         trustDeviceInfoDelegate?.onSendDeviceInfoResponse(status: getResponseStatus(response: httpResponse))
         sendDeviceInfoCompletionHandler?(getResponseStatus(response: httpResponse))
     }

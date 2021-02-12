@@ -8,8 +8,6 @@
 
 // MARK: - ClientCredentialsManagerProtocol
 protocol ClientCredentialsManagerProtocol: AnyObject {
-    var managerOutput: ClientCredentialsManagerOutputProtocol? {get set}
-    
     func save(clientCredentials: ClientCredentials)
     func getClientCredentials() -> ClientCredentials?
     func deleteClientCredentials()
@@ -21,7 +19,7 @@ protocol ClientCredentialsManagerOutputProtocol: AnyObject {
 }
 
 // MARK: - ClientCredentialsManager
-class ClientCredentialsManager: ClientCredentialsManagerProtocol {
+final class ClientCredentialsManager {
     weak var managerOutput: ClientCredentialsManagerOutputProtocol?
     
     var accessGroup: String
@@ -35,7 +33,10 @@ class ClientCredentialsManager: ClientCredentialsManagerProtocol {
         self.serviceName = serviceName
         self.accessGroup = accessGroup
     }
-    
+}
+
+// MARK: - ClientCredentialsManagerProtocol
+extension ClientCredentialsManager: ClientCredentialsManagerProtocol {
     func save(clientCredentials: ClientCredentials) {
         guard
             let tokenType = clientCredentials.tokenType,
@@ -63,7 +64,5 @@ class ClientCredentialsManager: ClientCredentialsManagerProtocol {
     func deleteClientCredentials() {
         keychain.removeObject(forKey: "accessToken")
         keychain.removeObject(forKey: "tokenType")
-//        keychain.remove(key: "accessToken")
-//        keychain.remove(key: "tokenType")
     }
 }

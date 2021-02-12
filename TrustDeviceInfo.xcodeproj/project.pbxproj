@@ -18,7 +18,6 @@
 		378C8D0D21C973A90069AB16 /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C8D0C21C973A90069AB16 /* Sysctl.swift */; };
 		378C8D0F21C973E30069AB16 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C8D0E21C973E30069AB16 /* KeychainWrapper.swift */; };
 		378C8D1121D3B47C0069AB16 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C8D1021D3B47C0069AB16 /* Extensions.swift */; };
-		378C8D1321D3B7890069AB16 /* EventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C8D1221D3B7890069AB16 /* EventData.swift */; };
 		37A387062134B7F400DB87F7 /* TrustDeviceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 37A387042134B7F400DB87F7 /* TrustDeviceInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		38F22C00036E8815FE6BC901 /* Pods_TrustDeviceInfo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41871B023E2F33367CD3BBF9 /* Pods_TrustDeviceInfo.framework */; };
 		FEE2991823079CE8006DE4D5 /* Identify.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE2991723079CE8006DE4D5 /* Identify.swift */; };
@@ -36,7 +35,6 @@
 		378C8D0C21C973A90069AB16 /* Sysctl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sysctl.swift; sourceTree = "<group>"; };
 		378C8D0E21C973E30069AB16 /* KeychainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
 		378C8D1021D3B47C0069AB16 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		378C8D1221D3B7890069AB16 /* EventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventData.swift; sourceTree = "<group>"; };
 		37A387012134B7F400DB87F7 /* TrustDeviceInfo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TrustDeviceInfo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37A387042134B7F400DB87F7 /* TrustDeviceInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrustDeviceInfo.h; sourceTree = "<group>"; };
 		37A387052134B7F400DB87F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -153,7 +151,6 @@
 			children = (
 				37A387042134B7F400DB87F7 /* TrustDeviceInfo.h */,
 				37A387052134B7F400DB87F7 /* Info.plist */,
-				378C8D1221D3B7890069AB16 /* EventData.swift */,
 				FEE2991723079CE8006DE4D5 /* Identify.swift */,
 				375FDF40226E3AA500C1935F /* DataManager */,
 				375FDF3D226E1D1200C1935F /* Network */,
@@ -275,7 +272,6 @@
 			files = (
 				378C8D1121D3B47C0069AB16 /* Extensions.swift in Sources */,
 				378C8D0B21C972750069AB16 /* DiskStatus.swift in Sources */,
-				378C8D1321D3B7890069AB16 /* EventData.swift in Sources */,
 				378C8D0F21C973E30069AB16 /* KeychainWrapper.swift in Sources */,
 				375FDF44226E4AFD00C1935F /* APIManager.swift in Sources */,
 				FEE2991823079CE8006DE4D5 /* Identify.swift in Sources */,
